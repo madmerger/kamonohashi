@@ -304,7 +304,7 @@ namespace Nssol.Platypus.Controllers.spa
                         }
                     }
 
-                    // ファイル情報の集計
+                    // ファイル情報の集計（ファイルサイズはS3への個別問い合わせが必要なため集計しない）
                     if (entry.Data?.DataProperties != null)
                     {
                         foreach (var property in entry.Data.DataProperties)
@@ -313,18 +313,6 @@ namespace Nssol.Platypus.Controllers.spa
 
                             if (property.DataFile != null)
                             {
-                                // ファイルサイズの取得
-                                try
-                                {
-                                    var fileSize = storageLogic.GetFileSize(
-                                        ResourceType.Data, property.DataFile.StoredPath);
-                                    model.TotalFileSize += fileSize;
-                                }
-                                catch
-                                {
-                                    // ファイルサイズ取得に失敗した場合はスキップ
-                                }
-
                                 // ファイルタイプ(拡張子)の分布
                                 string fileName = property.DataFile.FileName ?? property.Key;
                                 string ext = System.IO.Path.GetExtension(fileName)?.ToLower() ?? "";

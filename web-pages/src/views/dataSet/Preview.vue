@@ -57,7 +57,7 @@
                 <div class="stats-label">ファイル総数</div>
               </el-card>
             </el-col>
-            <el-col :span="8">
+            <el-col v-if="statistics.totalFileSize > 0" :span="8">
               <el-card shadow="hover" class="stats-card">
                 <div class="stats-number">
                   {{ formatFileSize(statistics.totalFileSize) }}
@@ -219,6 +219,15 @@ export default {
         .sort((a, b) => b.count - a.count)
     },
   },
+  watch: {
+    loadingStats(newVal) {
+      if (!newVal && this.activeTab === 'distribution') {
+        this.$nextTick(() => {
+          this.renderChart()
+        })
+      }
+    },
+  },
   async created() {
     await this.initialize()
   },
@@ -311,8 +320,11 @@ export default {
 
     formatFileSize(bytes) {
       if (bytes === 0) return '0 B'
-      let units = ['B', 'KB', 'MB', 'GB', 'TB']
-      let i = Math.floor(Math.log(bytes) / Math.log(1024))
+      let units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']
+      let i = Math.min(
+        Math.floor(Math.log(bytes) / Math.log(1024)),
+        units.length - 1,
+      )
       return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + units[i]
     },
 
