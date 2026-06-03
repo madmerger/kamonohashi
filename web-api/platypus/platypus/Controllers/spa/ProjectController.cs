@@ -98,12 +98,11 @@ namespace Nssol.Platypus.Controllers.spa
             };
 
             projectRepository.Add(project);
-            unitOfWork.Commit();
 
-            // 作成者をManagerとして追加
+            // 作成者をManagerとして追加（navigation propertyで単一コミット）
             var member = new ProjectMember
             {
-                ProjectId = project.Id,
+                Project = project,
                 UserId = CurrentUserInfo.Id,
                 RoleType = ProjectRoleType.Manager,
             };
