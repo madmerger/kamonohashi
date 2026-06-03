@@ -70,7 +70,7 @@ export default {
       })
     },
     async initialize() {
-      this.title = '実験履歴'
+      this.title = this.$t('aquarium.experimentHistory')
       await this.retrieveData()
       this.name = this.detail.name
       this.infoForm = {}

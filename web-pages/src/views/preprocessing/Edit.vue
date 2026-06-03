@@ -183,14 +183,14 @@ export default {
       let type = url.split('/')[2] // ["", "preprocessing", "{type}", "{id}"]
       switch (type) {
         case 'create':
-          this.title = '前処理作成'
+          this.title = this.$t('preprocessing.preprocessRegister')
           this.isCreateDialog = true
           this.isCopyCreation = this.id !== null
           this.isEditDialog = false
           this.isPatch = false
           break
         case 'edit':
-          this.title = '前処理編集'
+          this.title = this.$t('preprocessing.preprocessEdit')
           this.isCreateDialog = false
           this.isCopyCreation = false
           this.isEditDialog = true

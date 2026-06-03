@@ -270,7 +270,7 @@ export default {
       let type = url.split('/')[3] // ["", "preprocessing", "{type}", "{id}"]
       switch (type) {
         case 'create':
-          this.title = '新しいテンプレートの登録'
+          this.title = this.$t('aquarium.newTemplateRegister')
           this.isCopyCreation = this.id !== null
           this.isEditDialog = false
           break

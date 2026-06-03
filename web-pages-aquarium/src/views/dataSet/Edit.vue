@@ -189,7 +189,7 @@ export default {
       let type = url.split('/')[3] // ["", "dataset", "{type}", "{id}"]
       switch (type) {
         case 'create':
-          this.title = '新しいデータセットの作成'
+          this.title = this.$t('aquarium.newDatasetCreate')
           this.isCreateDialog = true
           this.isCopyCreation = this.id !== null
           this.isLocked = false

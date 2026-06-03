@@ -103,9 +103,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'ユーザグループ登録'
+      this.title = this.$t('systemSetting.userGroupRegister')
     } else {
-      this.title = 'ユーザグループ編集'
+      this.title = this.$t('systemSetting.userGroupEdit')
       try {
         await this['userGroup/fetchDetail'](this.id)
         this.form.name = this.detail.name

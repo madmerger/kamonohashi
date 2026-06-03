@@ -150,10 +150,10 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'データ登録'
+      this.title = this.$t('data.dataRegister')
       this.clearUploadedFiles()
     } else {
-      this.title = 'データ編集'
+      this.title = this.$t('data.dataEdit')
       this.isEditDialog = true
       await this.retrieveData()
     }

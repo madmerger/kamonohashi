@@ -57,12 +57,6 @@ import KqiDialog from '@/components/KqiDialog'
 import KqiDisplayError from '@/components/KqiDisplayError'
 import { mapGetters, mapActions } from 'vuex'
 
-const formRules = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
   components: {
     KqiDialog,
@@ -89,7 +83,7 @@ export default {
       displayTenants: [],
       error: null,
       rules: {
-        name: [formRules],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
       },
     }
   },
@@ -114,9 +108,9 @@ export default {
     })
 
     if (this.id === null) {
-      this.title = 'ノード登録'
+      this.title = this.$t('systemSetting.nodeRegister')
     } else {
-      this.title = 'ノード編集'
+      this.title = this.$t('systemSetting.nodeEdit')
       try {
         await this['node/fetchDetail'](this.id)
         this.form.name = this.detail.name

@@ -131,9 +131,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'Dockerレジストリ登録'
+      this.title = this.$t('systemSetting.registryRegister')
     } else {
-      this.title = 'Dockerレジストリ編集'
+      this.title = this.$t('systemSetting.registryEdit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

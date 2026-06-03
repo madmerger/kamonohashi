@@ -168,10 +168,10 @@ export default {
     await this['role/fetchRoles']()
     await this['tenant/fetchTenants']()
     if (this.isCreateDialog) {
-      this.title = 'ユーザ作成'
+      this.title = this.$t('systemSetting.userRegister')
       this.passwordLabel = 'パスワード'
     } else {
-      this.title = 'ユーザ編集'
+      this.title = this.$t('systemSetting.userEdit')
       this.passwordLabel = 'パスワード（変更する場合のみ入力）'
       await this['user/fetchDetail'](this.id)
       try {

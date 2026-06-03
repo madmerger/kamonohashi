@@ -146,9 +146,9 @@ export default {
     await this['registry/fetchRegistries']()
     await this['userGroup/fetchUserGroups']()
     if (this.id === null) {
-      this.title = 'テナント作成'
+      this.title = this.$t('systemSetting.tenantRegister')
     } else {
-      this.title = 'テナント編集'
+      this.title = this.$t('systemSetting.tenantEdit')
       try {
         await this['tenant/fetchDetail'](this.id)
         this.form.tenantName = this.detail.name

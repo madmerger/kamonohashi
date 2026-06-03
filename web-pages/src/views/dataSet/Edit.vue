@@ -208,7 +208,7 @@ export default {
       let type = url.split('/')[2] // ["", "dataset", "{type}", "{id}"]
       switch (type) {
         case 'create':
-          this.title = 'データセット作成'
+          this.title = this.$t('dataSet.create')
           this.isCreateDialog = true
           this.isCopyCreation = this.id !== null
           this.isEditDialog = false
@@ -216,7 +216,7 @@ export default {
           break
 
         case 'edit':
-          this.title = 'データセット編集'
+          this.title = this.$t('dataSet.edit')
           this.isCreateDialog = false
           this.isCopyCreation = false
           this.isEditDialog = true

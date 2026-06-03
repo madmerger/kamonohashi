@@ -371,7 +371,7 @@ export default {
       'deleteFile',
     ]),
     async initialize() {
-      this.title = '推論履歴'
+      this.title = this.$t('inference.history')
       await this.retrieveData()
       this.form.name = this.detail.name
       this.form.favorite = this.detail.favorite

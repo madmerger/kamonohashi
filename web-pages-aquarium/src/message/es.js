@@ -301,6 +301,7 @@ const es = {
     templateName: 'Nombre de plantilla',
     modelTemplate: 'Plantilla de modelo',
     newTemplateRegister: 'Registrar nueva plantilla',
+    newDatasetCreate: 'Crear nuevo conjunto de datos',
     templateRequiredFields: 'Los campos obligatorios no están completos: El nombre de la plantilla y la configuración de publicación son obligatorios.',
     noTemplatePermission: 'No tiene permiso para acceder a los detalles de la plantilla utilizada en este experimento',
     averagePrecision: 'Precisión promedio',

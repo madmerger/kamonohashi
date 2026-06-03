@@ -109,9 +109,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'ロール作成'
+      this.title = this.$t('systemSetting.roleCreate')
     } else {
-      this.title = 'ロール編集'
+      this.title = this.$t('systemSetting.roleEdit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

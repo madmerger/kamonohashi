@@ -301,6 +301,7 @@ const ja = {
     templateName: 'テンプレート名',
     modelTemplate: 'モデルテンプレート',
     newTemplateRegister: '新しいテンプレートの登録',
+    newDatasetCreate: '新しいデータセットの作成',
     templateRequiredFields: '必須項目が入力されていません : テンプレート名、公開設定は必須項目です。',
     noTemplatePermission: 'この実験に使用されたテンプレートの詳細にアクセスする権限がありません',
     averagePrecision: '平均適合率',

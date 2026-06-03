@@ -84,9 +84,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'ストレージ登録'
+      this.title = this.$t('systemSetting.storageRegister')
     } else {
-      this.title = 'ストレージ編集'
+      this.title = this.$t('systemSetting.storageEdit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

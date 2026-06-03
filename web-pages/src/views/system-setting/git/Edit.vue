@@ -98,9 +98,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'Git登録'
+      this.title = this.$t('systemSetting.gitRegister')
     } else {
-      this.title = 'Git編集'
+      this.title = this.$t('systemSetting.gitEdit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

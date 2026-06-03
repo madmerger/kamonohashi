@@ -301,6 +301,7 @@ const en = {
     templateName: 'Template Name',
     modelTemplate: 'Model Template',
     newTemplateRegister: 'Register New Template',
+    newDatasetCreate: 'Create New Dataset',
     templateRequiredFields: 'Required fields are not filled: Template name and publish settings are required.',
     noTemplatePermission: 'You do not have permission to access the template details used in this experiment',
     averagePrecision: 'Average Precision',

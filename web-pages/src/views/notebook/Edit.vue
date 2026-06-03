@@ -209,7 +209,7 @@
               :label="$t('common.launchPeriodH')"
               :value="String(detail.expiresIn / 60 / 60)"
             />
-            <kqi-display-text-form v-else :label="$t('common.launchPeriod')" value="無期限" />
+            <kqi-display-text-form v-else :label="$t('common.launchPeriod')" :value="$t('common.noLimit')" />
           </div>
           <kqi-display-text-form
             :label="$t('common.partition')"
@@ -333,7 +333,7 @@ export default {
     ...mapGetters(['detail', 'events', 'endpoint']),
   },
   async created() {
-    this.title = 'ノートブック履歴'
+    this.title = this.$t('notebook.notebookHistory')
     await this.retrieveData()
     this.form.name = this.detail.name
     this.form.favorite = this.detail.favorite
