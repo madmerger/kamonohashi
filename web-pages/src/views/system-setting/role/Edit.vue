@@ -120,7 +120,7 @@ export default {
         this.error = null
         this.isNotEditable = this.detail.isNotEditable
         if (this.detail.tenantName) {
-          this.tenantName = `${this.$t('messages.tenant_custom')} / ${
+          this.form.tenantName = `${this.$t('messages.tenant_custom')} / ${
             this.detail.tenantName
           }`
         }
