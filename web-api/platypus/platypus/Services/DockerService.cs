@@ -592,20 +592,50 @@ namespace Nssol.Platypus.Services
         #region 権限管理
 
         /// <summary>
-        /// レジストリトークン登録（Docker版: 資格情報をメモリにキャッシュ）
+        /// レジストリトークン登録（Docker版: DockerCfgAuthStringからユーザ名/パスワードを抽出しキャッシュ）
         /// </summary>
         public Task<bool> RegistRegistryTokenyAsync(RegistRegistryTokenInputModel model)
         {
-            if (!string.IsNullOrEmpty(model.RegistryTokenKey) && !string.IsNullOrEmpty(model.UserName))
+            if (!string.IsNullOrEmpty(model.RegistryTokenKey) && !string.IsNullOrEmpty(model.DockerCfgAuthString))
             {
-                registryCredentials[model.RegistryTokenKey] = new AuthConfig
+                var authConfig = ParseDockerCfgAuthString(model.DockerCfgAuthString);
+                if (authConfig != null)
                 {
-                    Username = model.UserName,
-                    Password = model.Password,
-                    ServerAddress = model.Url
-                };
+                    authConfig.ServerAddress = model.Url;
+                    registryCredentials[model.RegistryTokenKey] = authConfig;
+                }
             }
             return Task.FromResult(true);
+        }
+
+        private static AuthConfig ParseDockerCfgAuthString(string dockerCfgAuth)
+        {
+            // Format: "username":"<user>","password":"<pass>","auth":"<base64>"
+            string username = null;
+            string password = null;
+
+            var usernameMatch = System.Text.RegularExpressions.Regex.Match(dockerCfgAuth, "\"username\":\"([^\"]+)\"");
+            var passwordMatch = System.Text.RegularExpressions.Regex.Match(dockerCfgAuth, "\"password\":\"([^\"]+)\"");
+
+            if (usernameMatch.Success)
+            {
+                username = usernameMatch.Groups[1].Value;
+            }
+            if (passwordMatch.Success)
+            {
+                password = passwordMatch.Groups[1].Value;
+            }
+
+            if (string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
+
+            return new AuthConfig
+            {
+                Username = username,
+                Password = password
+            };
         }
 
         /// <summary>
