@@ -211,7 +211,9 @@ namespace Nssol.Platypus.Controllers.spa
             projectRepository.AddMember(member);
             unitOfWork.Commit();
 
-            return JsonCreated(new MemberOutputModel(member));
+            // User navigation propertyを読み込んでレスポンスに含める
+            var saved = await projectRepository.GetMemberAsync(id, model.UserId);
+            return JsonCreated(new MemberOutputModel(saved ?? member));
         }
 
         /// <summary>

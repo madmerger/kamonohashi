@@ -111,6 +111,10 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return JsonBadRequest("Invalid requiredLevel value.");
             }
+            if (!Enum.IsDefined(typeof(ResourceType2), resourceType))
+            {
+                return JsonBadRequest("Invalid resourceType value.");
+            }
             var hasAccess = await projectRepository.HasResourceAccessAsync(
                 CurrentUserInfo.Id, resourceType, resourceId, requiredLevel);
             return JsonOK(new { hasAccess });
