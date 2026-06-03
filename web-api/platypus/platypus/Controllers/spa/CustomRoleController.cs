@@ -130,6 +130,13 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonNotFound($"Custom role Id {id} is not found.");
             }
 
+            var tenantId = CurrentUserInfo.SelectedTenant.Id;
+            var existingRoles = await customRoleRepository.GetAllAsync(tenantId);
+            if (existingRoles.Any(r => r.Name == model.Name && r.Id != id))
+            {
+                return JsonBadRequest($"Custom role with name '{model.Name}' already exists.");
+            }
+
             role.Name = model.Name;
             role.DisplayName = model.DisplayName;
             role.Description = model.Description;
