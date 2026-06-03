@@ -161,8 +161,9 @@ namespace Nssol.Platypus.DataAccess.Repositories.TenantRepositories
 
             if (projectIds.Count == 0)
             {
-                // どのプロジェクトにも所属していないリソースは全ユーザーがアクセス可能
-                return true;
+                // どのプロジェクトにも所属していないリソースは閲覧のみ全ユーザーに許可（後方互換性）
+                // Executor以上の権限が必要な場合は明示的な権限付与が必要
+                return requiredLevel <= ProjectRoleType.Viewer;
             }
 
             return await GetDbSet<ProjectMember>()
