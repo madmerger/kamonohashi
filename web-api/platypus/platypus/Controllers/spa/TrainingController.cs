@@ -590,7 +590,7 @@ namespace Nssol.Platypus.Controllers.spa
                     ContainerImage = $"{history.ContainerImage}:{history.ContainerTag}",
                     LogSummary = history.LogSummary,
                     Memo = history.Memo,
-                    Tags = history.Tags,
+                    Tags = tagLogic.GetAllTrainingHistoryTag(history.Id).Select(t => t.Name),
                     ExecutionTime = executionTime
                 };
 

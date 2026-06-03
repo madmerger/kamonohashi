@@ -582,11 +582,12 @@ export default {
 
       // X-axis labels
       ctx.textAlign = 'center'
-      for (let i = 0; i <= Math.min(maxEpoch - 1, 10); i++) {
+      for (let i = 0; i <= Math.min(Math.max(maxEpoch - 1, 1), 10); i++) {
         const epoch = Math.round(
-          (i * (maxEpoch - 1)) / Math.min(maxEpoch - 1, 10),
+          (i * Math.max(maxEpoch - 1, 1)) /
+            Math.min(Math.max(maxEpoch - 1, 1), 10),
         )
-        const x = padding.left + (epoch / (maxEpoch - 1)) * plotWidth
+        const x = padding.left + (epoch / Math.max(maxEpoch - 1, 1)) * plotWidth
         ctx.fillText(String(epoch + 1), x, padding.top + plotHeight + 15)
       }
 
