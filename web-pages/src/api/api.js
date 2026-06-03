@@ -249,6 +249,16 @@ let api = {
     getSearchFill: gen.getApiV2TrainingSearchFill,
   },
 
+  hpo: {
+    get: (params) => gen.request('get', '/api/v2/hpo', null, params || {}, null),
+    getSimple: () => gen.request('get', '/api/v2/hpo/simple', null, {}, null),
+    getById: (params) => gen.request('get', '/api/v2/hpo/' + params.id, null, {}, null),
+    post: (body) => gen.request('post', '/api/v2/hpo/run', body, {}, null),
+    postHaltById: (params) => gen.request('post', '/api/v2/hpo/' + params.id + '/halt', null, {}, null),
+    deleteById: (params) => gen.request('delete', '/api/v2/hpo/' + params.id, null, {}, null),
+    putTrialMetrics: (params, body) => gen.request('put', '/api/v2/hpo/' + params.id + '/trials/' + params.trialId + '/metrics', body, {}, null),
+  },
+
   notebook: {
     getSimple: gen.getApiV2NotebookSimple,
     get: gen.getApiV2Notebook,

@@ -10,6 +10,7 @@ import dataSet from '@/router/dataSet'
 import preprocessing from '@/router/preprocessing'
 import notebook from '@/router/notebook'
 import training from '@/router/training'
+import hpo from '@/router/hpo'
 import inference from '@/router/inference'
 import tenantsetting from '@/router/tenant-setting'
 import tenant from '@/router/tenant'
@@ -39,6 +40,7 @@ let router = new Router({
     ...preprocessing,
     ...notebook,
     ...training,
+    ...hpo,
     ...inference,
     ...tenantsetting,
     ...tenant,

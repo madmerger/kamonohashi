@@ -268,6 +268,15 @@ namespace Nssol.Platypus.DataAccess
         /// </summary>
         public virtual DbSet<Models.TenantModels.Aquarium.DataSetVersion> AquariumDatasetVersions { get; set; }
 
+        /// <summary>
+        /// HPOジョブ
+        /// </summary>
+        public virtual DbSet<HpoJob> HpoJobs { get; set; }
+        /// <summary>
+        /// HPOトライアル
+        /// </summary>
+        public virtual DbSet<HpoTrial> HpoTrials { get; set; }
+
         #endregion
 
         #region View

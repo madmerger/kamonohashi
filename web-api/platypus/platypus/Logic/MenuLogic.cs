@@ -434,6 +434,19 @@ namespace Nssol.Platypus.Logic
             ShowSideMenu = true,
             MenuType = MenuType.Tenant
         };
+        internal static MenuItemInfo HpoMenu = new MenuItemInfo()
+        {
+            Name = "HPO管理",
+            NameEn = "HPO",
+            Description = "ハイパーパラメータ最適化ジョブの管理",
+            DescriptionEn = "Managing Hyperparameter Optimization Jobs",
+            Category = "pl-training",
+            Code = MenuCode.Training,
+            Url = "/hpo",
+            ShowTopMenu = true,
+            ShowSideMenu = true,
+            MenuType = MenuType.Tenant
+        };
         internal static MenuItemInfo InferenceMenu = new MenuItemInfo()
         {
             Name = "推論管理",
@@ -676,6 +689,7 @@ namespace Nssol.Platypus.Logic
             PreprocessMenu,
             NotebookMenu,
             TrainingMenu,
+            HpoMenu,
             InferenceMenu,
 
             new MenuItemInfo()
