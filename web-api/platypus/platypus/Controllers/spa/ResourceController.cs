@@ -1106,7 +1106,8 @@ namespace Nssol.Platypus.Controllers.spa
         [ProducesResponseType(typeof(DashboardSummaryOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetDashboardSummary([FromServices] INodeRepository nodeRepository)
         {
-            var nodes = nodeRepository.GetAll().OrderBy(n => n.Name);
+            var nodes = nodeRepository.GetAll().OrderBy(n => n.Name).ToList();
+            var nodeNames = new HashSet<string>(nodes.Select(n => n.Name));
             var nodeInfos = (await clusterManagementLogic.GetAllNodesAsync())?.ToList();
             if (nodeInfos == null)
             {
@@ -1115,7 +1116,7 @@ namespace Nssol.Platypus.Controllers.spa
 
             var summary = new DashboardSummaryOutputModel
             {
-                TotalNodeCount = nodes.Count(),
+                TotalNodeCount = nodes.Count,
                 ActiveNodeCount = 0,
             };
 
@@ -1136,7 +1137,7 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 foreach (var container in response.Value)
                 {
-                    if (!string.IsNullOrEmpty(container.NodeName) && nodes.Any(n => n.Name == container.NodeName))
+                    if (!string.IsNullOrEmpty(container.NodeName) && nodeNames.Contains(container.NodeName))
                     {
                         summary.UsedCpu += container.Cpu;
                         summary.UsedMemory += container.Memory;
