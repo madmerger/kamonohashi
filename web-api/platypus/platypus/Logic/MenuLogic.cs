@@ -39,6 +39,9 @@ namespace Nssol.Platypus.Logic
                 TenantUserMenu,
                 //TenantMenuAccessMenu,
                 TenantResourceMenu,
+                ProjectManagementMenu,
+                ResourcePermissionMenu,
+                CustomRoleMenu,
 
                 TenantMenu,
                 GitMenu,
@@ -550,6 +553,36 @@ namespace Nssol.Platypus.Logic
             ShowSideMenu = true,
             MenuType = MenuType.Tenant
         };
+        internal static MenuItemInfo ProjectManagementMenu = new MenuItemInfo()
+        {
+            Name = "プロジェクト管理",
+            Description = "テナント内プロジェクトの管理",
+            Code = MenuCode.ProjectManagement,
+            Url = "/manage/project",
+            ShowTopMenu = false,
+            ShowSideMenu = true,
+            MenuType = MenuType.Tenant
+        };
+        internal static MenuItemInfo ResourcePermissionMenu = new MenuItemInfo()
+        {
+            Name = "リソース権限管理",
+            Description = "リソース単位のアクセス権限管理",
+            Code = MenuCode.ResourcePermission,
+            Url = "/manage/permission",
+            ShowTopMenu = false,
+            ShowSideMenu = true,
+            MenuType = MenuType.Tenant
+        };
+        internal static MenuItemInfo CustomRoleMenu = new MenuItemInfo()
+        {
+            Name = "カスタムロール管理",
+            Description = "テナント用カスタムロールの作成・管理",
+            Code = MenuCode.CustomRole,
+            Url = "/manage/custom-role",
+            ShowTopMenu = false,
+            ShowSideMenu = true,
+            MenuType = MenuType.Tenant
+        };
 
 
         internal static MenuItemInfo TenantMenu = new MenuItemInfo()
@@ -688,7 +721,10 @@ namespace Nssol.Platypus.Logic
                     //TenantRoleMenu,
                     TenantUserMenu,
                     //TenantMenuAccessMenu,
-                    TenantResourceMenu
+                    TenantResourceMenu,
+                    ProjectManagementMenu,
+                    ResourcePermissionMenu,
+                    CustomRoleMenu
                 }
             },
             new MenuItemInfo()

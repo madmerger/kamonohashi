@@ -223,6 +223,13 @@ namespace Nssol.Platypus.Migrations
                 table: "CustomRoles",
                 columns: new[] { "TenantId", "Name" },
                 unique: true);
+
+            // 新メニューコードのMenuRoleMapを追加（managersロールに権限付与）
+            string adminUser = "admin";
+            DateTime now = DateTime.Now;
+            migrationBuilder.Sql($"INSERT INTO \"MenuRoleMaps\" (\"Id\", \"CreatedBy\", \"CreatedAt\", \"ModifiedBy\", \"ModifiedAt\", \"MenuCode\", \"RoleId\") SELECT nextval('\"MenuRoleMaps_Id_seq\"'), '{adminUser}', '{now}', '{adminUser}', '{now}', '{Logic.MenuLogic.ProjectManagementMenu.Code.ToString()}', \"Id\" FROM \"Roles\" WHERE \"Name\" = 'managers';");
+            migrationBuilder.Sql($"INSERT INTO \"MenuRoleMaps\" (\"Id\", \"CreatedBy\", \"CreatedAt\", \"ModifiedBy\", \"ModifiedAt\", \"MenuCode\", \"RoleId\") SELECT nextval('\"MenuRoleMaps_Id_seq\"'), '{adminUser}', '{now}', '{adminUser}', '{now}', '{Logic.MenuLogic.ResourcePermissionMenu.Code.ToString()}', \"Id\" FROM \"Roles\" WHERE \"Name\" = 'managers';");
+            migrationBuilder.Sql($"INSERT INTO \"MenuRoleMaps\" (\"Id\", \"CreatedBy\", \"CreatedAt\", \"ModifiedBy\", \"ModifiedAt\", \"MenuCode\", \"RoleId\") SELECT nextval('\"MenuRoleMaps_Id_seq\"'), '{adminUser}', '{now}', '{adminUser}', '{now}', '{Logic.MenuLogic.CustomRoleMenu.Code.ToString()}', \"Id\" FROM \"Roles\" WHERE \"Name\" = 'managers';");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
