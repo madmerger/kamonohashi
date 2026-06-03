@@ -43,6 +43,19 @@
           class-name="memo-column"
         />
         <el-table-column prop="createdAt" label="登録日時" width="170px" />
+        <el-table-column label="操作" width="120px" align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="info"
+              icon="el-icon-view"
+              plain
+              @click.stop="openPreviewDialog(scope.row)"
+            >
+              プレビュー
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-row>
     <el-row>
@@ -127,6 +140,9 @@ export default {
     },
     openEditDialog(selectedRow) {
       this.$router.push('/dataset/edit/' + selectedRow.id)
+    },
+    openPreviewDialog(selectedRow) {
+      this.$router.push('/dataset/preview/' + selectedRow.id)
     },
     handleCopy(id) {
       this.$router.push('/dataset/create/' + id)

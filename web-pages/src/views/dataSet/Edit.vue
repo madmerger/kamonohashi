@@ -8,6 +8,9 @@
   >
     <el-row v-if="isEditDialog">
       <el-col :span="24" class="right-button-group">
+        <el-button type="info" icon="el-icon-view" plain @click="openPreview">
+          プレビュー
+        </el-button>
         <el-button @click="$emit('copy', id)">コピー</el-button>
       </el-col>
     </el-row>
@@ -341,6 +344,9 @@ export default {
 
     handleShowData(id) {
       this.$router.push(`/data/edit/${id}`)
+    },
+    openPreview() {
+      this.$router.push(`/dataset/preview/${this.id}`)
     },
   },
 }

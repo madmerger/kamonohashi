@@ -152,6 +152,12 @@ let api = {
     patch: gen.patchApiV2DatasetsById,
     getFiles: gen.getApiV2DataByIdFiles,
     getDatatypes: gen.getApiV2Datatypes,
+    getStatistics: params =>
+      axios.get(`/api/v2/datasets/${params.id}/statistics`),
+    getDataFilesWithUrl: params =>
+      axios.get(`/api/v2/data/${params.id}/files`, {
+        params: { withUrl: true },
+      }),
   },
 
   git: {

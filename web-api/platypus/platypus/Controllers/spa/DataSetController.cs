@@ -29,6 +29,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IDataTypeRepository dataTypeRepository;
         private readonly IUserRepository userRepository;
         private readonly IDataLogic dataLogic;
+        private readonly IStorageLogic storageLogic;
         private readonly IUnitOfWork unitOfWork;
         private static readonly string dummyDataType = "training";
 
@@ -41,6 +42,7 @@ namespace Nssol.Platypus.Controllers.spa
             IDataSetRepository dataSetRepository,
             IDataTypeRepository dataTypeRepository,
             IDataLogic dataLogic,
+            IStorageLogic storageLogic,
             IUnitOfWork unitOfWork,
             IHttpContextAccessor accessor) : base(accessor)
         {
@@ -49,6 +51,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.dataSetRepository = dataSetRepository;
             this.dataTypeRepository = dataTypeRepository;
             this.dataLogic = dataLogic;
+            this.storageLogic = storageLogic;
             this.unitOfWork = unitOfWork;
         }
 
@@ -237,6 +240,98 @@ namespace Nssol.Platypus.Controllers.spa
 
                 model.SetEntries(entities);
                 model.FlatEntries = flatEntries;
+            }
+
+            return JsonOK(model);
+        }
+
+        /// <summary>
+        /// 指定したIDのデータセットの統計情報を取得する。
+        /// </summary>
+        /// <param name="id">データセットID</param>
+        [HttpGet("{id}/statistics")]
+        [Filters.PermissionFilter(MenuCode.DataSet, MenuCode.Training, MenuCode.Inference, MenuCode.Notebook)]
+        [ProducesResponseType(typeof(DataSetStatisticsOutputModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetStatistics([FromRoute] long? id)
+        {
+            if (id == null)
+            {
+                return JsonBadRequest("DataSet ID is required.");
+            }
+            var dataSet = await dataSetRepository.GetDataSetIncludeDataSetEntryAndDataAsync(id.Value);
+            if (dataSet == null)
+            {
+                return JsonNotFound($"DataSet Id {id.Value} is not found.");
+            }
+
+            var model = new DataSetStatisticsOutputModel
+            {
+                Id = dataSet.Id,
+                Name = dataSet.Name,
+                TotalDataCount = 0,
+                TotalFileCount = 0,
+                TotalFileSize = 0,
+                FileTypeDistribution = new Dictionary<string, int>(),
+                ClassDistribution = new Dictionary<string, int>(),
+            };
+
+            if (dataSet.DataSetEntries != null)
+            {
+                model.TotalDataCount = dataSet.DataSetEntries.Count;
+
+                // クラス分布の初期化
+                if (!dataSet.IsFlat)
+                {
+                    foreach (var dataType in dataTypeRepository.GetAllWithOrderby(d => d.SortOrder, true))
+                    {
+                        model.ClassDistribution[dataType.Name] = 0;
+                    }
+                }
+
+                foreach (var entry in dataSet.DataSetEntries)
+                {
+                    // クラス分布のカウント
+                    if (!dataSet.IsFlat && entry.DataType != null)
+                    {
+                        string typeName = entry.DataType.Name;
+                        if (model.ClassDistribution.ContainsKey(typeName))
+                        {
+                            model.ClassDistribution[typeName]++;
+                        }
+                        else
+                        {
+                            model.ClassDistribution[typeName] = 1;
+                        }
+                    }
+
+                    // ファイル情報の集計（ファイルサイズはS3への個別問い合わせが必要なため集計しない）
+                    if (entry.Data?.DataProperties != null)
+                    {
+                        foreach (var property in entry.Data.DataProperties)
+                        {
+                            model.TotalFileCount++;
+
+                            if (property.DataFile != null)
+                            {
+                                // ファイルタイプ(拡張子)の分布
+                                string fileName = property.DataFile.FileName ?? property.Key;
+                                string ext = System.IO.Path.GetExtension(fileName)?.ToLower() ?? "";
+                                if (string.IsNullOrEmpty(ext))
+                                {
+                                    ext = "(no extension)";
+                                }
+                                if (model.FileTypeDistribution.ContainsKey(ext))
+                                {
+                                    model.FileTypeDistribution[ext]++;
+                                }
+                                else
+                                {
+                                    model.FileTypeDistribution[ext] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             return JsonOK(model);

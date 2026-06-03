@@ -61,6 +61,7 @@ namespace Nssol.Platypus.DataAccess.Repositories.TenantRepositories
         {
             return await GetAll().Include(d => d.DataSetEntries).ThenInclude(d => d.Data)
                 .ThenInclude(d => d.DataProperties).ThenInclude(d => d.DataFile)
+                .Include(d => d.DataSetEntries).ThenInclude(d => d.DataType)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 

@@ -8,6 +8,8 @@ const state = {
   detail: {},
   dataTypes: [],
   data: [],
+  statistics: null,
+  previewFiles: [],
 }
 
 // getters
@@ -34,6 +36,14 @@ const getters = {
 
   dataTotal(state) {
     return state.dataTotal
+  },
+
+  statistics(state) {
+    return state.statistics
+  },
+
+  previewFiles(state) {
+    return state.previewFiles
   },
 }
 
@@ -93,6 +103,16 @@ const actions = {
   async delete({ commit }, id) {
     await api.datasets.delete({ id: id })
   },
+
+  async fetchStatistics({ commit }, id) {
+    let statistics = (await api.datasets.getStatistics({ id: id })).data
+    commit('setStatistics', { statistics })
+  },
+
+  async fetchPreviewFiles({ commit }, { dataId }) {
+    let files = (await api.datasets.getDataFilesWithUrl({ id: dataId })).data
+    commit('setPreviewFiles', { files })
+  },
 }
 
 // mutations
@@ -121,6 +141,22 @@ const mutations = {
 
   setDataTypes(state, dataTypes) {
     state.dataTypes = dataTypes
+  },
+
+  setStatistics(state, { statistics }) {
+    state.statistics = statistics
+  },
+
+  setPreviewFiles(state, { files }) {
+    state.previewFiles = files
+  },
+
+  clearPreviewFiles(state) {
+    state.previewFiles = []
+  },
+
+  clearStatistics(state) {
+    state.statistics = null
   },
 }
 
