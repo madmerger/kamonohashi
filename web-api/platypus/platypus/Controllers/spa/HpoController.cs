@@ -27,6 +27,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IHpoJobRepository hpoJobRepository;
         private readonly IHpoTrialRepository hpoTrialRepository;
         private readonly IHpoLogic hpoLogic;
+        private readonly IGitLogic gitLogic;
         private readonly IUnitOfWork unitOfWork;
 
         /// <summary>
@@ -36,12 +37,14 @@ namespace Nssol.Platypus.Controllers.spa
             IHpoJobRepository hpoJobRepository,
             IHpoTrialRepository hpoTrialRepository,
             IHpoLogic hpoLogic,
+            IGitLogic gitLogic,
             IUnitOfWork unitOfWork,
             IHttpContextAccessor accessor) : base(accessor)
         {
             this.hpoJobRepository = hpoJobRepository;
             this.hpoTrialRepository = hpoTrialRepository;
             this.hpoLogic = hpoLogic;
+            this.gitLogic = gitLogic;
             this.unitOfWork = unitOfWork;
         }
 
@@ -177,6 +180,18 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonBadRequest("GitId is not specified and no default Git is configured for the tenant.");
             }
 
+            // CommitIdの解決（未指定の場合はブランチのHEADを取得）
+            string branch = model.GitModel.Branch ?? "master";
+            string commitId = model.GitModel.CommitId;
+            if (string.IsNullOrEmpty(commitId))
+            {
+                commitId = await gitLogic.GetCommitIdAsync(gitId.Value, model.GitModel.Repository, model.GitModel.Owner, branch);
+                if (string.IsNullOrEmpty(commitId))
+                {
+                    return JsonNotFound($"The branch {branch} for {model.GitModel.Owner}/{model.GitModel.Repository} is not found.");
+                }
+            }
+
             // HPOジョブを作成
             var hpoJob = new HpoJob
             {
@@ -198,8 +213,8 @@ namespace Nssol.Platypus.Controllers.spa
                 ModelGitId = gitId.Value,
                 ModelRepository = model.GitModel.Repository,
                 ModelRepositoryOwner = model.GitModel.Owner,
-                ModelBranch = model.GitModel.Branch ?? "master",
-                ModelCommitId = model.GitModel.CommitId,
+                ModelBranch = branch,
+                ModelCommitId = commitId,
                 EntryPoint = model.EntryPoint,
                 ContainerRegistryId = model.ContainerImage.RegistryId,
                 ContainerImage = model.ContainerImage.Image,
