@@ -113,6 +113,7 @@ export default {
     dataset_name: 'Nombre del dataset',
     training_name: 'Nombre del entrenamiento',
     preprocessing_name: 'Nombre del preprocesamiento',
+    preprocessing_id: 'ID de preprocesamiento',
     inference_name: 'Nombre de la inferencia',
     notebook_name: 'Nombre del notebook',
     entry_point: 'Comando de ejecución',

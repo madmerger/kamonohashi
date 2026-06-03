@@ -113,6 +113,7 @@ export default {
     dataset_name: 'Dataset Name',
     training_name: 'Training Name',
     preprocessing_name: 'Preprocessing Name',
+    preprocessing_id: 'Preprocessing ID',
     inference_name: 'Inference Name',
     notebook_name: 'Notebook Name',
     entry_point: 'Entry Point',

@@ -113,6 +113,7 @@ export default {
     dataset_name: 'データセット名',
     training_name: '学習名',
     preprocessing_name: '前処理名',
+    preprocessing_id: '前処理ID',
     inference_name: '推論名',
     notebook_name: 'ノートブック名',
     entry_point: '実行コマンド',
