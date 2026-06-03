@@ -118,6 +118,7 @@ const en = {
     notice: 'Notice',
     completed: 'Completed',
     noPermission: 'No permission',
+    processedSuccessfully: 'Processed successfully',
     execute: 'Execute',
     newExecute: 'New Execution',
     newRegister: 'New Registration',

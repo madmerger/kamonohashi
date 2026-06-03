@@ -213,7 +213,7 @@ export default {
           //エラーがある場合は元の画面に遷移してエラーメッセージを出す
           this.$router.push('/aquarium/experiment/detail/' + this.value.id)
           this.$notify.error({
-            title: 'common.noPermission',
+            title: this.$t('common.noPermission'),
             message:
               this.$t('aquarium.noTemplatePermission'),
             duration: 0,

@@ -118,6 +118,7 @@ const es = {
     notice: 'Aviso',
     completed: 'Completado',
     noPermission: 'Sin permiso',
+    processedSuccessfully: 'Procesado exitosamente',
     execute: 'Ejecutar',
     newExecute: 'Nueva ejecución',
     newRegister: 'Nuevo registro',

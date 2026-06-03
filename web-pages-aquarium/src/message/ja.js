@@ -118,6 +118,7 @@ const ja = {
     notice: 'お知らせ',
     completed: '完了',
     noPermission: '権限がありません',
+    processedSuccessfully: '正常に処理されました',
     execute: '実行',
     newExecute: '新規実行',
     newRegister: '新規登録',

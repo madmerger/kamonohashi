@@ -43,7 +43,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('storage')
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: this.$t('common.required'),
+  message: '必須項目です',
 }
 
 export default {

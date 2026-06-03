@@ -3,6 +3,9 @@ export default {
     let { title } = this.$options
     if (title) {
       title = typeof title === 'function' ? title.call(this) : title
+      if (this.$t) {
+        title = this.$t(title) || title
+      }
       document.title = `${title} - KAMONOHASHI`
     }
   },
@@ -11,7 +14,7 @@ export default {
       if (msg) {
         this.$notify.success({ title: msg })
       } else {
-        this.$notify.success({ title: '正常に処理されました' })
+        this.$notify.success({ title: this.$t('common.processedSuccessfully') })
       }
     },
   },
