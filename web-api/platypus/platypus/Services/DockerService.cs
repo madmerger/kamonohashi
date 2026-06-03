@@ -355,7 +355,12 @@ namespace Nssol.Platypus.Services
             catch (Exception e)
             {
                 LogError($"GetContainerDetailsInfoAsync失敗: {e.Message}");
-                return null;
+                return new ContainerDetailsInfo
+                {
+                    Name = jobName,
+                    TenantName = tenantName,
+                    Status = KqiContainerStatus.Failed
+                };
             }
         }
 
@@ -415,7 +420,11 @@ namespace Nssol.Platypus.Services
             catch (Exception e)
             {
                 LogError($"GetContainerEndpointInfoAsync失敗: {e.Message}");
-                return null;
+                return new ContainerEndpointInfo
+                {
+                    Name = containerName,
+                    Status = KqiContainerStatus.Failed
+                };
             }
         }
 
