@@ -70,7 +70,7 @@ export default {
     },
     configs: {
       type: Array,
-      default: () => [
+      default() { return [
         {
           prop: 'id',
           name: 'ID',
@@ -99,7 +99,7 @@ export default {
           disabled: false,
           option: { default: 'E' },
         },
-      ],
+      ] },
     },
     mini: {
       type: Boolean,

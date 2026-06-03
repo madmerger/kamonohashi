@@ -114,9 +114,8 @@ export default {
       return str.length <= 25 ? str : str.substr(0, 25) + '...'
     },
     handleSwitchLocale(locale) {
-      this.$i18n.locale = locale
-      this.currentLocale = locale
       localStorage.setItem('kqi-locale', locale)
+      window.location.reload()
     },
     async handleSwitchTenant(tenant) {
       if (tenant === '@setting') {
