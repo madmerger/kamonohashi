@@ -9,9 +9,11 @@ using Nssol.Platypus.Infrastructure;
 using Nssol.Platypus.Logic.Interfaces;
 using Nssol.Platypus.Models.TenantModels;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nssol.Platypus.Controllers.spa
@@ -24,6 +26,8 @@ namespace Nssol.Platypus.Controllers.spa
     [Route("api/v{api-version:apiVersion}/hpo")]
     public class HpoController : PlatypusApiControllerBase
     {
+        private static readonly ConcurrentDictionary<long, SemaphoreSlim> _jobLocks = new ConcurrentDictionary<long, SemaphoreSlim>();
+
         private readonly IHpoJobRepository hpoJobRepository;
         private readonly IHpoTrialRepository hpoTrialRepository;
         private readonly IHpoLogic hpoLogic;
@@ -389,35 +393,43 @@ namespace Nssol.Platypus.Controllers.spa
         /// </summary>
         private async Task CheckAndCompleteHpoJobAsync(HpoJob hpoJob)
         {
-            var trials = hpoTrialRepository.GetByHpoJobId(hpoJob.Id).ToList();
-            var completedCount = trials.Count(t => t.Status == "Completed" || t.Status == "Failed" || t.Status == "Cancelled");
+            var jobLock = _jobLocks.GetOrAdd(hpoJob.Id, _ => new SemaphoreSlim(1, 1));
+            await jobLock.WaitAsync();
+            try
+            {
+                var trials = hpoTrialRepository.GetByHpoJobId(hpoJob.Id).ToList();
+                var completedCount = trials.Count(t => t.Status == "Completed" || t.Status == "Failed" || t.Status == "Cancelled");
 
-            if (completedCount >= hpoJob.MaxTrials && hpoJob.Status == "Running")
-            {
-                await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Completed");
-                hpoJob.CompletedAt = DateTime.Now;
-                unitOfWork.Commit();
-            }
-            else if (hpoJob.Algorithm.ToLower() == "bayes" && hpoJob.Status == "Running")
-            {
-                // ベイズ最適化：完了済みトライアルの結果をもとに次のトライアルを逐次生成
-                int totalGenerated = trials.Count;
-                if (totalGenerated < hpoJob.MaxTrials)
+                if (completedCount >= hpoJob.MaxTrials && hpoJob.Status == "Running")
                 {
-                    int trialNo = totalGenerated;
-                    var parameters = hpoLogic.GenerateNextParameters(hpoJob, trials, trialNo);
-
-                    var newTrial = new HpoTrial
-                    {
-                        TrialNo = trialNo,
-                        HpoJobId = hpoJob.Id,
-                        Parameters = JsonConvert.SerializeObject(parameters),
-                        Status = "Pending",
-                    };
-
-                    hpoTrialRepository.Add(newTrial);
+                    await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Completed");
+                    hpoJob.CompletedAt = DateTime.Now;
                     unitOfWork.Commit();
                 }
+                else if (hpoJob.Algorithm.ToLower() == "bayes" && hpoJob.Status == "Running")
+                {
+                    int totalGenerated = trials.Count;
+                    if (totalGenerated < hpoJob.MaxTrials)
+                    {
+                        int trialNo = totalGenerated;
+                        var parameters = hpoLogic.GenerateNextParameters(hpoJob, trials, trialNo);
+
+                        var newTrial = new HpoTrial
+                        {
+                            TrialNo = trialNo,
+                            HpoJobId = hpoJob.Id,
+                            Parameters = JsonConvert.SerializeObject(parameters),
+                            Status = "Pending",
+                        };
+
+                        hpoTrialRepository.Add(newTrial);
+                        unitOfWork.Commit();
+                    }
+                }
+            }
+            finally
+            {
+                jobLock.Release();
             }
         }
     }

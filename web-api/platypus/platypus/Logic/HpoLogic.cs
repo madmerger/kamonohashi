@@ -77,7 +77,8 @@ namespace Nssol.Platypus.Logic
         {
             var parameters = new Dictionary<string, string>();
             var gridSizes = searchSpace.Select(p => GetGridSize(p)).ToList();
-            int totalCombinations = gridSizes.Aggregate(1, (acc, val) => acc * val);
+            long totalCombinationsLong = gridSizes.Aggregate(1L, (acc, val) => acc * val);
+            int totalCombinations = totalCombinationsLong > int.MaxValue ? int.MaxValue : (int)totalCombinationsLong;
             int index = trialNo % totalCombinations;
 
             for (int i = 0; i < searchSpace.Count; i++)
