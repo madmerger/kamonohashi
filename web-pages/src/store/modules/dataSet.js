@@ -154,6 +154,10 @@ const mutations = {
   clearPreviewFiles(state) {
     state.previewFiles = []
   },
+
+  clearStatistics(state) {
+    state.statistics = null
+  },
 }
 
 export default {

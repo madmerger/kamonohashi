@@ -238,7 +238,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchDetail', 'fetchStatistics', 'fetchPreviewFiles']),
-    ...mapMutations(['clearPreviewFiles']),
+    ...mapMutations(['clearPreviewFiles', 'clearDetail', 'clearStatistics']),
 
     handleClose() {
       this.$emit('cancel')
@@ -246,6 +246,11 @@ export default {
 
     async initialize() {
       if (!this.id) return
+
+      // 前回のデータをクリア（別データセットの残留データ防止）
+      this.clearDetail()
+      this.clearStatistics()
+      this.clearPreviewFiles()
 
       // データセット詳細と統計を取得
       this.loadingStats = true
@@ -267,7 +272,7 @@ export default {
       this.clearPreviewFiles()
       this.previewDataList = []
 
-      if (!this.detail) return
+      if (!this.detail || !this.detail.id) return
 
       if (this.detail.isFlat) {
         // フラット配置の場合
