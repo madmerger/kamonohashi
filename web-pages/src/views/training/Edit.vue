@@ -15,8 +15,38 @@
           推論実行
         </el-button>
         <el-button @click="emitCopyCreate">コピー実行</el-button>
+        <el-button
+          v-if="detail && detail.statusType === 'Completed'"
+          type="success"
+          @click="showPublishDialog = true"
+        >
+          モデル公開
+        </el-button>
       </el-col>
     </el-row>
+
+    <el-dialog
+      title="モデルとして公開"
+      :visible.sync="showPublishDialog"
+      width="500px"
+      append-to-body
+    >
+      <el-form ref="publishForm" :model="publishForm" :rules="publishRules">
+        <el-form-item label="モデル名" prop="modelName">
+          <el-input v-model="publishForm.modelName" />
+        </el-form-item>
+        <el-form-item label="精度">
+          <el-input v-model.number="publishForm.accuracy" placeholder="任意" />
+        </el-form-item>
+        <el-form-item label="メモ">
+          <el-input v-model="publishForm.description" type="textarea" :rows="2" />
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showPublishDialog = false">キャンセル</el-button>
+        <el-button type="primary" @click="publishModel">公開</el-button>
+      </span>
+    </el-dialog>
 
     <el-form ref="updateForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
@@ -332,6 +362,7 @@ import KqiFileManager from '@/components/KqiFileManager'
 import KqiDataSetDetails from '@/components/selector/KqiDataSetDetails'
 import KqiTrainingHistoryDetails from '@/components/selector/KqiTrainingHistoryDetails'
 import KqiTagEditor from '@/components/KqiTagEditor'
+import api from '@/api/api'
 import KqiTensorboardHandler from './KqiTensorboardHandler'
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('training')
@@ -376,6 +407,17 @@ export default {
       dialogVisible: true,
       error: null,
       kqiHost: process.env.VUE_APP_KAMONOHASHI_HOST || window.location.hostname,
+      showPublishDialog: false,
+      publishForm: {
+        modelName: '',
+        accuracy: null,
+        description: '',
+      },
+      publishRules: {
+        modelName: [
+          { required: true, message: 'モデル名は必須です', trigger: 'blur' },
+        ],
+      },
     }
   },
   computed: {
@@ -544,6 +586,58 @@ export default {
           message:
             'ステータスがCompletedまたはUserCanceledの学習のみ推論を実行できます。',
         })
+      }
+    },
+    async publishModel() {
+      let valid = await this.$refs.publishForm.validate().catch(() => false)
+      if (!valid) return
+
+      try {
+        // まずモデルを作成（既に存在する場合は取得）
+        let modelResponse
+        try {
+          modelResponse = await api.model.post({
+            body: { name: this.publishForm.modelName },
+          })
+        } catch (e) {
+          // 409 Conflict の場合は既存モデルを取得
+          if (e.response && e.response.status === 409) {
+            let listResponse = await api.model.get()
+            let existingModel = listResponse.data.find(
+              m => m.name === this.publishForm.modelName,
+            )
+            if (existingModel) {
+              modelResponse = { data: existingModel }
+            } else {
+              throw e
+            }
+          } else {
+            throw e
+          }
+        }
+
+        // バージョンを追加
+        let body = {
+          trainingHistoryId: this.detail.id,
+          status: 'none',
+          description: this.publishForm.description,
+        }
+        if (this.publishForm.accuracy != null && this.publishForm.accuracy !== '') {
+          body.accuracy = this.publishForm.accuracy
+        }
+        await api.model.postVersion({
+          id: modelResponse.data.id,
+          body,
+        })
+
+        this.showPublishDialog = false
+        this.publishForm = { modelName: '', accuracy: null, description: '' }
+        this.$notify.success({
+          title: 'Success',
+          message: 'モデルとして公開しました。',
+        })
+      } catch (e) {
+        this.error = e
       }
     },
   },

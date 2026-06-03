@@ -23,6 +23,7 @@ import user from '@/router/user'
 import usergroup from '@/router/usergroup'
 import menu from '@/router/menu'
 import clusterResource from '@/router/cluster-resource'
+import model from '@/router/model'
 import version from '@/router/version'
 import Util from '../util/util'
 
@@ -52,6 +53,7 @@ let router = new Router({
     ...usergroup,
     ...menu,
     ...clusterResource,
+    ...model,
     ...version,
   ],
 })
