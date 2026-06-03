@@ -147,7 +147,7 @@ namespace Nssol.Platypus
             var containerMode = Configuration.GetSection("ContainerManageOptions")["Mode"];
             if (string.Equals(containerMode, "Docker", System.StringComparison.OrdinalIgnoreCase))
             {
-                services.AddTransient<IClusterManagementService, DockerService>();
+                services.AddSingleton<IClusterManagementService, DockerService>();
             }
             else
             {

@@ -25,7 +25,7 @@ namespace Nssol.Platypus.Services
     /// ローカルDockerデーモンとの通信を行うクラスタ管理サービス実装。
     /// シングルテナント・ローカル実行前提。
     /// </summary>
-    public class DockerService : PlatypusServiceBase, IClusterManagementService
+    public class DockerService : PlatypusServiceBase, IClusterManagementService, IDisposable
     {
         private readonly ContainerManageOptions containerOptions;
         private readonly DockerClient dockerClient;
@@ -91,7 +91,7 @@ namespace Nssol.Platypus.Services
                 {
                     foreach (var kv in inModel.ContainerSharedPath)
                     {
-                        string sharedDir = Path.Combine(containerOptions.LocalStorageBasePath, "shared", inModel.Name, kv.Key);
+                        string sharedDir = Path.Combine(containerOptions.LocalStorageBasePath ?? "/var/kqi-local", "shared", inModel.Name, kv.Key);
                         binds.Add($"{sharedDir}:{kv.Value}");
                     }
                 }
@@ -435,11 +435,14 @@ namespace Nssol.Platypus.Services
                 // MultiplexedStreamをMemoryStreamに変換
                 var memoryStream = new MemoryStream();
                 var buffer = new byte[4096];
-                var readResult = await multiplexedStream.ReadOutputAsync(buffer, 0, buffer.Length, CancellationToken.None);
-                while (readResult.Count > 0)
+                using (multiplexedStream)
                 {
-                    await memoryStream.WriteAsync(buffer, 0, readResult.Count);
-                    readResult = await multiplexedStream.ReadOutputAsync(buffer, 0, buffer.Length, CancellationToken.None);
+                    var readResult = await multiplexedStream.ReadOutputAsync(buffer, 0, buffer.Length, CancellationToken.None);
+                    while (readResult.Count > 0)
+                    {
+                        await memoryStream.WriteAsync(buffer, 0, readResult.Count);
+                        readResult = await multiplexedStream.ReadOutputAsync(buffer, 0, buffer.Length, CancellationToken.None);
+                    }
                 }
                 memoryStream.Position = 0;
 
@@ -724,6 +727,15 @@ namespace Nssol.Platypus.Services
                 return KqiContainerStatus.Completed;
             }
             return KqiContainerStatus.Error;
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            dockerClient?.Dispose();
         }
 
         #endregion
