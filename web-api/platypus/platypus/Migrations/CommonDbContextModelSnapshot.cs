@@ -857,11 +857,20 @@ namespace Nssol.Platypus.Migrations
                         .HasColumnType("character varying(128)")
                         .HasMaxLength(128);
 
+                    b.Property<string>("SlackNotificationTemplate")
+                        .HasColumnType("text");
+
                     b.Property<string>("StorageBucket")
                         .HasColumnType("text");
 
                     b.Property<long?>("StorageId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("WebhookNotificationTemplate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WebhookUrl")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
