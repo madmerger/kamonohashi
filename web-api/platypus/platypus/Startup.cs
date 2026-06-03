@@ -142,6 +142,7 @@ namespace Nssol.Platypus
             services.AddTransient<ISlackLogic, SlackLogic>();
             services.AddTransient<IResourceMonitorLogic, ResourceMonitorLogic>();
             services.AddTransient<IUserGroupLogic, UserGroupLogic>();
+            services.AddTransient<IPipelineLogic, PipelineLogic>();
 
             // ServiceのDI設定
             services.AddTransient<IClusterManagementService, KubernetesService>();
@@ -191,6 +192,7 @@ namespace Nssol.Platypus
             services.AddTransient<IRepository<ResourceContainer>, RepositoryBase<ResourceContainer>>();
             services.AddTransient<IRepository<ResourceJob>, RepositoryBase<ResourceJob>>();
             services.AddTransient<IUserGroupRepository, UserGroupRepository>();
+            services.AddTransient<IPipelineRepository, PipelineRepository>();
 
             // その他のDI設定
             services.AddTransient<IUnitOfWork, UnitOfWork>();

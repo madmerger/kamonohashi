@@ -11,6 +11,7 @@ import preprocessing from '@/router/preprocessing'
 import notebook from '@/router/notebook'
 import training from '@/router/training'
 import inference from '@/router/inference'
+import pipeline from '@/router/pipeline'
 import tenantsetting from '@/router/tenant-setting'
 import tenant from '@/router/tenant'
 import git from '@/router/git'
@@ -40,6 +41,7 @@ let router = new Router({
     ...notebook,
     ...training,
     ...inference,
+    ...pipeline,
     ...tenantsetting,
     ...tenant,
     ...git,
