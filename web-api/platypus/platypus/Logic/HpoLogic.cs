@@ -55,6 +55,13 @@ namespace Nssol.Platypus.Logic
         /// </summary>
         public async Task StopHpoJobAsync(HpoJob hpoJob)
         {
+            // ロック取得後にDBから最新ステータスを再確認（TOCTOU防止）
+            var currentStatus = await hpoJobRepository.GetCurrentStatusAsync(hpoJob.Id);
+            if (currentStatus != "Running")
+            {
+                return;
+            }
+
             await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Cancelled");
             hpoJob.CompletedAt = DateTime.Now;
 
