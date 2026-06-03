@@ -258,9 +258,11 @@ export default {
       this.clearPreviewFiles()
       this.previewDataList = []
 
-      if (!this.detail || !this.detail.entries) {
+      if (!this.detail) return
+
+      if (this.detail.isFlat) {
         // フラット配置の場合
-        if (this.detail && this.detail.flatEntries) {
+        if (this.detail.flatEntries) {
           let entries = this.detail.flatEntries.slice(0, 20)
           await this.loadFilesForEntries(entries)
         }
