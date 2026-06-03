@@ -414,6 +414,11 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonNotFound($"Pipeline Run Step ID {stepId} is not found.");
             }
 
+            if (step.Status != "Running")
+            {
+                return JsonBadRequest($"Step is not in Running state. Current status: {step.Status}");
+            }
+
             step.Status = status;
             step.CompletedAt = System.DateTime.Now;
             unitOfWork.Commit();
