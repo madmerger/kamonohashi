@@ -261,7 +261,17 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonBadRequest($"HPO Job ID {id} is not running.");
             }
 
-            await hpoLogic.StopHpoJobAsync(hpoJob);
+            // ジョブロックを取得してCheckAndCompleteHpoJobAsyncとの競合を防止
+            var jobLock = _jobLocks.GetOrAdd(id, _ => new SemaphoreSlim(1, 1));
+            await jobLock.WaitAsync();
+            try
+            {
+                await hpoLogic.StopHpoJobAsync(hpoJob);
+            }
+            finally
+            {
+                jobLock.Release();
+            }
 
             // ロックのクリーンアップ
             _jobLocks.TryRemove(id, out _);
