@@ -190,6 +190,10 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return JsonBadRequest("Invalid inputs.");
             }
+            if (model.UserId <= 0)
+            {
+                return JsonBadRequest("UserId is required.");
+            }
             if (!Enum.IsDefined(typeof(ProjectRoleType), model.RoleType))
             {
                 return JsonBadRequest("Invalid RoleType value.");
@@ -306,6 +310,10 @@ namespace Nssol.Platypus.Controllers.spa
             if (!Enum.IsDefined(typeof(ResourceType2), model.ResourceType))
             {
                 return JsonBadRequest("Invalid ResourceType value.");
+            }
+            if (model.ResourceId <= 0)
+            {
+                return JsonBadRequest("ResourceId is required.");
             }
 
             var project = await projectRepository.GetByIdAsync(id);

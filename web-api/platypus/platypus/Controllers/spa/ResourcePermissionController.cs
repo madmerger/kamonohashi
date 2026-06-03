@@ -67,6 +67,14 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return JsonBadRequest("Invalid AccessLevel value.");
             }
+            if (model.UserId <= 0)
+            {
+                return JsonBadRequest("UserId is required.");
+            }
+            if (model.ResourceId <= 0)
+            {
+                return JsonBadRequest("ResourceId is required.");
+            }
 
             var existing = (await projectRepository.GetResourcePermissionsAsync(model.ResourceType, model.ResourceId))
                 .FirstOrDefault(p => p.UserId == model.UserId);
