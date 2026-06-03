@@ -373,9 +373,10 @@ export default {
     user_group_tenants: 'Tenants joined via user groups',
     user_group_tenant_roles: 'Tenant roles via user groups',
     delete_container_history_all: 'Delete all container resource history?',
-    delete_container_history_until: ' container resource history?',
+    delete_container_history_until:
+      'Delete container resource history until {date}?',
     delete_job_history_all: 'Delete all job execution history?',
-    delete_job_history_until: ' job execution history?',
+    delete_job_history_until: 'Delete job execution history until {date}?',
     move_to: 'Move selection to {name}',
     remove_selection: 'Remove selection',
     page_of: 'page',

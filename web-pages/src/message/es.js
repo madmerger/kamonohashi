@@ -375,10 +375,12 @@ export default {
       'Roles de inquilino a través de grupos de usuarios',
     delete_container_history_all:
       '¿Eliminar todo el historial de recursos de contenedor?',
-    delete_container_history_until: ' historial de recursos de contenedor?',
+    delete_container_history_until:
+      '¿Eliminar historial de recursos de contenedor hasta {date}?',
     delete_job_history_all:
       '¿Eliminar todo el historial de ejecución de trabajos?',
-    delete_job_history_until: ' historial de ejecución de trabajos?',
+    delete_job_history_until:
+      '¿Eliminar historial de ejecución de trabajos hasta {date}?',
     move_to: 'Mover selección a {name}',
     remove_selection: 'Eliminar selección',
     page_of: 'página',

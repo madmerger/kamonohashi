@@ -372,9 +372,10 @@ export default {
     user_group_tenants: 'ユーザグループ経由での所属しているテナント',
     user_group_tenant_roles: 'ユーザグループ経由でのテナントロール',
     delete_container_history_all: 'すべてのコンテナリソース履歴を削除しますか',
-    delete_container_history_until: 'までのコンテナリソース履歴を削除しますか',
+    delete_container_history_until:
+      '{date}までのコンテナリソース履歴を削除しますか',
     delete_job_history_all: 'すべてのジョブ実行履歴を削除しますか',
-    delete_job_history_until: 'までのジョブ実行履歴を削除しますか',
+    delete_job_history_until: '{date}までのジョブ実行履歴を削除しますか',
     move_to: '選択を {name} に移動',
     remove_selection: '選択を削除',
     page_of: 'ページ目へ',

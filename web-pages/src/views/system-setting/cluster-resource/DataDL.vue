@@ -240,13 +240,14 @@ export default {
       if (this.containersDeleteEndDate == null) {
         confirmMessage = this.$t('messages.delete_container_history_all')
       } else {
-        confirmMessage = `${this.containersDeleteEndDate.getFullYear() +
-          '/' +
-          ('0' + (this.containersDeleteEndDate.getMonth() + 1)).slice(-2) +
-          '/' +
-          ('0' + this.containersDeleteEndDate.getDate()).slice(-2)}${this.$t(
-          'messages.delete_container_history_until',
-        )}`
+        let d = this.containersDeleteEndDate
+        let formattedDate = `${d.getFullYear()}/${(
+          '0' +
+          (d.getMonth() + 1)
+        ).slice(-2)}/${('0' + d.getDate()).slice(-2)}`
+        confirmMessage = this.$t('messages.delete_container_history_until', {
+          date: formattedDate,
+        })
       }
       // 確認ダイアログ
       await this.$confirm(confirmMessage, 'Warning', {
@@ -303,13 +304,14 @@ export default {
       if (this.jobsDeleteEndDate == null) {
         confirmMessage = this.$t('messages.delete_job_history_all')
       } else {
-        confirmMessage = `${this.jobsDeleteEndDate.getFullYear() +
-          '/' +
-          ('0' + (this.jobsDeleteEndDate.getMonth() + 1)).slice(-2) +
-          '/' +
-          ('0' + this.jobsDeleteEndDate.getDate()).slice(-2)}${this.$t(
-          'messages.delete_job_history_until',
-        )}`
+        let d = this.jobsDeleteEndDate
+        let formattedDate = `${d.getFullYear()}/${(
+          '0' +
+          (d.getMonth() + 1)
+        ).slice(-2)}/${('0' + d.getDate()).slice(-2)}`
+        confirmMessage = this.$t('messages.delete_job_history_until', {
+          date: formattedDate,
+        })
       }
       // 確認ダイアログ
       await this.$confirm(confirmMessage, 'Warning', {
