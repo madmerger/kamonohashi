@@ -132,5 +132,20 @@
         /// アクアリウムデータセット
         /// </summary>
         AquariumDataSet,
+
+        /// <summary>
+        /// プロジェクト管理
+        /// </summary>
+        ProjectManagement,
+
+        /// <summary>
+        /// リソース権限管理
+        /// </summary>
+        ResourcePermission,
+
+        /// <summary>
+        /// カスタムロール管理
+        /// </summary>
+        CustomRole,
     }
 }

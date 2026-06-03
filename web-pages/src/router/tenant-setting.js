@@ -5,6 +5,11 @@ import ManageResourceIndex from '@/views/tenant-setting/resource/Index'
 import ManageResourceNode from '@/views/tenant-setting/resource/Node'
 import ManageResourceContainerList from '@/views/tenant-setting/resource/ContainerList'
 import ManageResourceEdit from '@/views/tenant-setting/resource/Edit'
+import ManageProjectIndex from '@/views/tenant-setting/project/Index'
+import ManageProjectEdit from '@/views/tenant-setting/project/Edit'
+import ManageCustomRoleIndex from '@/views/tenant-setting/custom-role/Index'
+import ManageCustomRoleEdit from '@/views/tenant-setting/custom-role/Edit'
+import ManagePermissionIndex from '@/views/tenant-setting/permission/Index'
 
 export default [
   {
@@ -49,5 +54,31 @@ export default [
         ],
       },
     ],
+  },
+  {
+    path: '/manage/project',
+    component: ManageProjectIndex,
+    children: [
+      {
+        path: ':id',
+        component: ManageProjectEdit,
+        props: true,
+      },
+    ],
+  },
+  {
+    path: '/manage/custom-role',
+    component: ManageCustomRoleIndex,
+    children: [
+      {
+        path: ':id',
+        component: ManageCustomRoleEdit,
+        props: true,
+      },
+    ],
+  },
+  {
+    path: '/manage/permission',
+    component: ManagePermissionIndex,
   },
 ]
