@@ -32,6 +32,8 @@ namespace Nssol.Platypus.Services
 
         private static DockerClient sharedDockerClient;
         private static readonly object clientLock = new object();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, AuthConfig> registryCredentials
+            = new System.Collections.Concurrent.ConcurrentDictionary<string, AuthConfig>();
 
         private const string KqiManagedLabel = "kqi.managed";
         private const string KqiTenantLabel = "kqi.tenant";
@@ -155,15 +157,11 @@ namespace Nssol.Platypus.Services
                     { KqiContainerNameLabel, inModel.Name ?? "" }
                 };
 
-                // レジストリ認証
+                // レジストリ認証（RegistRegistryTokenyAsyncで保存された資格情報を使用）
                 AuthConfig authConfig = null;
                 if (!string.IsNullOrEmpty(inModel.RegistryTokenName))
                 {
-                    authConfig = new AuthConfig
-                    {
-                        Username = inModel.RegistryTokenName,
-                        Password = inModel.RegistryTokenName
-                    };
+                    registryCredentials.TryGetValue(inModel.RegistryTokenName, out authConfig);
                 }
 
                 // コンテナのEntryPoint/Cmd構築
@@ -594,10 +592,19 @@ namespace Nssol.Platypus.Services
         #region 権限管理
 
         /// <summary>
-        /// レジストリトークン登録（no-op: Docker側の認証はRunContainerAsync内で処理）
+        /// レジストリトークン登録（Docker版: 資格情報をメモリにキャッシュ）
         /// </summary>
         public Task<bool> RegistRegistryTokenyAsync(RegistRegistryTokenInputModel model)
         {
+            if (!string.IsNullOrEmpty(model.RegistryTokenKey) && !string.IsNullOrEmpty(model.UserName))
+            {
+                registryCredentials[model.RegistryTokenKey] = new AuthConfig
+                {
+                    Username = model.UserName,
+                    Password = model.Password,
+                    ServerAddress = model.Url
+                };
+            }
             return Task.FromResult(true);
         }
 
