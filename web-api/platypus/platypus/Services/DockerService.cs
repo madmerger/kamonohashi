@@ -38,6 +38,7 @@ namespace Nssol.Platypus.Services
         private const string KqiManagedLabel = "kqi.managed";
         private const string KqiTenantLabel = "kqi.tenant";
         private const string KqiContainerNameLabel = "kqi.name";
+        private const string KqiPortLabelPrefix = "kqi.port.";
 
         public DockerService(
             ICommonDiLogic commonDiLogic,
@@ -156,6 +157,18 @@ namespace Nssol.Platypus.Services
                     { KqiTenantLabel, inModel.TenantName ?? "" },
                     { KqiContainerNameLabel, inModel.Name ?? "" }
                 };
+
+                // ポート名マッピングをラベルに保存 (kqi.port.<targetPort>=<name>)
+                if (inModel.PortMappings != null)
+                {
+                    foreach (var pm in inModel.PortMappings)
+                    {
+                        if (!string.IsNullOrEmpty(pm.Name))
+                        {
+                            labels[$"{KqiPortLabelPrefix}{pm.TargetPort}"] = pm.Name;
+                        }
+                    }
+                }
 
                 // レジストリ認証（RegistRegistryTokenyAsyncで保存された資格情報を使用）
                 AuthConfig authConfig = null;
@@ -363,9 +376,17 @@ namespace Nssol.Platypus.Services
                         {
                             var binding = port.Value.First();
                             int hostPort = int.TryParse(binding.HostPort, out int p) ? p : 0;
+                            // ポート番号からポート名を逆引き (ラベル kqi.port.<targetPort>=<name>)
+                            string portNumber = port.Key.Split('/')[0];
+                            string portName = port.Key;
+                            if (inspect.Config?.Labels != null &&
+                                inspect.Config.Labels.TryGetValue($"{KqiPortLabelPrefix}{portNumber}", out string name))
+                            {
+                                portName = name;
+                            }
                             endpoints.Add(new EndPointInfo
                             {
-                                Key = port.Key,
+                                Key = portName,
                                 Host = containerOptions.WebEndPoint ?? "localhost",
                                 Port = hostPort
                             });
