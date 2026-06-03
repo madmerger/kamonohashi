@@ -339,6 +339,41 @@ let api = {
     },
   },
 
+  model: {
+    get: function() {
+      return axios.get('/api/v2/models')
+    },
+    getById: function(params) {
+      return axios.get('/api/v2/models/' + params.id)
+    },
+    post: function(params) {
+      return axios.post('/api/v2/models', params.body)
+    },
+    putById: function(params) {
+      return axios.put('/api/v2/models/' + params.id, params.body)
+    },
+    deleteById: function(params) {
+      return axios.delete('/api/v2/models/' + params.id)
+    },
+    getVersions: function(params) {
+      return axios.get('/api/v2/models/' + params.id + '/versions')
+    },
+    postVersion: function(params) {
+      return axios.post('/api/v2/models/' + params.id + '/versions', params.body)
+    },
+    putVersion: function(params) {
+      return axios.put(
+        '/api/v2/models/' + params.id + '/versions/' + params.versionId,
+        params.body,
+      )
+    },
+    deleteVersion: function(params) {
+      return axios.delete(
+        '/api/v2/models/' + params.id + '/versions/' + params.versionId,
+      )
+    },
+  },
+
   version: {
     get: gen.getApiV2Version,
   },

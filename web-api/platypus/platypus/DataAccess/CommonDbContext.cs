@@ -245,6 +245,15 @@ namespace Nssol.Platypus.DataAccess
         public virtual DbSet<NotebookHistoryParentInferenceMap> NotebookHistoryParentInferenceMaps { get; set; }
 
         /// <summary>
+        /// モデルレジストリ
+        /// </summary>
+        public virtual DbSet<Model> Models { get; set; }
+        /// <summary>
+        /// モデルバージョン
+        /// </summary>
+        public virtual DbSet<ModelVersion> ModelVersions { get; set; }
+
+        /// <summary>
         /// 実験
         /// </summary>
         public virtual DbSet<Experiment> Experiments { get; set; }
@@ -354,6 +363,12 @@ namespace Nssol.Platypus.DataAccess
                     .IsUnique();
             modelBuilder.Entity<NotebookHistoryParentInferenceMap>()
                     .HasIndex(e => new { e.TenantId, e.NotebookHistoryId, e.ParentId })
+                    .IsUnique();
+            modelBuilder.Entity<Model>()
+                    .HasIndex(e => new { e.TenantId, e.Name })
+                    .IsUnique();
+            modelBuilder.Entity<ModelVersion>()
+                    .HasIndex(e => new { e.ModelId, e.Version })
                     .IsUnique();
 
             // DeleteBehaviorの指定

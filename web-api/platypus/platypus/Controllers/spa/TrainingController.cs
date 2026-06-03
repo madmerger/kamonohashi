@@ -42,6 +42,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly ITagRepository tagRepository;
         private readonly ITenantRepository tenantRepository;
         private readonly INodeRepository nodeRepository;
+        private readonly IModelVersionRepository modelVersionRepository;
         private readonly IDataSetLogic dataSetLogic;
         private readonly ITagLogic tagLogic;
         private readonly ITrainingLogic trainingLogic;
@@ -65,6 +66,7 @@ namespace Nssol.Platypus.Controllers.spa
             ITagRepository tagRepository,
             ITenantRepository tenantRepository,
             INodeRepository nodeRepository,
+            IModelVersionRepository modelVersionRepository,
             IDataSetLogic dataSetLogic,
             ITagLogic tagLogic,
             ITrainingLogic trainingLogic,
@@ -85,6 +87,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.tagRepository = tagRepository;
             this.tenantRepository = tenantRepository;
             this.nodeRepository = nodeRepository;
+            this.modelVersionRepository = modelVersionRepository;
             this.dataSetLogic = dataSetLogic;
             this.tagLogic = tagLogic;
             this.trainingLogic = trainingLogic;
@@ -1269,6 +1272,7 @@ namespace Nssol.Platypus.Controllers.spa
                 tensorBoardContainerRepository,
                 tagRepository,
                 trainingLogic,
+                modelVersionRepository,
                 RequestUrl);
             return result;
         }
@@ -1288,6 +1292,7 @@ namespace Nssol.Platypus.Controllers.spa
             ITensorBoardContainerRepository tensorBoardContainerRepository,
             ITagRepository tagRepository,
             ITrainingLogic trainingLogic,
+            IModelVersionRepository modelVersionRepository,
             string requestUrl
             )
         {
@@ -1323,6 +1328,17 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return (false, DoJsonConflict(typeof(TrainingController), requestUrl, modelState,
                     $"Training {trainingHistory.Id} has been used by inference."));
+            }
+
+            //モデルバージョンで参照されていたら消せない
+            if (modelVersionRepository != null)
+            {
+                var hasModelVersion = await modelVersionRepository.ExistsAsync(v => v.TrainingHistoryId == trainingHistory.Id);
+                if (hasModelVersion)
+                {
+                    return (false, DoJsonConflict(typeof(TrainingController), requestUrl, modelState,
+                        $"Training {trainingHistory.Id} is referenced by a model version and cannot be deleted."));
+                }
             }
 
             if (status.Exist())

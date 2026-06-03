@@ -132,5 +132,9 @@
         /// アクアリウムデータセット
         /// </summary>
         AquariumDataSet,
+        /// <summary>
+        /// モデルレジストリ
+        /// </summary>
+        Model,
     }
 }
