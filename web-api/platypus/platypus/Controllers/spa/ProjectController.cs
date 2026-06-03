@@ -303,6 +303,10 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return JsonBadRequest("Invalid inputs.");
             }
+            if (!Enum.IsDefined(typeof(ResourceType2), model.ResourceType))
+            {
+                return JsonBadRequest("Invalid ResourceType value.");
+            }
 
             var project = await projectRepository.GetByIdAsync(id);
             if (project == null)
