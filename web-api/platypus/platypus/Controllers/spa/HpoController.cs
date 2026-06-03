@@ -149,6 +149,28 @@ namespace Nssol.Platypus.Controllers.spa
                 }
             }
 
+            // グリッドサーチの場合、Stepのバリデーション
+            if (model.Algorithm.ToLower() == "grid")
+            {
+                foreach (var param in model.SearchSpace)
+                {
+                    if (param.Type?.ToLower() == "int" || param.Type?.ToLower() == "float")
+                    {
+                        if (!param.Step.HasValue || param.Step.Value <= 0)
+                        {
+                            return JsonBadRequest($"Parameter '{param.Name}' must have a positive Step value for grid search.");
+                        }
+                    }
+                }
+            }
+
+            // GitIdの解決（未指定の場合はテナントのデフォルトを使用）
+            long? gitId = model.GitModel.GitId ?? CurrentUserInfo.SelectedTenant.DefaultGit?.Id;
+            if (!gitId.HasValue)
+            {
+                return JsonBadRequest("GitId is not specified and no default Git is configured for the tenant.");
+            }
+
             // HPOジョブを作成
             var hpoJob = new HpoJob
             {
@@ -167,10 +189,10 @@ namespace Nssol.Platypus.Controllers.spa
                 ObjectiveMetric = model.ObjectiveMetric,
                 OptimizationDirection = model.OptimizationDirection.ToLower(),
                 DataSetId = model.DataSetId.Value,
-                ModelGitId = model.GitModel.GitId.Value,
+                ModelGitId = gitId.Value,
                 ModelRepository = model.GitModel.Repository,
                 ModelRepositoryOwner = model.GitModel.Owner,
-                ModelBranch = model.GitModel.Branch,
+                ModelBranch = model.GitModel.Branch ?? "master",
                 ModelCommitId = model.GitModel.CommitId,
                 EntryPoint = model.EntryPoint,
                 ContainerRegistryId = model.ContainerImage.RegistryId,
@@ -292,12 +314,23 @@ namespace Nssol.Platypus.Controllers.spa
 
         /// <summary>
         /// トライアルを生成する
+        /// ベイズ最適化の場合は初期バッチのみ生成し、残りはトライアル完了時に逐次生成する
         /// </summary>
         private async Task GenerateTrialsAsync(HpoJob hpoJob)
         {
             var existingTrials = hpoTrialRepository.GetByHpoJobId(hpoJob.Id).ToList();
             int startTrialNo = existingTrials.Count;
-            int trialsToGenerate = Math.Min(hpoJob.MaxTrials - startTrialNo, hpoJob.MaxTrials);
+
+            // ベイズ最適化の場合は初期バッチ（最大3個）のみ生成
+            int trialsToGenerate;
+            if (hpoJob.Algorithm.ToLower() == "bayes")
+            {
+                trialsToGenerate = Math.Min(3, hpoJob.MaxTrials - startTrialNo);
+            }
+            else
+            {
+                trialsToGenerate = hpoJob.MaxTrials - startTrialNo;
+            }
 
             for (int i = 0; i < trialsToGenerate; i++)
             {
@@ -319,7 +352,7 @@ namespace Nssol.Platypus.Controllers.spa
         }
 
         /// <summary>
-        /// HPOジョブの完了チェック
+        /// HPOジョブの完了チェックと次のトライアル生成
         /// </summary>
         private async Task CheckAndCompleteHpoJobAsync(HpoJob hpoJob)
         {
@@ -331,6 +364,27 @@ namespace Nssol.Platypus.Controllers.spa
                 await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Completed");
                 hpoJob.CompletedAt = DateTime.Now;
                 unitOfWork.Commit();
+            }
+            else if (hpoJob.Algorithm.ToLower() == "bayes" && hpoJob.Status == "Running")
+            {
+                // ベイズ最適化：完了済みトライアルの結果をもとに次のトライアルを逐次生成
+                int totalGenerated = trials.Count;
+                if (totalGenerated < hpoJob.MaxTrials)
+                {
+                    int trialNo = totalGenerated;
+                    var parameters = hpoLogic.GenerateNextParameters(hpoJob, trials, trialNo);
+
+                    var newTrial = new HpoTrial
+                    {
+                        TrialNo = trialNo,
+                        HpoJobId = hpoJob.Id,
+                        Parameters = JsonConvert.SerializeObject(parameters),
+                        Status = "Pending",
+                    };
+
+                    hpoTrialRepository.Add(newTrial);
+                    unitOfWork.Commit();
+                }
             }
         }
     }

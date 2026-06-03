@@ -240,11 +240,13 @@ namespace Nssol.Platypus.Logic
                     int intMin = (int)(param.Min ?? 0);
                     int intMax = (int)(param.Max ?? 10);
                     int intStep = (int)(param.Step ?? 1);
+                    if (intStep <= 0) intStep = 1;
                     return ((intMax - intMin) / intStep) + 1;
                 case "float":
                     double floatMin = param.Min ?? 0.0;
                     double floatMax = param.Max ?? 1.0;
                     double floatStep = param.Step ?? 0.1;
+                    if (floatStep <= 0) floatStep = 0.1;
                     return (int)((floatMax - floatMin) / floatStep) + 1;
                 case "categorical":
                     return param.Values?.Count ?? 1;
