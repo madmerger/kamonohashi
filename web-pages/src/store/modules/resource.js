@@ -16,6 +16,10 @@ const state = {
   historiesContainersData: [],
   historiesJobsMetadata: {},
   historiesJobsData: [],
+  dashboardSummary: {},
+  dashboardTenantUsage: [],
+  dashboardHistory: {},
+  dashboardNodeStatus: [],
 }
 
 // getters
@@ -61,6 +65,18 @@ const getters = {
   },
   historiesJobsData(state) {
     return state.historiesJobsData
+  },
+  dashboardSummary(state) {
+    return state.dashboardSummary
+  },
+  dashboardTenantUsage(state) {
+    return state.dashboardTenantUsage
+  },
+  dashboardHistory(state) {
+    return state.dashboardHistory
+  },
+  dashboardNodeStatus(state) {
+    return state.dashboardNodeStatus
   },
 }
 
@@ -170,6 +186,27 @@ const actions = {
   async deleteHistoriesJobs({ commit }, params) {
     return await api.resource.admin.deleteHistoriesJobs({ body: params })
   },
+
+  // dashboard系
+  async fetchDashboardSummary({ commit }) {
+    let response = await api.resource.admin.getDashboardSummary()
+    commit('setDashboardSummary', response.data)
+  },
+
+  async fetchDashboardTenantUsage({ commit }) {
+    let response = await api.resource.admin.getDashboardTenantUsage()
+    commit('setDashboardTenantUsage', response.data)
+  },
+
+  async fetchDashboardHistory({ commit }, params) {
+    let response = await api.resource.admin.getDashboardHistory(params)
+    commit('setDashboardHistory', response.data)
+  },
+
+  async fetchDashboardNodeStatus({ commit }) {
+    let response = await api.resource.admin.getDashboardNodeStatus()
+    commit('setDashboardNodeStatus', response.data)
+  },
 }
 
 // mutations
@@ -215,6 +252,18 @@ const mutations = {
   },
   setHistoriesJobsData(state, historiesJobsData) {
     state.historiesJobsData = historiesJobsData
+  },
+  setDashboardSummary(state, data) {
+    state.dashboardSummary = data
+  },
+  setDashboardTenantUsage(state, data) {
+    state.dashboardTenantUsage = data
+  },
+  setDashboardHistory(state, data) {
+    state.dashboardHistory = data
+  },
+  setDashboardNodeStatus(state, data) {
+    state.dashboardNodeStatus = data
   },
 }
 
