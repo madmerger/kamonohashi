@@ -4,7 +4,7 @@ title
     <el-row justify="center">
       <el-col :span="12" class="title">
         <el-button type="text" class="menu label-color" @click="handleMenu">
-          ≡
+          <i class="el-icon-s-fold menu-icon" />
         </el-button>
         <router-link to="/">
           <img class="logo" src="@/assets/KAMONOHASHI_logo_white.png" alt="" />
@@ -17,19 +17,19 @@ title
           @command="handleSwitchTenant"
         >
           <span class="el-dropdown-link user-label">
-            <icon
-              name="user"
-              scale="1.4"
-              class="user-label"
-              style="position: relative; top: 7px; left: -8px;"
-            />
-
-            {{ omitIfLong(account.userName)
-            }}<span v-if="account.userDisplayName"
-              >【{{ omitIfLong(account.userDisplayName) }}】</span
-            >/
-            {{ omitIfLong(account.selectedTenant.displayName) }}
-            <i class="el-icon-caret-bottom" />
+            <span class="user-avatar">
+              <icon name="user" scale="1" class="avatar-icon" />
+            </span>
+            <span class="user-name">
+              {{ omitIfLong(account.userName)
+              }}<span v-if="account.userDisplayName">{{
+                omitIfLong(account.userDisplayName)
+              }}</span>
+            </span>
+            <span class="tenant-badge">
+              {{ omitIfLong(account.selectedTenant.displayName) }}
+            </span>
+            <i class="el-icon-arrow-down" style="font-size: 12px;" />
           </span>
           <el-dropdown-menu
             slot="dropdown"
@@ -47,16 +47,13 @@ title
             </el-dropdown-item>
             <hr />
             <el-dropdown-item key="@setting" command="@setting">
+              <i class="el-icon-setting" style="margin-right: 6px;" />
               ユーザ情報設定
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button
-          style="padding-left: 15px;"
-          type="text"
-          class="user-label"
-          @click="handleLogout"
-        >
+        <el-button type="text" class="logout-btn" @click="handleLogout">
+          <i class="el-icon-switch-button" style="margin-right: 4px;" />
           ログアウト
         </el-button>
       </el-col>
@@ -98,14 +95,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$header-bg: #1e293b;
+$header-text: #f8fafc;
+$primary: #6366f1;
+
 .header {
   height: inherit;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
 }
 
 .el-row {
   height: inherit;
+  width: 100%;
+  display: flex;
+  align-items: center;
   .el-col {
     height: inherit;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -115,48 +124,81 @@ export default {
 }
 
 .user {
-  position: absolute;
-  top: 4px;
-  right: 10px;
+  justify-content: flex-end;
   text-align: right;
+  gap: 8px;
 }
 
 .menu {
-  margin: 0px;
-  padding: 0px;
-  position: absolute;
-  top: 4px;
-  left: -10px;
-  font-size: 38px;
-  color: white;
+  margin: 0;
+  padding: 8px;
+  font-size: 20px;
+  color: rgba(248, 250, 252, 0.7) !important;
+  border: none !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 
-  &:hover {
-    color: white;
-  }
+  &:hover,
   &:focus {
-    color: white;
+    color: $header-text !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
   }
+}
+
+.menu-icon {
+  font-size: 20px;
 }
 
 .logo {
-  position: absolute;
-  left: 30px;
-  top: 10px;
-  height: 30px;
-  padding-left: 0px;
+  height: 28px;
+  margin-left: 8px;
+  opacity: 0.95;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
-.manual {
-  position: absolute;
-  left: 180px;
-  top: 13px;
-  font-size: 14px;
-  color: white;
-  text-decoration: none;
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(99, 102, 241, 0.2);
+  margin-right: 8px;
+  flex-shrink: 0;
+
+  .avatar-icon {
+    color: #a5b4fc !important;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.user-name {
+  color: $header-text;
+  font-weight: 500;
+  font-size: 13px;
+  margin-right: 8px;
+}
+
+.tenant-badge {
+  display: inline-block;
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 4px;
 }
 
 .activeTenant {
   font-weight: bold;
+  color: $primary;
 }
 
 .scroll {
@@ -165,14 +207,33 @@ export default {
 }
 
 .user-label {
-  color: white;
+  color: $header-text !important;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 13px;
+
+  &:hover,
+  &:focus {
+    color: $header-text !important;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.logout-btn {
+  color: rgba(248, 250, 252, 0.6) !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: white;
-  }
-  &:focus {
-    color: white;
+    color: $header-text !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
   }
 }
 </style>

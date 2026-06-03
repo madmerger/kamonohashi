@@ -70,73 +70,74 @@ export default {
 
 <style lang="scss" scoped>
 #app {
-  color: #2c3e50;
+  color: #1e293b;
 
-  $header-height: 50px;
-  $menu-back-color: #fafafa;
+  $header-height: 56px;
+  $sidebar-width: 240px;
+  $sidebar-collapsed: 64px;
+  $sidebar-bg: #1e293b;
 
   .el-header {
     height: $header-height !important;
     position: fixed;
     width: 100%;
-    z-index: 2;
-    margin-top: 0%;
-    top: 0px;
-    left: 0px;
-    background-color: #1abfd5;
-    border-bottom: 1px solid #cccccc;
-
-    background: linear-gradient(
-      to bottom,
-      rgba(26, 191, 213, 1) 0%,
-      rgba(26, 191, 213, 1) 30%,
-      rgba(26, 191, 213, 0.7) 100%
-    );
-    filter: alpha(opacity=90);
-    -moz-opacity: 0.9;
-    opacity: 0.9;
+    z-index: 10;
+    margin-top: 0;
+    top: 0;
+    left: 0;
+    background-color: $sidebar-bg;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
 
   .sidenav {
     margin-top: $header-height;
-    height: 100%;
+    height: calc(100vh - #{$header-height});
     position: fixed;
-    z-index: 1;
+    z-index: 5;
     top: 0;
     left: 0;
     overflow-x: hidden;
-    background-color: $menu-back-color;
-    box-shadow: inset -2px 0 0 #e5e5e5;
+    overflow-y: auto;
+    background-color: $sidebar-bg;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
   @media screen and (max-width: 1000px) {
     .sidenav {
-      width: 65px;
+      width: $sidebar-collapsed;
     }
   }
   @media screen and (min-width: 1000px) {
     .sidenav {
-      width: 200px;
+      width: $sidebar-width;
     }
   }
 
   .el-main {
     padding-top: $header-height;
     height: 100vh;
+    background-color: #f1f5f9;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
   }
 
-  // Components Common style
   .el-transfer-panel {
     width: 40% !important;
   }
 
   @media screen and (max-width: 1000px) {
     .content {
-      margin-left: 65px;
+      margin-left: $sidebar-collapsed;
     }
   }
   @media screen and (min-width: 1000px) {
     .content {
-      margin-left: 200px;
+      margin-left: $sidebar-width;
     }
   }
 }
@@ -147,11 +148,11 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.3s ease;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
- {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

@@ -1,0 +1,628 @@
+// ============================================================
+// KAMONOHASHI Modern Theme Overrides
+// Palette: Indigo primary, Slate neutrals, dark sidebar
+// ============================================================
+
+// --- Color Variables ---
+$primary:        #4F46E5;
+$primary-light:  #6366F1;
+$primary-dark:   #3730A3;
+$primary-bg:     #EEF2FF;
+
+$success:        #10B981;
+$warning:        #F59E0B;
+$danger:         #EF4444;
+$info:           #6366F1;
+
+$sidebar-bg:     #1E293B;
+$sidebar-text:   #CBD5E1;
+$sidebar-active: $primary-light;
+
+$header-bg:      #1E293B;
+$header-text:    #F8FAFC;
+
+$body-bg:        #F1F5F9;
+$card-bg:        #FFFFFF;
+$text-primary:   #1E293B;
+$text-secondary: #64748B;
+$text-muted:     #94A3B8;
+$border-color:   #E2E8F0;
+$border-radius:  8px;
+
+$shadow-sm:  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow:     0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+$shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+$transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+// --- Global Resets ---
+body {
+  background-color: $body-bg;
+  color: $text-primary;
+  line-height: 1.6;
+}
+
+* {
+  font-family: 'Inter', 'Noto Sans JP', 'Noto Sans CJK JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  color: $text-primary !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  color: $text-primary !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+  letter-spacing: -0.025em;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: $border-color;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    color: $primary-light;
+  }
+}
+
+// --- Element UI: Buttons ---
+.el-button--primary {
+  background-color: $primary !important;
+  border-color: $primary !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: $transition !important;
+  box-shadow: 0 1px 2px 0 rgba(79, 70, 229, 0.2) !important;
+
+  &:hover,
+  &:focus {
+    background-color: $primary-light !important;
+    border-color: $primary-light !important;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3) !important;
+  }
+
+  &.is-plain {
+    background-color: $primary-bg !important;
+    color: $primary !important;
+    border-color: lighten($primary, 20%) !important;
+
+    &:hover,
+    &:focus {
+      background-color: $primary !important;
+      color: #fff !important;
+      border-color: $primary !important;
+    }
+  }
+}
+
+.el-button--success {
+  background-color: $success !important;
+  border-color: $success !important;
+  border-radius: 6px !important;
+}
+
+.el-button--warning {
+  background-color: $warning !important;
+  border-color: $warning !important;
+  border-radius: 6px !important;
+}
+
+.el-button--danger {
+  background-color: $danger !important;
+  border-color: $danger !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.el-button--default {
+  border-radius: 6px !important;
+  border-color: $border-color !important;
+  color: $text-primary !important;
+  font-weight: 500 !important;
+  transition: $transition !important;
+
+  &:hover,
+  &:focus {
+    color: $primary !important;
+    border-color: $primary !important;
+    background-color: $primary-bg !important;
+  }
+}
+
+.el-button--text {
+  color: $primary !important;
+  font-weight: 500 !important;
+
+  &:hover {
+    color: $primary-light !important;
+  }
+}
+
+.el-button {
+  border-radius: 6px !important;
+  transition: $transition !important;
+  letter-spacing: 0.01em;
+}
+
+// --- Element UI: Cards ---
+.el-card {
+  border-radius: $border-radius !important;
+  border: 1px solid $border-color !important;
+  box-shadow: $shadow-sm !important;
+  transition: $transition !important;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: $shadow-md !important;
+    transform: translateY(-2px);
+  }
+
+  .el-card__header {
+    border-bottom: 1px solid $border-color;
+    padding: 16px 20px;
+    font-weight: 600;
+    color: $text-primary;
+    background-color: #FAFBFC;
+  }
+
+  .el-card__body {
+    padding: 20px;
+  }
+}
+
+// --- Element UI: Tables ---
+.el-table {
+  border-radius: $border-radius !important;
+  overflow: hidden;
+
+  &::before {
+    display: none;
+  }
+
+  &::after {
+    display: none;
+  }
+
+  th {
+    background-color: #F8FAFC !important;
+    color: $text-secondary !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border-bottom: 2px solid $border-color !important;
+    padding: 14px 0 !important;
+  }
+
+  td {
+    border-bottom: 1px solid #F1F5F9 !important;
+    padding: 14px 0 !important;
+    color: $text-primary !important;
+    font-size: 14px !important;
+  }
+
+  .el-table__row {
+    transition: $transition;
+
+    &:hover > td {
+      background-color: $primary-bg !important;
+    }
+
+    &:nth-child(even) {
+      background-color: #FAFBFC;
+    }
+  }
+
+  .el-table__header-wrapper {
+    th {
+      .cell {
+        font-size: 12px;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  // Remove the border from tables marked with pl-index-table
+  &.pl-index-table {
+    border: 1px solid $border-color !important;
+    border-radius: $border-radius !important;
+  }
+}
+
+// --- Element UI: Forms ---
+.el-input__inner {
+  border-radius: 6px !important;
+  border-color: $border-color !important;
+  transition: $transition !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  color: $text-primary !important;
+  background-color: #fff !important;
+
+  &:hover {
+    border-color: $text-muted !important;
+  }
+
+  &:focus {
+    border-color: $primary !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+  }
+
+  &::placeholder {
+    color: $text-muted !important;
+  }
+}
+
+.el-textarea__inner {
+  border-radius: 6px !important;
+  border-color: $border-color !important;
+  transition: $transition !important;
+  font-size: 14px !important;
+  color: $text-primary !important;
+
+  &:focus {
+    border-color: $primary !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+  }
+}
+
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: $primary !important;
+}
+
+.el-select-dropdown__item.selected {
+  color: $primary !important;
+  font-weight: 600 !important;
+}
+
+.el-form-item__label {
+  color: $text-secondary !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.el-form-item {
+  margin-bottom: 20px !important;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: $primary !important;
+  background: $primary !important;
+}
+
+.el-radio__input.is-checked + .el-radio__label {
+  color: $primary !important;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: $primary !important;
+}
+
+.el-switch.is-checked .el-switch__core {
+  border-color: $primary !important;
+  background-color: $primary !important;
+}
+
+// --- Element UI: Dialogs ---
+.el-dialog {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: $shadow-lg !important;
+
+  .el-dialog__header {
+    padding: 20px 24px 16px !important;
+    border-bottom: 1px solid $border-color;
+
+    .el-dialog__title {
+      font-weight: 600 !important;
+      font-size: 18px !important;
+      color: $text-primary !important;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 24px !important;
+    color: $text-primary !important;
+  }
+
+  .el-dialog__footer {
+    padding: 16px 24px 20px !important;
+    border-top: 1px solid $border-color;
+  }
+}
+
+.el-dialog__wrapper {
+  background-color: rgba(15, 23, 42, 0.5) !important;
+}
+
+// --- Element UI: Tags ---
+.el-tag {
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  padding: 0 10px !important;
+}
+
+.el-tag--info {
+  background-color: #F1F5F9 !important;
+  color: $text-secondary !important;
+}
+
+.el-tag--primary,
+.el-tag:not(.el-tag--info):not(.el-tag--success):not(.el-tag--warning):not(.el-tag--danger) {
+  background-color: $primary-bg !important;
+  color: $primary !important;
+}
+
+.el-tag--success {
+  background-color: #D1FAE5 !important;
+  color: #065F46 !important;
+}
+
+.el-tag--warning {
+  background-color: #FEF3C7 !important;
+  color: #92400E !important;
+}
+
+.el-tag--danger {
+  background-color: #FEE2E2 !important;
+  color: #991B1B !important;
+}
+
+// --- Element UI: Pagination ---
+.el-pagination {
+  .btn-prev,
+  .btn-next {
+    border-radius: 6px !important;
+    border: 1px solid $border-color !important;
+    background-color: #fff !important;
+
+    &:hover {
+      color: $primary !important;
+      border-color: $primary !important;
+    }
+  }
+
+  .el-pager li {
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    margin: 0 2px !important;
+    min-width: 32px !important;
+
+    &.active {
+      background-color: $primary !important;
+      color: #fff !important;
+    }
+
+    &:hover {
+      color: $primary !important;
+    }
+  }
+}
+
+// --- Element UI: Dropdown ---
+.el-dropdown-menu {
+  border-radius: $border-radius !important;
+  box-shadow: $shadow-lg !important;
+  border: 1px solid $border-color !important;
+  padding: 4px !important;
+
+  .el-dropdown-menu__item {
+    border-radius: 4px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    transition: $transition;
+
+    &:hover {
+      background-color: $primary-bg !important;
+      color: $primary !important;
+    }
+  }
+}
+
+// --- Element UI: Menu (sidebar) ---
+.el-menu {
+  border-right: none !important;
+  background-color: $sidebar-bg !important;
+  padding: 8px !important;
+
+  .el-menu-item,
+  .el-submenu__title {
+    color: $sidebar-text !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    margin: 2px 0 !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    transition: $transition;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+      color: #F8FAFC !important;
+    }
+
+    i {
+      color: $sidebar-text !important;
+    }
+
+    .icon {
+      color: $sidebar-text !important;
+    }
+  }
+
+  .el-menu-item.is-active {
+    background-color: rgba(79, 70, 229, 0.15) !important;
+    color: #A5B4FC !important;
+    border-left: 3px solid $primary-light !important;
+
+    .icon {
+      color: #A5B4FC !important;
+    }
+  }
+
+  .el-submenu {
+    .el-menu {
+      background-color: rgba(0, 0, 0, 0.15) !important;
+      padding: 4px 0 4px 8px !important;
+
+      .el-menu-item {
+        padding-left: 44px !important;
+        font-size: 13px !important;
+        height: 40px !important;
+        line-height: 40px !important;
+      }
+    }
+  }
+
+  .el-submenu__title {
+    .el-submenu__icon-arrow {
+      color: $sidebar-text !important;
+    }
+  }
+
+  // Info icon for version
+  .el-icon-info {
+    color: $sidebar-text !important;
+    margin-right: 10px;
+  }
+}
+
+// --- Element UI: Message / Notification ---
+.el-message {
+  border-radius: $border-radius !important;
+  box-shadow: $shadow-md !important;
+  border: 1px solid $border-color !important;
+}
+
+.el-notification {
+  border-radius: $border-radius !important;
+  box-shadow: $shadow-lg !important;
+}
+
+// --- Element UI: Loading ---
+.el-loading-mask {
+  background-color: rgba(248, 250, 252, 0.8) !important;
+}
+
+// --- Element UI: Breadcrumbs ---
+.el-breadcrumb__inner {
+  color: $text-secondary !important;
+  font-weight: 500 !important;
+
+  &.is-link:hover {
+    color: $primary !important;
+  }
+}
+
+// --- Element UI: Tabs ---
+.el-tabs__item {
+  font-weight: 500 !important;
+  color: $text-secondary !important;
+
+  &.is-active {
+    color: $primary !important;
+  }
+
+  &:hover {
+    color: $primary !important;
+  }
+}
+
+.el-tabs__active-bar {
+  background-color: $primary !important;
+}
+
+// --- Element UI: Tooltip ---
+.el-tooltip__popper.is-dark {
+  background-color: $sidebar-bg !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+}
+
+// --- Element UI: Progress ---
+.el-progress-bar__inner {
+  background-color: $primary !important;
+}
+
+// --- Element UI: Steps ---
+.el-step__head.is-finish {
+  color: $primary !important;
+  border-color: $primary !important;
+}
+
+.el-step__title.is-finish {
+  color: $primary !important;
+}
+
+// --- Scrollbar Styling ---
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #CBD5E1;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: #94A3B8;
+  }
+}
+
+// --- Utility Classes ---
+.text-primary   { color: $primary !important; }
+.text-success   { color: $success !important; }
+.text-warning   { color: $warning !important; }
+.text-danger    { color: $danger !important; }
+.text-muted     { color: $text-muted !important; }
+
+// --- Global Table Overrides ---
+.pl-index-table {
+  margin-top: 16px !important;
+  margin-bottom: 24px !important;
+  border: 1px solid $border-color !important;
+  border-radius: $border-radius !important;
+  overflow: hidden;
+
+  &::after {
+    background-color: transparent !important;
+  }
+}
+
+// --- Favorite star ---
+.favorite {
+  color: $warning !important;
+  font-size: 18px;
+}
+
+// --- Selection / Status colors ---
+.el-table__column-filter-trigger i {
+  color: $text-secondary !important;
+}
