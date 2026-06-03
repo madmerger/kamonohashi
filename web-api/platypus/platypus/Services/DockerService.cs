@@ -130,7 +130,7 @@ namespace Nssol.Platypus.Services
                         {
                             new PortBinding
                             {
-                                HostPort = pm.NodePort > 0 ? pm.NodePort.ToString() : pm.Port.ToString()
+                                HostPort = pm.NodePort > 0 ? pm.NodePort.ToString() : "0"
                             }
                         };
                     }
@@ -227,20 +227,38 @@ namespace Nssol.Platypus.Services
                     return Result<RunContainerOutputModel, string>.CreateErrorResult("コンテナの起動に失敗しました。");
                 }
 
+                // 起動後にinspectして実際に割り当てられたポートを取得
+                var inspectAfterStart = await dockerClient.Containers.InspectContainerAsync(createResponse.ID);
+                var actualPortMappings = inModel.PortMappings?.Select(pm =>
+                {
+                    int actualNodePort = pm.NodePort > 0 ? pm.NodePort : pm.Port;
+                    string containerPort = $"{pm.TargetPort}/tcp";
+                    if (inspectAfterStart.NetworkSettings?.Ports != null &&
+                        inspectAfterStart.NetworkSettings.Ports.TryGetValue(containerPort, out var bindings) &&
+                        bindings != null && bindings.Count > 0)
+                    {
+                        if (int.TryParse(bindings[0].HostPort, out int assignedPort) && assignedPort > 0)
+                        {
+                            actualNodePort = assignedPort;
+                        }
+                    }
+                    return new PortMappingModel
+                    {
+                        Name = pm.Name,
+                        Protocol = pm.Protocol,
+                        TargetPort = pm.TargetPort,
+                        Port = pm.Port,
+                        NodePort = actualNodePort
+                    };
+                }).ToList();
+
                 var result = new RunContainerOutputModel
                 {
                     Name = inModel.Name,
                     Status = KqiContainerStatus.Running,
                     Host = Environment.MachineName,
                     Configuration = $"Docker container: {createResponse.ID}",
-                    PortMappings = inModel.PortMappings?.Select(pm => new PortMappingModel
-                    {
-                        Name = pm.Name,
-                        Protocol = pm.Protocol,
-                        TargetPort = pm.TargetPort,
-                        Port = pm.Port,
-                        NodePort = pm.NodePort > 0 ? pm.NodePort : pm.Port
-                    }).ToList()
+                    PortMappings = actualPortMappings
                 };
                 return Result<RunContainerOutputModel, string>.CreateResult(result);
             }
@@ -561,23 +579,22 @@ namespace Nssol.Platypus.Services
 
                 var execCreateResponse = await dockerClient.Exec.ExecCreateContainerAsync(dockerContainer.ID, new ContainerExecCreateParameters
                 {
-                    AttachStdout = true,
-                    AttachStderr = true,
+                    AttachStdout = false,
+                    AttachStderr = false,
                     Cmd = new List<string> { "/bin/bash", "-c", command }
                 });
 
-                using (var stream = await dockerClient.Exec.StartAndAttachContainerExecAsync(execCreateResponse.ID, false))
+                await dockerClient.Exec.StartContainerExecAsync(execCreateResponse.ID);
+
+                // コマンドの完了を待つ
+                for (int i = 0; i < maxLoopCount; i++)
                 {
-                    // コマンドの完了を待つ
-                    for (int i = 0; i < maxLoopCount; i++)
+                    var execInspect = await dockerClient.Exec.InspectContainerExecAsync(execCreateResponse.ID);
+                    if (!execInspect.Running)
                     {
-                        var execInspect = await dockerClient.Exec.InspectContainerExecAsync(execCreateResponse.ID);
-                        if (!execInspect.Running)
-                        {
-                            return execInspect.ExitCode == 0;
-                        }
-                        await Task.Delay(intervalMillisec);
+                        return execInspect.ExitCode == 0;
                     }
+                    await Task.Delay(intervalMillisec);
                 }
                 return false;
             }
