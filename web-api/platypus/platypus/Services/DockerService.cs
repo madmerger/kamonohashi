@@ -455,7 +455,7 @@ namespace Nssol.Platypus.Services
                     Name = containerName,
                     Status = MapInspectStateToContainerStatus(inspect.State),
                     EndPoints = endpoints,
-                    StartedAt = inspect.State?.StartedAt != null ? (DateTime?)DateTime.Parse(inspect.State.StartedAt) : null,
+                    StartedAt = !string.IsNullOrEmpty(inspect.State?.StartedAt) ? (DateTime?)DateTime.Parse(inspect.State.StartedAt) : null,
                     Node = Environment.MachineName
                 };
             }
