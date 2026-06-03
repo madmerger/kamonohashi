@@ -54,6 +54,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly ISlackLogic slackLogic;
         private readonly IUnitOfWork unitOfWork;
         private readonly ITagRepository tagRepository;
+        private readonly IModelVersionRepository modelVersionRepository;
 
         /// <summary>
         /// コンストラクタ
@@ -74,6 +75,7 @@ namespace Nssol.Platypus.Controllers.spa
             IInferenceHistoryRepository inferenceHistoryRepository,
             ITensorBoardContainerRepository tensorBoardContainerRepository,
             ITagRepository tagRepository,
+            IModelVersionRepository modelVersionRepository,
             ITemplateLogic templateLogic,
             ITagLogic tagLogic,
             IGitLogic gitLogic,
@@ -101,6 +103,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.inferenceHistoryRepository = inferenceHistoryRepository;
             this.tensorBoardContainerRepository = tensorBoardContainerRepository;
             this.tagRepository = tagRepository;
+            this.modelVersionRepository = modelVersionRepository;
             this.templateLogic = templateLogic;
             this.tagLogic = tagLogic;
             this.gitLogic = gitLogic;
@@ -744,6 +747,7 @@ namespace Nssol.Platypus.Controllers.spa
                         tensorBoardContainerRepository,
                         tagRepository,
                         trainingLogic,
+                        modelVersionRepository,
                         RequestUrl);
                     if (!status)
                     {
@@ -799,6 +803,7 @@ namespace Nssol.Platypus.Controllers.spa
                         tensorBoardContainerRepository,
                         tagRepository,
                         trainingLogic,
+                        modelVersionRepository,
                         RequestUrl);
                     if (!status)
                     {

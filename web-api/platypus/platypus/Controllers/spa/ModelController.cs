@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nssol.Platypus.ApiModels.ModelApiModels;
 using Nssol.Platypus.Controllers.Util;
+using Nssol.Platypus.DataAccess;
 using Nssol.Platypus.DataAccess.Core;
 using Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories;
 using Nssol.Platypus.Filters;
@@ -27,6 +28,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IModelVersionRepository modelVersionRepository;
         private readonly ITrainingHistoryRepository trainingHistoryRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly CommonDbContext dbContext;
 
         /// <summary>
         /// コンストラクタ
@@ -36,12 +38,14 @@ namespace Nssol.Platypus.Controllers.spa
             IModelVersionRepository modelVersionRepository,
             ITrainingHistoryRepository trainingHistoryRepository,
             IUnitOfWork unitOfWork,
+            CommonDbContext dbContext,
             IHttpContextAccessor accessor) : base(accessor)
         {
             this.modelRepository = modelRepository;
             this.modelVersionRepository = modelVersionRepository;
             this.trainingHistoryRepository = trainingHistoryRepository;
             this.unitOfWork = unitOfWork;
+            this.dbContext = dbContext;
         }
 
         /// <summary>
@@ -222,7 +226,8 @@ namespace Nssol.Platypus.Controllers.spa
                 }
                 catch (DbUpdateException) when (retry < maxRetries - 1)
                 {
-                    // Version number conflict due to concurrent request; retry with fresh number
+                    // Detach failed entity to prevent duplicate inserts on retry
+                    dbContext.Entry(newVersion).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
                 }
             }
 

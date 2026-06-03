@@ -1258,13 +1258,6 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonBadRequest("Invalid inputs.");
             }
 
-            // モデルバージョンで参照されていたら消せない
-            var referencingVersion = modelVersionRepository.Find(v => v.TrainingHistoryId == id.Value);
-            if (referencingVersion != null)
-            {
-                return JsonConflict($"Training {id.Value} is referenced by a model version and cannot be deleted.");
-            }
-
             var (_, result) = await DoDelete(id.Value,
                 trainingHistoryRepository,
                 clusterManagementLogic,
@@ -1279,6 +1272,7 @@ namespace Nssol.Platypus.Controllers.spa
                 tensorBoardContainerRepository,
                 tagRepository,
                 trainingLogic,
+                modelVersionRepository,
                 RequestUrl);
             return result;
         }
@@ -1298,6 +1292,7 @@ namespace Nssol.Platypus.Controllers.spa
             ITensorBoardContainerRepository tensorBoardContainerRepository,
             ITagRepository tagRepository,
             ITrainingLogic trainingLogic,
+            IModelVersionRepository modelVersionRepository,
             string requestUrl
             )
         {
@@ -1333,6 +1328,17 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return (false, DoJsonConflict(typeof(TrainingController), requestUrl, modelState,
                     $"Training {trainingHistory.Id} has been used by inference."));
+            }
+
+            //モデルバージョンで参照されていたら消せない
+            if (modelVersionRepository != null)
+            {
+                var hasModelVersion = await modelVersionRepository.ExistsAsync(v => v.TrainingHistoryId == trainingHistory.Id);
+                if (hasModelVersion)
+                {
+                    return (false, DoJsonConflict(typeof(TrainingController), requestUrl, modelState,
+                        $"Training {trainingHistory.Id} is referenced by a model version and cannot be deleted."));
+                }
             }
 
             if (status.Exist())
