@@ -30,5 +30,10 @@ namespace Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories
         /// ステータスを更新する
         /// </summary>
         Task UpdateStatusAsync(long id, string status);
+
+        /// <summary>
+        /// DBから最新のステータスを取得する（キャッシュをバイパス）
+        /// </summary>
+        Task<string> GetCurrentStatusAsync(long id);
     }
 }

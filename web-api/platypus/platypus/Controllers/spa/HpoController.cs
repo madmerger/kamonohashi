@@ -297,6 +297,12 @@ namespace Nssol.Platypus.Controllers.spa
             hpoJobRepository.Delete(hpoJob);
             unitOfWork.Commit();
 
+            // ロックのクリーンアップ
+            if (_jobLocks.TryRemove(id, out var removedLock))
+            {
+                removedLock.Dispose();
+            }
+
             return JsonNoContent();
         }
 
@@ -397,16 +403,26 @@ namespace Nssol.Platypus.Controllers.spa
             await jobLock.WaitAsync();
             try
             {
+                // DBから最新のステータスを取得（別リクエストでHaltされた可能性がある）
+                var currentStatus = await hpoJobRepository.GetCurrentStatusAsync(hpoJob.Id);
+                if (currentStatus != "Running")
+                {
+                    return;
+                }
+
                 var trials = hpoTrialRepository.GetByHpoJobId(hpoJob.Id).ToList();
                 var completedCount = trials.Count(t => t.Status == "Completed" || t.Status == "Failed" || t.Status == "Cancelled");
 
-                if (completedCount >= hpoJob.MaxTrials && hpoJob.Status == "Running")
+                if (completedCount >= hpoJob.MaxTrials)
                 {
                     await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Completed");
                     hpoJob.CompletedAt = DateTime.Now;
                     unitOfWork.Commit();
+
+                    // ロックのクリーンアップ
+                    _jobLocks.TryRemove(hpoJob.Id, out _);
                 }
-                else if (hpoJob.Algorithm.ToLower() == "bayes" && hpoJob.Status == "Running")
+                else if (hpoJob.Algorithm.ToLower() == "bayes")
                 {
                     int totalGenerated = trials.Count;
                     if (totalGenerated < hpoJob.MaxTrials)

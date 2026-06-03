@@ -63,5 +63,16 @@ namespace Nssol.Platypus.DataAccess.Repositories.TenantRepositories
                 entity.Status = status;
             }
         }
+
+        /// <summary>
+        /// DBから最新のステータスを取得する（EFキャッシュをバイパス）
+        /// </summary>
+        public async Task<string> GetCurrentStatusAsync(long id)
+        {
+            return await GetAll().AsNoTracking()
+                .Where(j => j.Id == id)
+                .Select(j => j.Status)
+                .FirstOrDefaultAsync();
+        }
     }
 }
