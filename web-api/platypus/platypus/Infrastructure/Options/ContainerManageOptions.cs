@@ -87,14 +87,7 @@ namespace Nssol.Platypus.Infrastructure.Options
                 string k8sApiKeyOfEnv = Environment.GetEnvironmentVariable("ContainerManageOptions__ResourceManageKey");
                 if (string.IsNullOrEmpty(k8sApiKeyOfEnv))
                 {
-                    try
-                    {
-                        return File.ReadAllText(@"/var/run/secrets/kubernetes.io/serviceaccount/token");
-                    }
-                    catch (Exception)
-                    {
-                        return null;
-                    }
+                    return File.ReadAllText(@"/var/run/secrets/kubernetes.io/serviceaccount/token");
                 }
                 else
                 {

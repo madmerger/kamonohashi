@@ -330,7 +330,12 @@ namespace Nssol.Platypus.Services
                 var container = await FindContainerByNameAsync(jobName);
                 if (container == null)
                 {
-                    return null;
+                    return new ContainerDetailsInfo
+                    {
+                        Name = jobName,
+                        TenantName = tenantName,
+                        Status = KqiContainerStatus.None
+                    };
                 }
                 var inspect = await dockerClient.Containers.InspectContainerAsync(container.ID);
                 return new ContainerDetailsInfo
@@ -364,7 +369,11 @@ namespace Nssol.Platypus.Services
                 var container = await FindContainerByNameAsync(containerName);
                 if (container == null)
                 {
-                    return null;
+                    return new ContainerEndpointInfo
+                    {
+                        Name = containerName,
+                        Status = KqiContainerStatus.None
+                    };
                 }
                 var inspect = await dockerClient.Containers.InspectContainerAsync(container.ID);
                 var endpoints = new List<EndPointInfo>();
