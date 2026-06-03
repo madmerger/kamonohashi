@@ -511,7 +511,7 @@ export default {
       jupyterLabInfo: {
         description:
           this.$t('notebook.jupyterDefault'),
-        defaultVersion: 'デフォルト: 3.4.2',
+        defaultVersion: this.$t('notebook.jupyterDefaultShort'),
       },
     }
   },

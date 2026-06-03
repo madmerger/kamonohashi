@@ -120,9 +120,9 @@ export default {
     warnMessage() {
       if (this.originChangedList.length > 0) {
         return (
-          '元々の要求リソースから' +
+          this.$t('common.originalResourceChanged1') +
           this.originChangedList.join(',') +
-          'の値が変更されています。'
+          this.$t('common.originalResourceChanged2')
         )
       }
       return null
@@ -163,8 +163,8 @@ export default {
 
       // 利用可能なノードがあるか確認
       if (!this.nodes || this.nodes.length < 1) {
-        this.errors.push('利用可能なノードがありません。')
-        this.errors.push('システム管理者に確認してください。')
+        this.errors.push(this.$t('common.noAvailableNodes'))
+        this.errors.push(this.$t('common.contactAdmin'))
       } else {
         // 各リソースの最大値を持つノードに対して、それ以上のリソースを指定していればエラーを出す
         let message = []
@@ -177,7 +177,7 @@ export default {
         // メモリの設定値をもとにチェックする。
         if (this.maxMemoryNode) {
           if (this.maxMemoryNode.allocatableMemory < this.value.memory) {
-            message.push('メモリ')
+            message.push(this.$t('common.memory'))
           }
         }
         // GPUの設定値をもとにチェックする。
@@ -189,7 +189,7 @@ export default {
         // メッセージがあればエラーメッセージに格納し表示する。
         if (message.length > 0) {
           this.errors.push(
-            'ノードに要求分の' + message.join(',') + 'のリソースがありません。',
+            this.$t('common.noResourceOnNode1') + message.join(',') + this.$t('common.noResourceOnNode2'),
           )
 
           // エラーを出力したら抜ける
@@ -204,7 +204,7 @@ export default {
             n.allocatableGpu >= this.value.gpu,
         )
         if (allocatableNodes.length == 0) {
-          this.errors.push('要求分のリソースで実行可能なノードがありません。')
+          this.errors.push(this.$t('common.noExecutableNode'))
 
           // エラーを出力したら抜ける
           return
@@ -231,8 +231,8 @@ export default {
         this.quota.memory === 0 ? this.defaultMax.memory : this.quota.memory
       // 最大値より元々の要求値が超えている場合はリストに追加する
       if (this.maxResource.memory < this.value.memory) {
-        if (!this.originChangedList.includes('メモリ')) {
-          this.originChangedList.push('メモリ')
+        if (!this.originChangedList.includes(this.$t('common.memory'))) {
+          this.originChangedList.push(this.$t('common.memory'))
         }
       }
       return this.maxResource.memory

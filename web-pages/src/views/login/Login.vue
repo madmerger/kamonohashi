@@ -53,7 +53,7 @@ const formRule = {
 }
 
 export default {
-  title: 'login.loginButton',
+  title: 'login.title',
   components: {
     KqiDisplayError,
   },
