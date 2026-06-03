@@ -30,6 +30,9 @@ namespace Nssol.Platypus.Services
         private readonly ContainerManageOptions containerOptions;
         private readonly DockerClient dockerClient;
 
+        private static DockerClient sharedDockerClient;
+        private static readonly object clientLock = new object();
+
         private const string KqiManagedLabel = "kqi.managed";
         private const string KqiTenantLabel = "kqi.tenant";
         private const string KqiContainerNameLabel = "kqi.name";
@@ -39,10 +42,27 @@ namespace Nssol.Platypus.Services
             IOptions<ContainerManageOptions> containerOptions) : base(commonDiLogic)
         {
             this.containerOptions = containerOptions.Value;
-            var endpoint = string.IsNullOrEmpty(this.containerOptions.DockerEndpoint)
-                ? "unix:///var/run/docker.sock"
-                : this.containerOptions.DockerEndpoint;
-            dockerClient = new DockerClientConfiguration(new Uri(endpoint)).CreateClient();
+            dockerClient = GetOrCreateClient(this.containerOptions.DockerEndpoint);
+        }
+
+        private static DockerClient GetOrCreateClient(string dockerEndpoint)
+        {
+            if (sharedDockerClient != null)
+            {
+                return sharedDockerClient;
+            }
+            lock (clientLock)
+            {
+                if (sharedDockerClient != null)
+                {
+                    return sharedDockerClient;
+                }
+                var endpoint = string.IsNullOrEmpty(dockerEndpoint)
+                    ? "unix:///var/run/docker.sock"
+                    : dockerEndpoint;
+                sharedDockerClient = new DockerClientConfiguration(new Uri(endpoint)).CreateClient();
+                return sharedDockerClient;
+            }
         }
 
         #region コンテナ管理
@@ -210,7 +230,7 @@ namespace Nssol.Platypus.Services
                         Protocol = pm.Protocol,
                         TargetPort = pm.TargetPort,
                         Port = pm.Port,
-                        NodePort = pm.NodePort
+                        NodePort = pm.NodePort > 0 ? pm.NodePort : pm.Port
                     }).ToList()
                 };
                 return Result<RunContainerOutputModel, string>.CreateResult(result);
@@ -735,7 +755,7 @@ namespace Nssol.Platypus.Services
 
         public void Dispose()
         {
-            dockerClient?.Dispose();
+            // DockerClient is shared static; do not dispose here
         }
 
         #endregion
