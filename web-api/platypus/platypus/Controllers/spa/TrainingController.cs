@@ -515,6 +515,92 @@ namespace Nssol.Platypus.Controllers.spa
             return JsonOK(data.ToList().Select(history => GetUpdatedIndexOutputModelAsync(history).Result));
         }
         /// <summary>
+        /// 複数の学習ジョブを比較するためのデータを取得します。
+        /// </summary>
+        /// <param name="ids">比較する学習履歴IDのカンマ区切りリスト</param>
+        [HttpGet("compare")]
+        [Filters.PermissionFilter(MenuCode.Training)]
+        [ProducesResponseType(typeof(CompareOutputModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Compare([FromQuery] string ids)
+        {
+            if (string.IsNullOrEmpty(ids))
+            {
+                return JsonBadRequest("Training IDs are required.");
+            }
+
+            var idList = new List<long>();
+            foreach (var idStr in ids.Split(','))
+            {
+                if (long.TryParse(idStr.Trim(), out long parsedId))
+                {
+                    idList.Add(parsedId);
+                }
+                else
+                {
+                    return JsonBadRequest($"Invalid training ID: {idStr}");
+                }
+            }
+
+            if (idList.Count < 2)
+            {
+                return JsonBadRequest("At least 2 training IDs are required for comparison.");
+            }
+
+            var result = new CompareOutputModel
+            {
+                Jobs = new List<CompareJobOutputModel>()
+            };
+
+            foreach (var id in idList)
+            {
+                var history = await trainingHistoryRepository.GetIncludeAllAsync(id);
+                if (history == null)
+                {
+                    return JsonNotFound($"Training ID {id} is not found.");
+                }
+
+                var options = new List<KeyValuePair<string, string>>();
+                foreach (var option in history.GetOptionDic())
+                {
+                    options.Add(new KeyValuePair<string, string>(option.Key, option.Value));
+                }
+
+                string executionTime = null;
+                if (history.StartedAt != null && history.CompletedAt != null)
+                {
+                    var span = history.CompletedAt.Value - history.StartedAt.Value;
+                    executionTime = span.ToString(@"%d'd '%h'h '%m'm'", System.Globalization.CultureInfo.InvariantCulture);
+                }
+
+                var job = new CompareJobOutputModel
+                {
+                    Id = history.Id,
+                    Name = history.Name,
+                    Status = history.GetStatus().ToString(),
+                    CreatedBy = history.CreatedBy,
+                    StartedAt = history.StartedAt?.ToString("yyyy/MM/dd HH:mm:ss"),
+                    CompletedAt = history.CompletedAt?.ToString("yyyy/MM/dd HH:mm:ss"),
+                    EntryPoint = history.EntryPoint,
+                    Options = options,
+                    Cpu = history.Cpu,
+                    Memory = history.Memory,
+                    Gpu = history.Gpu,
+                    Partition = history.Partition,
+                    DataSetName = history.DataSet?.Name,
+                    ContainerImage = $"{history.ContainerImage}:{history.ContainerTag}",
+                    LogSummary = history.LogSummary,
+                    Memo = history.Memo,
+                    Tags = tagLogic.GetAllTrainingHistoryTag(history.Id).Select(t => t.Name),
+                    ExecutionTime = executionTime
+                };
+
+                result.Jobs.Add(job);
+            }
+
+            return JsonOK(result);
+        }
+
+        /// <summary>
         /// 指定されたIDの学習履歴の詳細情報を取得。
         /// </summary>
         /// <param name="id">学習履歴ID</param>
