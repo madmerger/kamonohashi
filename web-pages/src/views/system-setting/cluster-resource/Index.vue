@@ -3,12 +3,15 @@
     <h2>リソース利用状況</h2>
 
     <el-row>
-      <el-col :span="12">
+      <el-col :span="16">
         <el-radio-group
           v-model="mode"
           class="switch-group"
           @change="handleModeChange"
         >
+          <el-radio-button label="dashboard">
+            ダッシュボード
+          </el-radio-button>
           <el-radio-button label="">ノード別</el-radio-button>
           <el-radio-button label="tenant">テナント別</el-radio-button>
           <el-radio-button label="container-list">コンテナ一覧</el-radio-button>
@@ -18,9 +21,9 @@
         </el-radio-group>
       </el-col>
 
-      <el-col :span="12" align="right">
+      <el-col :span="8" align="right">
         <el-button
-          v-if="mode != 'data-download'"
+          v-if="mode != 'data-download' && mode != 'dashboard'"
           icon="el-icon-refresh"
           type="primary"
           plain
@@ -76,6 +79,9 @@ export default {
           break
         case 'data-download':
           this.$router.push('/cluster-resource/data-download')
+          break
+        case 'dashboard':
+          this.$router.push('/cluster-resource/dashboard')
           break
       }
     },

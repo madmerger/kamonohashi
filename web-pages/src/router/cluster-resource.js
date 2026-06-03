@@ -4,6 +4,7 @@ import Node from '@/views/system-setting/cluster-resource/Node'
 import Tenant from '@/views/system-setting/cluster-resource/Tenant'
 import ContainerList from '@/views/system-setting/cluster-resource/ContainerList'
 import DataDL from '@/views/system-setting/cluster-resource/DataDL'
+import Dashboard from '@/views/system-setting/cluster-resource/Dashboard'
 
 export default [
   {
@@ -46,6 +47,10 @@ export default [
       {
         path: 'data-download',
         component: DataDL,
+      },
+      {
+        path: 'dashboard',
+        component: Dashboard,
       },
     ],
   },

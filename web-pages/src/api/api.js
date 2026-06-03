@@ -209,6 +209,16 @@ let api = {
       getHistoriesJobsMetadata: gen.getApiV2AdminResourceHistoriesJobsMetadata,
       getHistoriesJobsData: gen.getApiV2AdminResourceHistoriesJobsData,
       deleteHistoriesJobs: gen.patchApiV2AdminResourceHistoriesJobs,
+      getDashboardSummary: () =>
+        axios.get('/api/v2/admin/resource/dashboard/summary'),
+      getDashboardTenantUsage: () =>
+        axios.get('/api/v2/admin/resource/dashboard/tenant-usage'),
+      getDashboardHistory: params =>
+        axios.get('/api/v2/admin/resource/dashboard/history', {
+          params: { period: params.period },
+        }),
+      getDashboardNodeStatus: () =>
+        axios.get('/api/v2/admin/resource/dashboard/node-status'),
     },
     tenant: {
       getNodes: gen.getApiV2TenantResourceNodes,

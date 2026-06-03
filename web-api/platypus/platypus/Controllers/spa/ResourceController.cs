@@ -1095,5 +1095,235 @@ namespace Nssol.Platypus.Controllers.spa
             return JsonOK(null);
         }
         #endregion
+
+        #region ダッシュボード
+
+        /// <summary>
+        /// ダッシュボードのリソースサマリーを取得する
+        /// </summary>
+        [HttpGet("dashboard/summary")]
+        [PermissionFilter(MenuCode.Resource)]
+        [ProducesResponseType(typeof(DashboardSummaryOutputModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetDashboardSummary([FromServices] INodeRepository nodeRepository)
+        {
+            var nodes = nodeRepository.GetAll().OrderBy(n => n.Name).ToList();
+            var nodeNames = new HashSet<string>(nodes.Select(n => n.Name));
+            var nodeInfos = (await clusterManagementLogic.GetAllNodesAsync())?.ToList();
+            if (nodeInfos == null)
+            {
+                return JsonError(HttpStatusCode.ServiceUnavailable, "Fetching nodes is failed.");
+            }
+
+            var summary = new DashboardSummaryOutputModel
+            {
+                TotalNodeCount = nodes.Count,
+                ActiveNodeCount = 0,
+            };
+
+            foreach (var node in nodes)
+            {
+                var info = nodeInfos.FirstOrDefault(i => i.Name == node.Name);
+                if (info != null)
+                {
+                    summary.ActiveNodeCount++;
+                    summary.TotalCpu += info.Cpu;
+                    summary.TotalMemory += info.Memory;
+                    summary.TotalGpu += info.Gpu;
+                }
+            }
+
+            var response = await clusterManagementLogic.GetAllContainerDetailsInfosAsync();
+            if (response.IsSuccess)
+            {
+                foreach (var container in response.Value)
+                {
+                    if (!string.IsNullOrEmpty(container.NodeName) && nodeNames.Contains(container.NodeName))
+                    {
+                        summary.UsedCpu += container.Cpu;
+                        summary.UsedMemory += container.Memory;
+                        summary.UsedGpu += container.Gpu;
+                        summary.RunningContainerCount++;
+                    }
+                }
+            }
+
+            return JsonOK(summary);
+        }
+
+        /// <summary>
+        /// テナント別リソース使用量を取得する
+        /// </summary>
+        [HttpGet("dashboard/tenant-usage")]
+        [PermissionFilter(MenuCode.Resource)]
+        [ProducesResponseType(typeof(IEnumerable<TenantUsageOutputModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetDashboardTenantUsage()
+        {
+            var tenants = tenantRepository.GetAllTenants().OrderBy(t => t.DisplayName);
+            var result = new Dictionary<string, TenantUsageOutputModel>();
+
+            foreach (var tenant in tenants)
+            {
+                result[tenant.Name] = new TenantUsageOutputModel
+                {
+                    TenantName = tenant.Name,
+                    TenantDisplayName = tenant.DisplayName,
+                };
+            }
+
+            var response = await clusterManagementLogic.GetAllContainerDetailsInfosAsync();
+            if (response.IsSuccess)
+            {
+                foreach (var container in response.Value)
+                {
+                    if (result.ContainsKey(container.TenantName))
+                    {
+                        result[container.TenantName].CpuUsed += container.Cpu;
+                        result[container.TenantName].MemoryUsed += container.Memory;
+                        result[container.TenantName].GpuUsed += container.Gpu;
+                        result[container.TenantName].ContainerCount++;
+                    }
+                }
+            }
+
+            // リソースを使用しているテナントのみ返却
+            return JsonOK(result.Values.Where(t => t.ContainerCount > 0));
+        }
+
+        /// <summary>
+        /// リソース使用履歴を取得する
+        /// </summary>
+        /// <param name="period">期間(hour, day, week)</param>
+        [HttpGet("dashboard/history")]
+        [PermissionFilter(MenuCode.Resource)]
+        [ProducesResponseType(typeof(ResourceHistoryOutputModel), (int)HttpStatusCode.OK)]
+        public IActionResult GetDashboardHistory([FromQuery] string period = "hour")
+        {
+            DateTime since;
+            switch (period?.ToLower())
+            {
+                case "day":
+                    since = DateTime.Now.AddDays(-1);
+                    break;
+                case "week":
+                    since = DateTime.Now.AddDays(-7);
+                    break;
+                case "hour":
+                default:
+                    since = DateTime.Now.AddHours(-1);
+                    break;
+            }
+
+            var resourceSamples = resourceSampleRepository.GetAll()
+                .Where(x => x.SampledAt >= since)
+                .Include(x => x.ResourceNodes)
+                .ThenInclude(y => y.ResourceContainers)
+                .OrderBy(x => x.SampledAt)
+                .ToList();
+
+            var result = new ResourceHistoryOutputModel();
+
+            foreach (var sample in resourceSamples)
+            {
+                string label;
+                if (string.Equals(period, "week", StringComparison.OrdinalIgnoreCase))
+                {
+                    label = sample.SampledAt.ToString("MM/dd HH:mm");
+                }
+                else
+                {
+                    label = sample.SampledAt.ToString("HH:mm");
+                }
+                result.Labels.Add(label);
+
+                float totalCpu = 0, totalMemory = 0, totalGpu = 0;
+                float usedCpu = 0, usedMemory = 0, usedGpu = 0;
+
+                foreach (var node in sample.ResourceNodes)
+                {
+                    if (string.IsNullOrEmpty(node.Name))
+                    {
+                        continue;
+                    }
+                    totalCpu += node.Cpu;
+                    totalMemory += node.Memory;
+                    totalGpu += node.Gpu;
+
+                    if (node.ResourceContainers != null)
+                    {
+                        foreach (var container in node.ResourceContainers)
+                        {
+                            usedCpu += container.Cpu;
+                            usedMemory += container.Memory;
+                            usedGpu += container.Gpu;
+                        }
+                    }
+                }
+
+                result.CpuUsage.Add(totalCpu > 0 ? (usedCpu / totalCpu) * 100 : 0);
+                result.MemoryUsage.Add(totalMemory > 0 ? (usedMemory / totalMemory) * 100 : 0);
+                result.GpuUsage.Add(totalGpu > 0 ? (usedGpu / totalGpu) * 100 : 0);
+                result.CpuTotal.Add(totalCpu);
+                result.MemoryTotal.Add(totalMemory);
+                result.GpuTotal.Add(totalGpu);
+            }
+
+            return JsonOK(result);
+        }
+
+        /// <summary>
+        /// ノードステータス一覧を取得する
+        /// </summary>
+        [HttpGet("dashboard/node-status")]
+        [PermissionFilter(MenuCode.Resource)]
+        [ProducesResponseType(typeof(IEnumerable<NodeStatusOutputModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetDashboardNodeStatus([FromServices] INodeRepository nodeRepository)
+        {
+            var nodes = nodeRepository.GetAll().OrderBy(n => n.Name);
+            var nodeInfos = (await clusterManagementLogic.GetAllNodesAsync())?.ToList();
+            if (nodeInfos == null)
+            {
+                return JsonError(HttpStatusCode.ServiceUnavailable, "Fetching nodes is failed.");
+            }
+
+            var result = new List<NodeStatusOutputModel>();
+            var containerCounts = new Dictionary<string, NodeStatusOutputModel>();
+
+            foreach (var node in nodes)
+            {
+                var info = nodeInfos.FirstOrDefault(i => i.Name == node.Name);
+                var model = new NodeStatusOutputModel
+                {
+                    Name = node.Name,
+                    Partition = node.Partition,
+                    Memo = node.Memo,
+                    TensorBoardEnabled = node.TensorBoardEnabled,
+                    Status = info != null ? "Ready" : "Disconnected",
+                    AllocatableCpu = info?.Cpu ?? 0,
+                    AllocatableMemory = info?.Memory ?? 0,
+                    AllocatableGpu = info?.Gpu ?? 0,
+                };
+                result.Add(model);
+                containerCounts[node.Name] = model;
+            }
+
+            var response = await clusterManagementLogic.GetAllContainerDetailsInfosAsync();
+            if (response.IsSuccess)
+            {
+                foreach (var container in response.Value)
+                {
+                    if (!string.IsNullOrEmpty(container.NodeName) && containerCounts.ContainsKey(container.NodeName))
+                    {
+                        containerCounts[container.NodeName].UsedCpu += container.Cpu;
+                        containerCounts[container.NodeName].UsedMemory += container.Memory;
+                        containerCounts[container.NodeName].UsedGpu += container.Gpu;
+                        containerCounts[container.NodeName].ContainerCount++;
+                    }
+                }
+            }
+
+            return JsonOK(result);
+        }
+
+        #endregion
     }
 }
