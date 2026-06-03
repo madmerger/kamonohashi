@@ -234,6 +234,9 @@ namespace Nssol.Platypus.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql($"DELETE FROM \"MenuRoleMaps\" WHERE \"MenuCode\" = '{Logic.MenuLogic.ProjectManagementMenu.Code.ToString()}';");
+            migrationBuilder.Sql($"DELETE FROM \"MenuRoleMaps\" WHERE \"MenuCode\" = '{Logic.MenuLogic.ResourcePermissionMenu.Code.ToString()}';");
+            migrationBuilder.Sql($"DELETE FROM \"MenuRoleMaps\" WHERE \"MenuCode\" = '{Logic.MenuLogic.CustomRoleMenu.Code.ToString()}';");
             migrationBuilder.DropTable(name: "CustomRoles");
             migrationBuilder.DropTable(name: "ResourcePermissions");
             migrationBuilder.DropTable(name: "ProjectResourceMaps");
