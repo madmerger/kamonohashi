@@ -108,7 +108,8 @@ namespace Nssol.Platypus.Logic
                     case "int":
                         int intMin = (int)(param.Min ?? 0);
                         int intMax = (int)(param.Max ?? 100);
-                        parameters[param.Name] = random.Value.Next(intMin, intMax + 1).ToString();
+                        int exclusiveMax = intMax == int.MaxValue ? int.MaxValue : intMax + 1;
+                        parameters[param.Name] = random.Value.Next(intMin, exclusiveMax).ToString();
                         break;
                     case "float":
                         double floatMin = param.Min ?? 0.0;
@@ -170,7 +171,8 @@ namespace Nssol.Platypus.Logic
                         case "int":
                             int intMin = (int)(param.Min ?? 0);
                             int intMax = (int)(param.Max ?? 100);
-                            parameters[param.Name] = random.Value.Next(intMin, intMax + 1).ToString();
+                            int exclusiveMax = intMax == int.MaxValue ? int.MaxValue : intMax + 1;
+                            parameters[param.Name] = random.Value.Next(intMin, exclusiveMax).ToString();
                             break;
                         case "float":
                             double floatMin = param.Min ?? 0.0;
@@ -203,7 +205,7 @@ namespace Nssol.Platypus.Logic
                     {
                         int intMin = (int)(param.Min ?? 0);
                         int intMax = (int)(param.Max ?? 100);
-                        int range = (intMax - intMin) / 5; // 探索範囲の20%
+                        int range = Math.Max(1, (intMax - intMin) / 5); // 探索範囲の20%、最低1
                         int perturbedInt = intVal + random.Value.Next(-range, range + 1);
                         return Math.Max(intMin, Math.Min(intMax, perturbedInt)).ToString();
                     }
