@@ -45,8 +45,8 @@ export default {
         { name: this.$t('common.equals'), detail: '= equals', symbol: '=' },
         { name: this.$t('common.greaterOrEqual'), detail: '', symbol: '>=' },
         { name: this.$t('common.lessOrEqual'), detail: '', symbol: '<=' },
-        { name: this.$t('common.greaterThan'), detail: '超過', symbol: '>' },
-        { name: this.$t('common.lessThan'), detail: '未満', symbol: '<' },
+        { name: this.$t('common.greaterThan'), detail: this.$t('common.exceeds'), symbol: '>' },
+        { name: this.$t('common.lessThan'), detail: this.$t('common.below'), symbol: '<' },
       ],
     }
   },

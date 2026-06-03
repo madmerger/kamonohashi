@@ -41,10 +41,10 @@ export default {
       value: '',
       show: true,
       selectData: [
-        { label: this.$t('common.test1'), detail: '詳細１', value: '1' },
-        { label: this.$t('common.test2'), detail: '詳細２', value: '2' },
-        { label: this.$t('common.test3'), detail: '詳細３', value: '3' },
-        { label: this.$t('common.test4'), detail: '詳細４', value: '4' },
+        { label: this.$t('common.test1'), detail: this.$t('common.detail1'), value: '1' },
+        { label: this.$t('common.test2'), detail: this.$t('common.detail2'), value: '2' },
+        { label: this.$t('common.test3'), detail: this.$t('common.detail3'), value: '3' },
+        { label: this.$t('common.test4'), detail: this.$t('common.detail4'), value: '4' },
       ],
     }
   },
