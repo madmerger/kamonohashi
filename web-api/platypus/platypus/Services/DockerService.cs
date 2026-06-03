@@ -87,7 +87,7 @@ namespace Nssol.Platypus.Services
                         envList.Add($"{kv.Key}={kv.Value}");
                     }
                 }
-                if (inModel.MainContainerEnvList != null)
+                if (inModel.MainContainerEnvList != null && !ReferenceEquals(inModel.MainContainerEnvList, inModel.PrepareAndFinishContainerEnvList))
                 {
                     foreach (var kv in inModel.MainContainerEnvList)
                     {
