@@ -43,6 +43,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IGitLogic gitLogic;
         private readonly IClusterManagementLogic clusterManagementLogic;
         private readonly ISlackLogic slackLogic;
+        private readonly INotificationLogic notificationLogic;
         private readonly IUnitOfWork unitOfWork;
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace Nssol.Platypus.Controllers.spa
             IGitLogic gitLogic,
             IClusterManagementLogic clusterManagementLogic,
             ISlackLogic slackLogic,
+            INotificationLogic notificationLogic,
             IUnitOfWork unitOfWork,
             IHttpContextAccessor accessor) : base(accessor)
         {
@@ -76,6 +78,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.gitLogic = gitLogic;
             this.clusterManagementLogic = clusterManagementLogic;
             this.slackLogic = slackLogic;
+            this.notificationLogic = notificationLogic;
             this.unitOfWork = unitOfWork;
         }
 
@@ -925,8 +928,8 @@ namespace Nssol.Platypus.Controllers.spa
                 await clusterManagementLogic.DeleteContainerAsync(
                     ContainerType.Training, inferenceHistory.Key, tenant.Name, false);
 
-                // 通知処理
-                slackLogic.InformJobResult(inferenceHistory);
+                // 通知処理（Slack + Webhook）
+                notificationLogic.InformJobResult(inferenceHistory);
             }
 
             //添付ファイルがあったらまとめて消す

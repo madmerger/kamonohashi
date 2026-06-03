@@ -36,6 +36,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IClusterManagementLogic clusterManagementLogic;
         private readonly ContainerManageOptions containerManageOptions;
         private readonly IUnitOfWork unitOfWork;
+        private readonly INotificationLogic notificationLogic;
 
         public TenantController(
             ITenantRepository tenantRepository,
@@ -49,6 +50,7 @@ namespace Nssol.Platypus.Controllers.spa
             IClusterManagementLogic clusterManagementLogic,
             IOptions<ContainerManageOptions> containerManageOptions,
             IUnitOfWork unitOfWork,
+            INotificationLogic notificationLogic,
             IHttpContextAccessor accessor) : base(accessor)
         {
             this.tenantRepository = tenantRepository;
@@ -62,6 +64,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.clusterManagementLogic = clusterManagementLogic;
             this.containerManageOptions = containerManageOptions.Value;
             this.unitOfWork = unitOfWork;
+            this.notificationLogic = notificationLogic;
         }
 
         #region Tenant管理
@@ -567,6 +570,80 @@ namespace Nssol.Platypus.Controllers.spa
         public async Task<IActionResult> EditForTenant([FromBody] EditInputModel model)
         {
             return await Edit(CurrentUserInfo.SelectedTenant.Id, model);
+        }
+        #endregion
+
+        #region Webhook設定
+        /// <summary>
+        /// 接続中のテナントのWebhook設定を取得する
+        /// </summary>
+        [HttpGet("/api/v{api-version:apiVersion}/tenant/webhook")]
+        [PermissionFilter(MenuCode.TenantSetting)]
+        [ProducesResponseType(typeof(WebhookSettingOutputModel), (int)HttpStatusCode.OK)]
+        public IActionResult GetWebhookSetting()
+        {
+            Tenant tenant = tenantRepository.Get(CurrentUserInfo.SelectedTenant.Id);
+            if (tenant == null)
+            {
+                return JsonNotFound($"Tenant Id {CurrentUserInfo.SelectedTenant.Id} is not found.");
+            }
+
+            var model = new WebhookSettingOutputModel()
+            {
+                WebhookUrl = tenant.WebhookUrl,
+                SlackNotificationTemplate = tenant.SlackNotificationTemplate,
+                WebhookNotificationTemplate = tenant.WebhookNotificationTemplate
+            };
+
+            return JsonOK(model);
+        }
+
+        /// <summary>
+        /// 接続中のテナントのWebhook設定を更新する
+        /// </summary>
+        /// <param name="model">Webhook設定モデル</param>
+        [HttpPut("/api/v{api-version:apiVersion}/tenant/webhook")]
+        [PermissionFilter(MenuCode.TenantSetting)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public IActionResult EditWebhookSetting([FromBody] WebhookSettingInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return JsonBadRequest("Invalid inputs.");
+            }
+
+            Tenant tenant = tenantRepository.Get(CurrentUserInfo.SelectedTenant.Id);
+            if (tenant == null)
+            {
+                return JsonNotFound($"Tenant Id {CurrentUserInfo.SelectedTenant.Id} is not found.");
+            }
+
+            tenant.WebhookUrl = model.WebhookUrl;
+            tenant.SlackNotificationTemplate = model.SlackNotificationTemplate;
+            tenant.WebhookNotificationTemplate = model.WebhookNotificationTemplate;
+            unitOfWork.Commit();
+
+            return JsonNoContent();
+        }
+
+        /// <summary>
+        /// Webhookテスト通知を送信する
+        /// </summary>
+        /// <param name="model">Webhook設定モデル</param>
+        [HttpPost("/api/v{api-version:apiVersion}/tenant/webhook/test")]
+        [PermissionFilter(MenuCode.TenantSetting)]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> SendWebhookTestNotification([FromBody] WebhookSettingInputModel model)
+        {
+            var result = await notificationLogic.InformWebhookTest(model.WebhookUrl);
+            if (result.IsSuccess)
+            {
+                return JsonOK(result);
+            }
+            else
+            {
+                return JsonBadRequest(result.Error);
+            }
         }
         #endregion
     }

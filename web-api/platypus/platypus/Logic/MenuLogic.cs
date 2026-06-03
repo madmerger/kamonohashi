@@ -35,6 +35,7 @@ namespace Nssol.Platypus.Logic
                 InferenceMenu,
 
                 TenantSettingMenu,
+                TenantWebhookMenu,
                 //TenantRoleMenu,
                 TenantUserMenu,
                 //TenantMenuAccessMenu,
@@ -510,6 +511,16 @@ namespace Nssol.Platypus.Logic
             ShowSideMenu = true,
             MenuType = MenuType.Tenant
         };
+        internal static MenuItemInfo TenantWebhookMenu = new MenuItemInfo()
+        {
+            Name = "Webhook設定",
+            Description = "テナントのWebhook通知設定",
+            Code = MenuCode.TenantSetting,
+            Url = "/manage/webhook",
+            ShowTopMenu = false,
+            ShowSideMenu = true,
+            MenuType = MenuType.Tenant
+        };
         internal static MenuItemInfo TenantRoleMenu = new MenuItemInfo()
         {
             Name = "テナントロール管理",
@@ -685,6 +696,7 @@ namespace Nssol.Platypus.Logic
                 Children = new List<MenuItemInfo>()
                 {
                     TenantSettingMenu,
+                    TenantWebhookMenu,
                     //TenantRoleMenu,
                     TenantUserMenu,
                     //TenantMenuAccessMenu,

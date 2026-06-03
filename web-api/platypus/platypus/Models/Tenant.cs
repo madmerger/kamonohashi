@@ -201,6 +201,21 @@ namespace Nssol.Platypus.Models
         public bool AvailableInfiniteTimeNotebook { get; set; }
 
         /// <summary>
+        /// カスタムWebhookの送信先URL
+        /// </summary>
+        public string WebhookUrl { get; set; }
+
+        /// <summary>
+        /// Slack通知テンプレート（カスタム）。nullの場合はデフォルトテンプレートを使用。
+        /// </summary>
+        public string SlackNotificationTemplate { get; set; }
+
+        /// <summary>
+        /// Webhook通知テンプレート（カスタム）。nullの場合はデフォルトテンプレートを使用。
+        /// </summary>
+        public string WebhookNotificationTemplate { get; set; }
+
+        /// <summary>
         /// ストレージ
         /// </summary>
         [ForeignKey(nameof(StorageId))]

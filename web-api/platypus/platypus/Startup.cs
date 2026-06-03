@@ -140,6 +140,7 @@ namespace Nssol.Platypus
             services.AddTransient<IVersionLogic, VersionLogic>();
             services.AddTransient<ITemplateLogic, TemplateLogic>();
             services.AddTransient<ISlackLogic, SlackLogic>();
+            services.AddTransient<INotificationLogic, NotificationLogic>();
             services.AddTransient<IResourceMonitorLogic, ResourceMonitorLogic>();
             services.AddTransient<IUserGroupLogic, UserGroupLogic>();
 
@@ -148,6 +149,7 @@ namespace Nssol.Platypus
             services.AddTransient<IObjectStorageService, ObjectStorageS3Service>();
             services.AddTransient<IVersionService, VersionService>();
             services.AddTransient<ISlackService, SlackService>();
+            services.AddTransient<IWebhookService, WebhookService>();
             // 切替のため型指定でDI設定
             services.AddTransient<GitHubService>();
             services.AddTransient<GitLabService>();

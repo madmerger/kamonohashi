@@ -1,0 +1,16 @@
+{
+  "event": "@Raw(Model.Event)",
+  "job": {
+    "id": @(Model.Id),
+    "name": "@Raw(Model.Name)",
+    "type": "@Raw(Model.JobType)",
+    "status": "@Raw(Model.Status)",
+    "createdBy": "@Raw(Model.CreatedBy)",
+    "tenant": "@Raw(Model.TenantName)",
+    "url": "@Raw(Model.Url)"
+  },
+  "timestamp": "@Raw(System.DateTime.UtcNow.ToString("o"))"@if (Model.Message != null) {
+@:,
+@:  "message": "@Raw(Model.Message)"
+}
+}

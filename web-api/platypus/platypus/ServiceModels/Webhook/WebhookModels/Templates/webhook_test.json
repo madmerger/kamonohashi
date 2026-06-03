@@ -1,0 +1,8 @@
+{
+  "event": "test",
+  "message": "KAMONOHASHI Webhook テスト通知",
+  "sender": "@Raw(Model.CreatedBy)",
+  "tenant": "@Raw(Model.TenantName)",
+  "url": "@Raw(Model.Url)",
+  "timestamp": "@Raw(System.DateTime.UtcNow.ToString("o"))"
+}
