@@ -167,7 +167,7 @@ export default {
         const row = { metric: key }
         this.compareData.jobs.forEach(job => {
           const pm = parsedMetrics[job.id]
-          if (pm && pm[key]) {
+          if (pm && pm[key] != null) {
             const values = pm[key]
             if (Array.isArray(values) && values.length > 0) {
               row['job_' + job.id] = values[values.length - 1].toFixed(4)
