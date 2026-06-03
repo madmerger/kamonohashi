@@ -121,9 +121,17 @@ export default {
     // 警告メッセージ
     warnMessage() {
       if (this.originChangedList.length > 0) {
+        const resourceLabels = {
+          CPU: 'CPU',
+          memory: this.$t('labels.memory'),
+          GPU: 'GPU',
+        }
+        const translatedList = this.originChangedList.map(
+          key => resourceLabels[key] || key,
+        )
         return (
           this.$t('messages.resource_changed_from_original') +
-          this.originChangedList.join(',') +
+          translatedList.join(',') +
           this.$t('messages.resource_value_changed')
         )
       }
@@ -235,8 +243,8 @@ export default {
         this.quota.memory === 0 ? this.defaultMax.memory : this.quota.memory
       // 最大値より元々の要求値が超えている場合はリストに追加する
       if (this.maxResource.memory < this.value.memory) {
-        if (!this.originChangedList.includes(this.$t('labels.memory'))) {
-          this.originChangedList.push(this.$t('labels.memory'))
+        if (!this.originChangedList.includes('memory')) {
+          this.originChangedList.push('memory')
         }
       }
       return this.maxResource.memory
