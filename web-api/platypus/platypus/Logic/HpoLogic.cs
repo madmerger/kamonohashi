@@ -221,8 +221,9 @@ namespace Nssol.Platypus.Logic
                         int intMax = (int)(param.Max ?? 100);
                         long rangeLong = (long)intMax - (long)intMin;
                         int range = Math.Max(1, (int)Math.Min(rangeLong / 5, int.MaxValue));
-                        int perturbedInt = intVal + random.Value.Next(-range, range + 1);
-                        return Math.Max(intMin, Math.Min(intMax, perturbedInt)).ToString();
+                        long perturbedLong = (long)intVal + random.Value.Next(-range, range + 1);
+                        int perturbedInt = (int)Math.Max(intMin, Math.Min((long)intMax, perturbedLong));
+                        return perturbedInt.ToString();
                     }
                     return bestValue;
                 case "float":
