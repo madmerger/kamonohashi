@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>リソース利用状況</h2>
+    <h2>{{ $t('titles.resource_usage') }}</h2>
 
     <el-row>
       <el-col :span="12">
@@ -9,11 +9,17 @@
           class="switch-group"
           @change="handleModeChange"
         >
-          <el-radio-button label="">ノード別</el-radio-button>
-          <el-radio-button label="tenant">テナント別</el-radio-button>
-          <el-radio-button label="container-list">コンテナ一覧</el-radio-button>
+          <el-radio-button label="">{{
+            $t('cluster.by_node')
+          }}</el-radio-button>
+          <el-radio-button label="tenant">{{
+            $t('cluster.by_tenant')
+          }}</el-radio-button>
+          <el-radio-button label="container-list">{{
+            $t('cluster.container_list')
+          }}</el-radio-button>
           <el-radio-button label="data-download">
-            データダウンロード
+            {{ $t('common.data_download') }}
           </el-radio-button>
         </el-radio-group>
       </el-col>
@@ -26,7 +32,7 @@
           plain
           @click="handleReload"
         >
-          リロード
+          {{ $t('common.reload') }}
         </el-button>
       </el-col>
     </el-row>
@@ -36,7 +42,9 @@
 
 <script>
 export default {
-  title: 'リソース利用状況',
+  title() {
+    return this.$t('titles.resource_usage')
+  },
   data: function() {
     return {
       mode: '',

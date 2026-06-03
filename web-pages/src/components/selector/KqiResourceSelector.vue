@@ -2,12 +2,12 @@
   <div>
     <el-row type="flex">
       <el-col>
-        <label>実行要求リソース</label>
+        <label>{{ $t('labels.request_resource') }}</label>
       </el-col>
       <el-col align="right">
         <el-popover
           ref="allocatableNodeInfo"
-          title="ノード情報"
+          :title="$t('titles.node_info')"
           trigger="hover"
         >
           <kqi-allocatable-node-info :allocatable-nodes="nodes" />
@@ -19,7 +19,7 @@
           plain
           size="mini"
         >
-          ノード情報
+          {{ $t('titles.node_info') }}
         </el-button>
       </el-col>
     </el-row>
@@ -43,7 +43,7 @@
           @input="resourceValidator()"
         />
       </el-form-item>
-      <el-form-item label="メモリ(GB)" required>
+      <el-form-item :label="$t('labels.memory_gb')" required>
         <el-slider
           v-model="value.memory"
           class="el-input"
@@ -121,10 +121,18 @@ export default {
     // 警告メッセージ
     warnMessage() {
       if (this.originChangedList.length > 0) {
+        const resourceLabels = {
+          CPU: 'CPU',
+          memory: this.$t('labels.memory'),
+          GPU: 'GPU',
+        }
+        const translatedList = this.originChangedList.map(
+          key => resourceLabels[key] || key,
+        )
         return (
-          '元々の要求リソースから' +
-          this.originChangedList.join(',') +
-          'の値が変更されています。'
+          this.$t('messages.resource_changed_from_original') +
+          translatedList.join(',') +
+          this.$t('messages.resource_value_changed')
         )
       }
       return null
@@ -165,8 +173,8 @@ export default {
 
       // 利用可能なノードがあるか確認
       if (!this.nodes || this.nodes.length < 1) {
-        this.errors.push('利用可能なノードがありません。')
-        this.errors.push('システム管理者に確認してください。')
+        this.errors.push(this.$t('messages.no_available_nodes'))
+        this.errors.push(this.$t('messages.contact_admin'))
       } else {
         // 各リソースの最大値を持つノードに対して、それ以上のリソースを指定していればエラーを出す
         let message = []
@@ -179,7 +187,7 @@ export default {
         // メモリの設定値をもとにチェックする。
         if (this.maxMemoryNode) {
           if (this.maxMemoryNode.allocatableMemory < this.value.memory) {
-            message.push('メモリ')
+            message.push(this.$t('labels.memory'))
           }
         }
         // GPUの設定値をもとにチェックする。
@@ -191,7 +199,9 @@ export default {
         // メッセージがあればエラーメッセージに格納し表示する。
         if (message.length > 0) {
           this.errors.push(
-            'ノードに要求分の' + message.join(',') + 'のリソースがありません。',
+            this.$t('messages.node_no_resource', {
+              resources: message.join(','),
+            }),
           )
 
           // エラーを出力したら抜ける
@@ -206,7 +216,7 @@ export default {
             n.allocatableGpu >= this.value.gpu,
         )
         if (allocatableNodes.length == 0) {
-          this.errors.push('要求分のリソースで実行可能なノードがありません。')
+          this.errors.push(this.$t('messages.no_executable_node'))
 
           // エラーを出力したら抜ける
           return
@@ -233,8 +243,8 @@ export default {
         this.quota.memory === 0 ? this.defaultMax.memory : this.quota.memory
       // 最大値より元々の要求値が超えている場合はリストに追加する
       if (this.maxResource.memory < this.value.memory) {
-        if (!this.originChangedList.includes('メモリ')) {
-          this.originChangedList.push('メモリ')
+        if (!this.originChangedList.includes('memory')) {
+          this.originChangedList.push('memory')
         }
       }
       return this.maxResource.memory

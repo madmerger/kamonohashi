@@ -1,15 +1,15 @@
 <template>
   <div>
     <kqi-display-text-form
-      label="前処理ID"
+      :label="$t('labels.preprocessing_id')"
       :value="preprocessing ? String(preprocessing.id) : '0'"
     />
     <kqi-display-text-form
-      label="前処理名"
+      :label="$t('labels.preprocessing_name')"
       :value="preprocessing ? preprocessing.name : ''"
     />
     <kqi-display-text-form
-      label="メモ"
+      :label="$t('labels.memo')"
       :value="preprocessing ? preprocessing.memo : ''"
     />
   </div>

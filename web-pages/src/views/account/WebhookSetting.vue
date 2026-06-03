@@ -4,7 +4,7 @@
       <el-col :span="6">Slack</el-col>
     </el-row>
     <el-row class="row-element" style="margin-top:20px; margin-left:20px;">
-      <el-col :span="3">通知先URL</el-col>
+      <el-col :span="3">{{ $t('labels.notification_url') }}</el-col>
       <el-col :span="19">
         <el-input
           :value="value.slackUrl"
@@ -15,7 +15,7 @@
       </el-col>
     </el-row>
     <el-row class="row-element" style="margin-left:20px;">
-      <el-col :span="3">メンション</el-col>
+      <el-col :span="3">{{ $t('labels.mention') }}</el-col>
       <el-col :span="19">
         <el-input
           :value="value.mention"
@@ -28,12 +28,12 @@
     <el-row>
       <el-col class="button-group" :span="21">
         <el-button type="primary" @click="$emit('sendNotification')">
-          テスト通知
+          {{ $t('common.test_notification') }}
         </el-button>
       </el-col>
       <el-col class="button-group" :span="3">
         <el-button type="primary" @click="$emit('updateWebhook')">
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>

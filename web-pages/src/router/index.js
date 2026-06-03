@@ -25,6 +25,7 @@ import menu from '@/router/menu'
 import clusterResource from '@/router/cluster-resource'
 import version from '@/router/version'
 import Util from '../util/util'
+import i18n from '../i18n'
 
 Vue.use(Router)
 
@@ -86,8 +87,8 @@ router.beforeEach(async (to, from, next) => {
       if (authError === 'true') {
         let vue = new Vue()
         vue.$notify.info({
-          title: 'ログインしてください',
-          message: '有効な認証情報がありません',
+          title: i18n.t('messages.please_login'),
+          message: i18n.t('messages.no_valid_auth'),
         })
         Util.setCookie('.Platypus.Auth.Error', false)
       }

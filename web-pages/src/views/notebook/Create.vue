@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="dialog"
-    title="ノートブック起動"
+    :title="$t('titles.notebook_launch')"
     :visible.sync="dialogVisible"
     :before-close="closeDialog"
     :close-on-click-modal="false"
@@ -13,10 +13,10 @@
         <el-row :gutter="20">
           <div class="element">
             <el-col :span="12">
-              <el-form-item label="ノートブック名" prop="name">
+              <el-form-item :label="$t('labels.notebook_name')" prop="name">
                 <el-input v-model="form.name" />
               </el-form-item>
-              <el-form-item label="インストールするJupyterLabのバージョン">
+              <el-form-item :label="$t('labels.jupyter_version')">
                 <el-popover
                   placement="top-start"
                   width="500"
@@ -50,16 +50,19 @@
               />
               <el-form-item
                 v-show="form.dataSetId"
-                label="データセット作成方式"
+                :label="$t('labels.dataset_creation_method')"
               >
                 <el-switch
                   v-model="form.localDataSet"
                   style="width: 100%;"
-                  inactive-text="シンボリックリンク"
-                  active-text="ローカルコピー"
+                  :inactive-text="$t('common.symbolic_link')"
+                  :active-text="$t('common.local_copy')"
                 />
               </el-form-item>
-              <el-form-item label="起動時実行コマンド" prop="entryPoint">
+              <el-form-item
+                :label="$t('labels.startup_command')"
+                prop="entryPoint"
+              >
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -92,7 +95,7 @@
             <el-col :span="12">
               <kqi-resource-selector v-model="form.resource" :quota="quota" />
               <div v-if="availableInfiniteTime">
-                <el-form-item label="起動期間設定">
+                <el-form-item :label="$t('labels.startup_period_setting')">
                   <el-switch
                     v-model="form.withExpiresInSetting"
                     style="width: 100%;"
@@ -102,7 +105,7 @@
                 </el-form-item>
               </div>
               <div v-show="form.withExpiresInSetting">
-                <el-form-item label="起動期間(h)" required>
+                <el-form-item :label="$t('labels.startup_period_h')" required>
                   <el-slider
                     v-model="form.expiresIn"
                     class="el-input"
@@ -117,7 +120,7 @@
                 v-model="form.partition"
                 :partitions="partitions"
               />
-              <el-form-item label="メモ">
+              <el-form-item :label="$t('labels.memo')">
                 <el-input
                   v-model="form.memo"
                   type="textarea"
@@ -135,7 +138,7 @@
         <div class="element">
           <el-form v-if="active === 0">
             <el-col :span="12">
-              <el-form-item label="インストールするJupyterLabのバージョン">
+              <el-form-item :label="$t('labels.jupyter_version')">
                 <el-popover
                   placement="top-start"
                   width="500"
@@ -168,16 +171,19 @@
               />
               <el-form-item
                 v-show="form.dataSetId"
-                label="データセット作成方式"
+                :label="$t('labels.dataset_creation_method')"
               >
                 <el-switch
                   v-model="form.localDataSet"
                   style="width: 100%;"
-                  inactive-text="シンボリックリンク"
-                  active-text="ローカルコピー"
+                  :inactive-text="$t('common.symbolic_link')"
+                  :active-text="$t('common.local_copy')"
                 />
               </el-form-item>
-              <el-form-item label="起動時実行コマンド" prop="entryPoint">
+              <el-form-item
+                :label="$t('labels.startup_command')"
+                prop="entryPoint"
+              >
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -212,7 +218,7 @@
             </el-col>
             <el-col :span="12">
               <div v-if="availableInfiniteTime">
-                <el-form-item label="起動期間設定">
+                <el-form-item :label="$t('labels.startup_period_setting')">
                   <el-switch
                     v-model="form.withExpiresInSetting"
                     style="width: 100%;"
@@ -222,7 +228,7 @@
                 </el-form-item>
               </div>
               <div v-show="form.withExpiresInSetting">
-                <el-form-item label="起動期間(h)" required>
+                <el-form-item :label="$t('labels.startup_period_h')" required>
                   <el-slider
                     v-model="form.expiresIn"
                     class="el-input"
@@ -240,10 +246,10 @@
     <div v-else>
       <el-row :gutter="20">
         <el-steps :active="active" align-center>
-          <el-step title="Step 1" description="ノートブック名" />
-          <el-step title="Step 2" description="リソース & 起動期間" />
-          <el-step title="Step 3" description="任意項目" />
-          <el-step title="Step 4" description="任意項目" />
+          <el-step title="Step 1" :description="$t('labels.notebook_name')" />
+          <el-step title="Step 2" :description="$t('steps.resource_period')" />
+          <el-step title="Step 3" :description="$t('steps.optional')" />
+          <el-step title="Step 4" :description="$t('steps.optional')" />
         </el-steps>
         <br />
         <div class="element">
@@ -251,7 +257,7 @@
           <el-form v-if="active === 0" ref="form0" :model="form" :rules="rules">
             <el-col :span="18" :offset="3">
               <el-form-item
-                label="ノートブック名"
+                :label="$t('labels.notebook_name')"
                 prop="name"
                 class="is-required"
               >
@@ -267,7 +273,7 @@
             </el-col>
             <el-col :span="18" :offset="3">
               <div v-if="availableInfiniteTime">
-                <el-form-item label="起動期間設定">
+                <el-form-item :label="$t('labels.startup_period_setting')">
                   <el-switch
                     v-model="form.withExpiresInSetting"
                     style="width: 100%;"
@@ -277,7 +283,7 @@
                 </el-form-item>
               </div>
               <div v-show="form.withExpiresInSetting">
-                <el-form-item label="起動期間(h)" required>
+                <el-form-item :label="$t('labels.startup_period_h')" required>
                   <el-slider
                     v-model="form.expiresIn"
                     class="el-input"
@@ -318,7 +324,7 @@
               />
             </el-col>
             <el-col :span="18" :offset="3">
-              <el-form-item label="インストールするJupyterLabのバージョン">
+              <el-form-item :label="$t('labels.jupyter_version')">
                 <el-popover
                   placement="top-start"
                   width="500"
@@ -352,13 +358,13 @@
               />
               <el-form-item
                 v-show="form.dataSetId"
-                label="データセット作成方式"
+                :label="$t('labels.dataset_creation_method')"
               >
                 <el-switch
                   v-model="form.localDataSet"
                   style="width: 100%;"
-                  inactive-text="シンボリックリンク"
-                  active-text="ローカルコピー"
+                  :inactive-text="$t('common.symbolic_link')"
+                  :active-text="$t('common.local_copy')"
                 />
               </el-form-item>
             </el-col>
@@ -367,7 +373,10 @@
           <!-- step 4 -->
           <el-form v-if="active === 3" ref="form3" :model="form" :rules="rules">
             <el-col>
-              <el-form-item label="起動時実行コマンド" prop="entryPoint">
+              <el-form-item
+                :label="$t('labels.startup_command')"
+                prop="entryPoint"
+              >
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -380,7 +389,7 @@
                 v-model="form.partition"
                 :partitions="partitions"
               />
-              <el-form-item label="メモ">
+              <el-form-item :label="$t('labels.memo')">
                 <el-input
                   v-model="form.memo"
                   type="textarea"
@@ -395,8 +404,10 @@
     <el-row class="step">
       <div v-if="isCopyCreation || isReRunCreation">
         <span class="right-step-group">
-          <el-button @click="emitCancel">キャンセル</el-button>
-          <el-button type="primary" @click="runNotebook">起動 </el-button>
+          <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="runNotebook"
+            >{{ $t('common.start') }}
+          </el-button>
         </span>
       </div>
       <div v-else>
@@ -420,7 +431,7 @@
         </span>
         <span class="right-step-group">
           <el-button v-if="active === 3" type="primary" @click="runNotebook">
-            起動
+            {{ $t('common.start') }}
           </el-button>
         </span>
       </div>
@@ -501,7 +512,7 @@ export default {
           {
             required: true,
             trigger: 'blur',
-            message: '必須項目です',
+            message: this.$t('common.required_field'),
           },
         ],
       },
@@ -511,9 +522,8 @@ export default {
       isCopyCreation: false,
       isReRunCreation: false,
       jupyterLabInfo: {
-        description:
-          'デフォルト: 3.4.2 (JupyterLabがインストール済みのコンテナイメージでは選択してもスキップされます)',
-        defaultVersion: 'デフォルト: 3.4.2',
+        description: this.$t('messages.notebook_version_description'),
+        defaultVersion: this.$t('messages.notebook_default_version'),
       },
     }
   },

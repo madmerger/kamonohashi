@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="ストレージ情報" prop="storageId">
+  <el-form-item :label="$t('titles.storage_info')" prop="storageId">
     <div class="left-margin">
       <el-select
         class="selectStorage"

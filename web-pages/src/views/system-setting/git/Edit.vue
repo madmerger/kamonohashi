@@ -9,10 +9,10 @@
   >
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="名前" prop="name">
+      <el-form-item :label="$t('labels.name')" prop="name">
         <el-input v-model="form.name" :disabled="isNotEditable" />
       </el-form-item>
-      <el-form-item label="種別" prop="serviceType">
+      <el-form-item :label="$t('labels.type')" prop="serviceType">
         <el-select
           v-model="form.serviceType"
           style="width: 100%;"
@@ -26,7 +26,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="リポジトリURL" prop="repositoryUrl">
+      <el-form-item :label="$t('labels.repository_url')" prop="repositoryUrl">
         <el-input
           v-model="form.repositoryUrl"
           :disabled="isNotEditable"
@@ -50,12 +50,6 @@ import KqiDisplayError from '@/components/KqiDisplayError'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('git')
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
   components: {
     KqiDialog,
@@ -68,6 +62,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         name: null,
@@ -98,9 +97,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'Git登録'
+      this.title = this.$t('titles.git_registration')
     } else {
-      this.title = 'Git編集'
+      this.title = this.$t('titles.git_edit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

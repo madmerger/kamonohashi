@@ -8,16 +8,16 @@
   >
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="名前" prop="name">
+      <el-form-item :label="$t('labels.name')" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="メモ">
+      <el-form-item :label="$t('labels.memo')">
         <el-input v-model="form.memo" type="textarea" />
       </el-form-item>
-      <el-form-item label="パーティション">
+      <el-form-item :label="$t('labels.partition')">
         <el-input v-model="form.partition" />
       </el-form-item>
-      <el-form-item label="アクセスレベル">
+      <el-form-item :label="$t('labels.access_level')">
         <el-radio-group v-model="form.accessLevel" style="width: 100%;">
           <el-radio-button :label="0">Disabled</el-radio-button>
           <el-radio-button :label="1">Private</el-radio-button>
@@ -29,23 +29,23 @@
           v-if="form.accessLevel === 1"
           v-model="form.selectedTenants"
           :data="displayTenants"
-          :titles="['アクセス拒否', 'アクセス許可']"
+          :titles="[$t('labels.access_denied'), $t('labels.access_allowed')]"
         />
       </transition>
       <el-form-item label="TensorBoard">
         <el-switch
           v-model="form.tensorBoardEnabled"
           style="width: 100%;"
-          inactive-text="実行しない"
-          active-text="実行する"
+          :inactive-text="$t('common.not_executable')"
+          :active-text="$t('common.executable')"
         />
       </el-form-item>
       <el-form-item label="Notebook">
         <el-switch
           v-model="form.notebookEnabled"
           style="width: 100%;"
-          inactive-text="実行しない"
-          active-text="実行する"
+          :inactive-text="$t('common.not_executable')"
+          :active-text="$t('common.executable')"
         />
       </el-form-item>
     </el-form>
@@ -56,12 +56,6 @@
 import KqiDialog from '@/components/KqiDialog'
 import KqiDisplayError from '@/components/KqiDisplayError'
 import { mapGetters, mapActions } from 'vuex'
-
-const formRules = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
 
 export default {
   components: {
@@ -75,6 +69,11 @@ export default {
     },
   },
   data() {
+    const formRules = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         name: null,
@@ -114,9 +113,9 @@ export default {
     })
 
     if (this.id === null) {
-      this.title = 'ノード登録'
+      this.title = this.$t('titles.node_registration')
     } else {
-      this.title = 'ノード編集'
+      this.title = this.$t('titles.node_edit')
       try {
         await this['node/fetchDetail'](this.id)
         this.form.name = this.detail.name

@@ -9,12 +9,12 @@
   >
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="レジストリ名" prop="name">
+      <el-form-item :label="$t('labels.registry_name')" prop="name">
         <el-input v-model="form.name" :disabled="isNotEditable" />
       </el-form-item>
-      <h3>レジストリ情報</h3>
+      <h3>{{ $t('titles.registry_info') }}</h3>
       <div style="padding-left: 30px; padding-right: 10px;">
-        <el-form-item label="種別" prop="serviceType">
+        <el-form-item :label="$t('labels.type')" prop="serviceType">
           <el-select
             v-model="form.serviceType"
             style="width: 100%;"
@@ -31,7 +31,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="16">
-            <el-form-item label="ホスト名" prop="host">
+            <el-form-item :label="$t('labels.host_name')" prop="host">
               <el-input
                 v-model="form.host"
                 :disabled="isNotEditable"
@@ -40,7 +40,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="ポート" prop="portNo">
+            <el-form-item :label="$t('labels.port')" prop="portNo">
               <el-input-number
                 v-model="form.portNo"
                 :min="1"
@@ -62,7 +62,7 @@
           </el-form-item>
         </div>
         <div v-if="form.serviceType === 2">
-          <el-form-item label="プロジェクト名" prop="projectName">
+          <el-form-item :label="$t('labels.project_name')" prop="projectName">
             <el-input v-model="form.projectName" :disabled="isNotEditable" />
           </el-form-item>
         </div>
@@ -78,12 +78,6 @@ import { createNamespacedHelpers } from 'vuex'
 
 const defaultProtocol = 'https://'
 const { mapGetters, mapActions } = createNamespacedHelpers('registry')
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
   components: {
     KqiDialog,
@@ -96,6 +90,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         name: null,
@@ -131,9 +130,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'Dockerレジストリ登録'
+      this.title = this.$t('titles.registry_registration')
     } else {
-      this.title = 'Dockerレジストリ編集'
+      this.title = this.$t('titles.registry_edit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

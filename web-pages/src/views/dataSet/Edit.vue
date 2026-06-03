@@ -8,21 +8,23 @@
   >
     <el-row v-if="isEditDialog">
       <el-col :span="24" class="right-button-group">
-        <el-button @click="$emit('copy', id)">コピー</el-button>
+        <el-button @click="$emit('copy', id)">{{
+          $t('common.copy')
+        }}</el-button>
       </el-col>
     </el-row>
 
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
       <el-row v-if="isCreateDialog">
-        <el-form-item label="データセット名" prop="name">
+        <el-form-item :label="$t('labels.dataset_name')" prop="name">
           <el-input v-model="form.name" />
         </el-form-item>
-        <el-form-item label="メモ" prop="memo">
+        <el-form-item :label="$t('labels.memo')" prop="memo">
           <el-input v-model="form.memo" type="textarea" />
         </el-form-item>
-        <el-form-item label="配置種別">
-          <el-switch v-model="form.isFlat"></el-switch>フラット
+        <el-form-item :label="$t('labels.placement_type')">
+          <el-switch v-model="form.isFlat"></el-switch>{{ $t('common.flat') }}
         </el-form-item>
       </el-row>
       <el-row v-else>
@@ -30,19 +32,22 @@
           <el-form-item label="ID">
             <kqi-display-text-form v-model="id" />
           </el-form-item>
-          <el-form-item label="データセット名" prop="name">
+          <el-form-item :label="$t('labels.dataset_name')" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
-          <el-form-item label="メモ" prop="memo">
+          <el-form-item :label="$t('labels.memo')" prop="memo">
             <el-input v-model="form.memo" type="textarea" />
           </el-form-item>
         </el-col>
         <el-col v-if="isEditDialog" :offset="1" :span="11">
-          <el-form-item label="編集可否">
-            <kqi-display-text-form v-if="isLocked" value="不可" />
-            <kqi-display-text-form v-else value="可" />
+          <el-form-item :label="$t('labels.edit_permission')">
+            <kqi-display-text-form
+              v-if="isLocked"
+              :value="$t('common.not_editable')"
+            />
+            <kqi-display-text-form v-else :value="$t('common.editable')" />
           </el-form-item>
-          <el-form-item label="登録者">
+          <el-form-item :label="$t('labels.created_by')">
             <kqi-display-text-form
               :value="
                 detail
@@ -56,19 +61,19 @@
               "
             />
           </el-form-item>
-          <el-form-item label="登録日時">
+          <el-form-item :label="$t('labels.created_at')">
             <kqi-display-text-form v-model="detail.createdAt" />
           </el-form-item>
-          <el-form-item label="配置種別">
+          <el-form-item :label="$t('labels.placement_type')">
             <el-switch v-model="detail.isFlat" :disabled="isEditDialog">
             </el-switch
-            >フラット
+            >{{ $t('common.flat') }}
           </el-form-item>
         </el-col>
       </el-row>
 
       <div v-if="form.isFlat">
-        <el-form-item label="データ" prop="flatEntries" />
+        <el-form-item :label="$t('labels.data')" prop="flatEntries" />
         <el-form-item>
           <pl-flat-dataset-transfer
             v-if="form.flatEntries"
@@ -80,7 +85,7 @@
         </el-form-item>
       </div>
       <div v-else>
-        <el-form-item label="データ" prop="entries" />
+        <el-form-item :label="$t('labels.data')" prop="entries" />
         <el-form-item>
           <pl-dataset-transfer
             v-if="form.entries"
@@ -136,7 +141,13 @@ export default {
       dialogVisible: true,
       error: null,
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [
+          {
+            required: true,
+            trigger: 'blur',
+            message: this.$t('common.required_field'),
+          },
+        ],
         entries: [
           {
             required: true,
@@ -152,7 +163,7 @@ export default {
               if (exists || this.that.form.isFlat) {
                 callback()
               } else {
-                callback(new Error('必須項目です'))
+                callback(new Error(this.$t('common.required_field')))
               }
             },
           },
@@ -170,7 +181,7 @@ export default {
               if (exists) {
                 callback()
               } else if (this.that.form.isFlat) {
-                callback(new Error('必須項目です'))
+                callback(new Error(this.$t('common.required_field')))
               }
             },
           },
@@ -208,7 +219,7 @@ export default {
       let type = url.split('/')[2] // ["", "dataset", "{type}", "{id}"]
       switch (type) {
         case 'create':
-          this.title = 'データセット作成'
+          this.title = this.$t('titles.dataset_creation')
           this.isCreateDialog = true
           this.isCopyCreation = this.id !== null
           this.isEditDialog = false
@@ -216,7 +227,7 @@ export default {
           break
 
         case 'edit':
-          this.title = 'データセット編集'
+          this.title = this.$t('titles.dataset_edit')
           this.isCreateDialog = false
           this.isCopyCreation = false
           this.isEditDialog = true

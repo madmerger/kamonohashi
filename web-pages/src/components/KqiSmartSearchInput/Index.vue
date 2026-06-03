@@ -76,36 +76,38 @@ export default {
     },
     configs: {
       type: Array,
-      default: () => [
-        {
-          prop: 'id',
-          name: 'ID',
-          type: 'number',
-          disabled: false,
-          option: { default: '1' },
-        },
-        {
-          prop: 'name',
-          name: '名前',
-          type: 'text',
-          disabled: false,
-          option: { default: 'B' },
-        },
-        {
-          prop: 'createdAt',
-          name: '登録日時',
-          type: 'date',
-          disabled: false,
-          option: { default: 'D' },
-        },
-        {
-          prop: 'status',
-          name: 'ステータス',
-          type: 'select',
-          disabled: false,
-          option: { default: 'E' },
-        },
-      ],
+      default() {
+        return [
+          {
+            prop: 'id',
+            name: 'ID',
+            type: 'number',
+            disabled: false,
+            option: { default: '1' },
+          },
+          {
+            prop: 'name',
+            name: this.$t('labels.name'),
+            type: 'text',
+            disabled: false,
+            option: { default: 'B' },
+          },
+          {
+            prop: 'createdAt',
+            name: this.$t('labels.created_at'),
+            type: 'date',
+            disabled: false,
+            option: { default: 'D' },
+          },
+          {
+            prop: 'status',
+            name: this.$t('labels.status'),
+            type: 'select',
+            disabled: false,
+            option: { default: 'E' },
+          },
+        ]
+      },
     },
     mini: {
       type: Boolean,

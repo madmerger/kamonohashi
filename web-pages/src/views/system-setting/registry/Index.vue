@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>レジストリ管理</h2>
+    <h2>{{ $t('titles.registry_management') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規登録
+          {{ $t('common.new_registration') }}
         </el-button>
       </el-col>
     </el-row>
@@ -22,18 +22,26 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="100px" />
-        <el-table-column prop="name" label="レジストリ名" width="auto" />
+        <el-table-column
+          prop="name"
+          :label="$t('labels.registry_name')"
+          width="auto"
+        />
         <el-table-column
           prop="registryPath"
-          label="レジストリパス"
+          :label="$t('labels.registry_path')"
           width="auto"
         />
         <el-table-column
           prop="projectName"
-          label="GitLabプロジェクト名"
+          :label="$t('labels.gitlab_project')"
           width="auto"
         />
-        <el-table-column prop="serviceType" label="種別" width="auto">
+        <el-table-column
+          prop="serviceType"
+          :label="$t('labels.type')"
+          width="auto"
+        >
           <template slot-scope="scope">
             {{ displayNameOfServiceType(scope.row.serviceType) }}
           </template>
@@ -49,7 +57,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('registry')
 
 export default {
-  title: 'レジストリ管理', //<title>設定
+  title() {
+    return this.$t('titles.registry_management')
+  }, //<title>設定
   computed: {
     ...mapGetters(['registries', 'serviceTypes']),
   },

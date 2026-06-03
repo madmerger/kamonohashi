@@ -22,18 +22,21 @@
           @submit.native.prevent="handleLogin"
         >
           <el-form-item prop="user" :label-width="labelwidth">
-            <el-input v-model="form.user" placeholder="ユーザ名" />
+            <el-input
+              v-model="form.user"
+              :placeholder="$t('labels.user_name')"
+            />
           </el-form-item>
           <el-form-item prop="password" :label-width="labelwidth">
             <el-input
               v-model="form.password"
               type="password"
-              placeholder="パスワード"
+              :placeholder="$t('labels.password')"
             />
           </el-form-item>
           <el-form-item class="button-group">
             <el-button style="width: 100%;" type="primary" native-type="submit">
-              {{ 'ログイン' }}
+              {{ $t('common.login') }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -46,21 +49,22 @@
 import KqiDisplayError from '@/components/KqiDisplayError'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('account')
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
-  title: 'ログイン',
+  title() {
+    return this.$t('common.login')
+  },
   components: {
     KqiDisplayError,
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     let err = null
     if (this.$route.query.timeout) {
-      err = Error('認証エラー：ログインしてください。')
+      err = Error(this.$t('messages.auth_error'))
     }
     return {
       labelwidth: '100px',

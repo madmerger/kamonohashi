@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h2>前処理履歴</h2>
+    <h2>{{ $t('titles.preprocessing_history') }}</h2>
     <el-row>
       <el-col :span="8" class="back">
         <span @click="openPreprocessing">
-          前処理管理
+          {{ $t('titles.preprocessing_management') }}
         </span>
         <i class="el-icon-arrow-right" />
         <span>{{ id }}</span>
@@ -22,7 +22,7 @@
     <kqi-display-error :error="error" />
     <br />
     <div v-if="histories.length === 0">
-      履歴が見つかりませんでした。
+      {{ $t('messages.history_not_found') }}
     </div>
     <div v-else>
       <el-table
@@ -31,9 +31,21 @@
         border
         @row-click="openEditDialog"
       >
-        <el-table-column prop="dataId" label="入力データID" width="120px" />
-        <el-table-column prop="dataName" label="入力データ名" width="auto" />
-        <el-table-column prop="createdAt" label="実行日時" width="170px" />
+        <el-table-column
+          prop="dataId"
+          :label="$t('labels.input_data_id')"
+          width="120px"
+        />
+        <el-table-column
+          prop="dataName"
+          :label="$t('labels.input_data_name')"
+          width="auto"
+        />
+        <el-table-column
+          prop="createdAt"
+          :label="$t('labels.execution_time_at')"
+          width="170px"
+        />
         <el-table-column width="25px">
           <div slot-scope="scope">
             <div
@@ -49,7 +61,11 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column
+          prop="status"
+          :label="$t('labels.status')"
+          width="120px"
+        />
       </el-table>
     </div>
 
@@ -71,7 +87,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('preprocessing')
 
 export default {
-  title: '前処理履歴',
+  title() {
+    return this.$t('titles.preprocessing_history')
+  },
   components: {
     KqiDisplayError,
     KqiPagination,

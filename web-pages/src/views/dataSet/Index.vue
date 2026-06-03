@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>データセット管理</h2>
+    <h2>{{ $t('titles.dataset_management') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -14,7 +14,7 @@
           plain
           @click="openCreateDialog()"
         >
-          新規作成
+          {{ $t('common.new_creation') }}
         </el-button>
       </el-col>
     </el-row>
@@ -35,14 +35,22 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="データセット名" width="auto" />
+        <el-table-column
+          prop="name"
+          :label="$t('labels.dataset_name')"
+          width="auto"
+        />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('labels.memo')"
           width="auto"
           class-name="memo-column"
         />
-        <el-table-column prop="createdAt" label="登録日時" width="170px" />
+        <el-table-column
+          prop="createdAt"
+          :label="$t('labels.created_at')"
+          width="170px"
+        />
       </el-table>
     </el-row>
     <el-row>
@@ -63,7 +71,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('dataSet')
 
 export default {
-  title: 'データセット管理',
+  title() {
+    return this.$t('titles.dataset_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -77,9 +87,9 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データセット名', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'createdAt', name: '登録日時', type: 'date' },
+        { prop: 'name', name: this.$t('labels.dataset_name'), type: 'text' },
+        { prop: 'memo', name: this.$t('labels.memo'), type: 'text' },
+        { prop: 'createdAt', name: this.$t('labels.created_at'), type: 'date' },
       ],
       tableData: [],
     }

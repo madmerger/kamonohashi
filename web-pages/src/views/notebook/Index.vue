@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ノートブック管理</h2>
+    <h2>{{ $t('titles.notebook_management') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -14,7 +14,7 @@
           plain
           @click="openCreateDialog()"
         >
-          ノートブック作成
+          {{ $t('titles.notebook_creation') }}
         </el-button>
       </el-col>
     </el-row>
@@ -41,11 +41,19 @@
           </div>
         </el-table-column>
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="ノートブック名" width="240px" />
-        <el-table-column prop="createdAt" label="作成日時" width="200px" />
+        <el-table-column
+          prop="name"
+          :label="$t('labels.notebook_name')"
+          width="240px"
+        />
+        <el-table-column
+          prop="createdAt"
+          :label="$t('labels.created_at_short')"
+          width="200px"
+        />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('labels.memo')"
           width="auto"
           class-name="memo-column"
         />
@@ -64,7 +72,11 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column
+          prop="status"
+          :label="$t('labels.status')"
+          width="120px"
+        />
         <el-table-column prop="status" label="Action" width="300px">
           <div slot-scope="scope">
             <div v-if="scope.row.status === 'Running'">
@@ -73,7 +85,7 @@
                 icon="el-icon-document"
                 @click.stop="openNotebook(scope.row)"
               >
-                ノートブックを開く
+                {{ $t('messages.open_notebook') }}
               </el-button>
             </div>
             <div v-if="scope.row.status === 'Killed'">
@@ -82,7 +94,7 @@
                 icon="el-icon-refresh"
                 @click.stop="openRerunDialog(scope.row)"
               >
-                再実行
+                {{ $t('common.rerun') }}
               </el-button>
             </div>
           </div>
@@ -117,7 +129,9 @@ const { mapGetters, mapActions } = createNamespacedHelpers('notebook')
 const kqiHost = process.env.VUE_APP_KAMONOHASHI_HOST || window.location.hostname
 
 export default {
-  title: 'ノートブック管理',
+  title() {
+    return this.$t('titles.notebook_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -131,13 +145,17 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'ノートブック名', type: 'text' },
-        { prop: 'createdAt', name: '作成日時', type: 'date' },
-        { prop: 'createdBy', name: '作成者', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
+        { prop: 'name', name: this.$t('labels.notebook_name'), type: 'text' },
+        {
+          prop: 'createdAt',
+          name: this.$t('labels.created_at_short'),
+          type: 'date',
+        },
+        { prop: 'createdBy', name: this.$t('labels.author'), type: 'text' },
+        { prop: 'memo', name: this.$t('labels.memo'), type: 'text' },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('labels.status'),
           type: 'select',
           option: {
             items: [

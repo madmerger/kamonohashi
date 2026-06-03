@@ -137,9 +137,13 @@ export default {
     )
 
     for (let entryName in this.entryList) {
-      this.moveList[entryName] = `選択を ${entryName} に移動`
+      this.moveList[entryName] = this.$t('messages.move_to', {
+        name: entryName,
+      })
     }
-    this.moveList[this.dataViewInfo.entryName] = '選択を削除'
+    this.moveList[this.dataViewInfo.entryName] = this.$t(
+      'messages.remove_selection',
+    )
 
     await this.initViewInfo()
     await this.retrieveData(1, '')

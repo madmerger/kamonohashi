@@ -1,9 +1,9 @@
 <template>
-  <el-form-item label="前処理" prop="preprocessing">
+  <el-form-item :label="$t('labels.preprocessing_name')" prop="preprocessing">
     <el-popover
       ref="detail-popover"
       :disabled="!value"
-      title="前処理詳細"
+      :title="$t('titles.preprocessing_detail')"
       trigger="hover"
       width="350"
       placement="right"

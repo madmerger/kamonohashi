@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="Git情報" prop="gitEndpoint">
+  <el-form-item :label="$t('labels.git_info')" prop="gitEndpoint">
     <div class="left-margin">
       <el-row />
       <el-col :span="6">Git</el-col>
@@ -23,7 +23,7 @@
           </span>
         </el-option>
       </el-select>
-      <el-col :span="6">デフォルト</el-col>
+      <el-col :span="6">{{ $t('common.default') }}</el-col>
       <el-select
         class="selectGit"
         :value="value.defaultId"

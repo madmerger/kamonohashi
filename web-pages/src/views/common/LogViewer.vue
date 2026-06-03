@@ -20,7 +20,7 @@
         <a :href="logUrl" :download="2">
           <el-button icon="el-icon-download" />
         </a>
-        <el-button @click="emitReturn">戻る</el-button>
+        <el-button @click="emitReturn">{{ $t('common.back') }}</el-button>
       </el-col>
     </el-row>
   </el-dialog>

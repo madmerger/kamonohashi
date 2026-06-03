@@ -1,18 +1,20 @@
 <template>
   <div>
-    <h3>コンテナリソース</h3>
+    <h3>{{ $t('titles.container_resource') }}</h3>
     <el-row class="row">
-      <el-col :span="3">保存されている履歴</el-col>
-      <el-col :span="1"> 開始日 </el-col>
+      <el-col :span="3">{{ $t('common.saved_history') }}</el-col>
+      <el-col :span="1"> {{ $t('common.start_date') }} </el-col>
       <el-col :span="5" class="grid-content">
         {{ allContainersStartDate }}
       </el-col>
-      <el-col :span="1">終了日</el-col>
+      <el-col :span="1">{{ $t('common.end_date') }}</el-col>
       <el-col :span="5" class="grid-content">
         {{ allContainersEndDate }}</el-col
       >
-      <el-col :span="2">件数</el-col>
-      <el-col :span="3">{{ containersCount }}件</el-col>
+      <el-col :span="2">{{ $t('common.count') }}</el-col>
+      <el-col :span="3"
+        >{{ containersCount }}{{ $t('common.count_suffix') }}</el-col
+      >
       <el-col :span="4">
         <el-button
           type="primary"
@@ -20,13 +22,13 @@
           icon="el-icon-refresh"
           @click="handleUpdateContainersData"
         >
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>
     <el-row class="row">
-      <el-col :span="3">履歴のダウンロード</el-col>
-      <el-col :span="1">開始日</el-col>
+      <el-col :span="3">{{ $t('common.download_history') }}</el-col>
+      <el-col :span="1">{{ $t('common.start_date') }}</el-col>
       <el-col :span="5">
         <el-date-picker
           v-model="containersHistoryStartDate"
@@ -34,7 +36,7 @@
           placeholder="Pick a day"
         />
       </el-col>
-      <el-col :span="1">終了日</el-col>
+      <el-col :span="1">{{ $t('common.end_date') }}</el-col>
       <el-col :span="5">
         <el-date-picker
           v-model="containersHistoryEndDate"
@@ -42,12 +44,12 @@
           placeholder="Pick a day"
         />
       </el-col>
-      <el-col :span="2">ヘッダー</el-col>
+      <el-col :span="2">{{ $t('common.header_label') }}</el-col>
       <el-col :span="3">
         <el-switch
           v-model="containersHeader"
-          active-text="あり"
-          inactive-text="なし"
+          :active-text="$t('common.with_header')"
+          :inactive-text="$t('common.without_header')"
         />
       </el-col>
       <el-col :span="4">
@@ -60,8 +62,8 @@
       </el-col>
     </el-row>
     <el-row class="row">
-      <el-col :span="9">履歴の削除</el-col>
-      <el-col :span="1">終了日</el-col>
+      <el-col :span="9">{{ $t('common.delete_history') }}</el-col>
+      <el-col :span="1">{{ $t('common.end_date') }}</el-col>
       <el-col :span="10">
         <el-date-picker
           v-model="containersDeleteEndDate"
@@ -78,20 +80,20 @@
       </el-col>
     </el-row>
 
-    <h3>ジョブ実行履歴</h3>
+    <h3>{{ $t('titles.job_execution_history') }}</h3>
     <el-row class="row">
-      <el-col :span="3">保存されている履歴</el-col>
-      <el-col :span="1">開始日</el-col>
+      <el-col :span="3">{{ $t('common.saved_history') }}</el-col>
+      <el-col :span="1">{{ $t('common.start_date') }}</el-col>
       <el-col :span="5" class="grid-content">
         {{ allJobsStartDate }}
       </el-col>
-      <el-col :span="1">終了日</el-col>
+      <el-col :span="1">{{ $t('common.end_date') }}</el-col>
       <el-col :span="5" class="grid-content">
         {{ allJobsEndDate }}
       </el-col>
 
-      <el-col :span="2">件数</el-col>
-      <el-col :span="3">{{ jobsCount }}件</el-col>
+      <el-col :span="2">{{ $t('common.count') }}</el-col>
+      <el-col :span="3">{{ jobsCount }}{{ $t('common.count_suffix') }}</el-col>
       <el-col :span="4">
         <el-button
           type="primary"
@@ -99,13 +101,13 @@
           icon="el-icon-refresh"
           @click="handleUpdateJobsData"
         >
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>
     <el-row class="row">
-      <el-col :span="3">履歴のダウンロード</el-col>
-      <el-col :span="1">開始日</el-col>
+      <el-col :span="3">{{ $t('common.download_history') }}</el-col>
+      <el-col :span="1">{{ $t('common.start_date') }}</el-col>
       <el-col :span="5">
         <el-date-picker
           v-model="jobsHistoryStartDate"
@@ -113,7 +115,7 @@
           placeholder="Pick a day"
         />
       </el-col>
-      <el-col :span="1">終了日</el-col>
+      <el-col :span="1">{{ $t('common.end_date') }}</el-col>
       <el-col :span="5">
         <el-date-picker
           v-model="jobsHistoryEndDate"
@@ -121,12 +123,12 @@
           placeholder="Pick a day"
         />
       </el-col>
-      <el-col :span="2">ヘッダー</el-col>
+      <el-col :span="2">{{ $t('common.header_label') }}</el-col>
       <el-col :span="3">
         <el-switch
           v-model="jobsHeader"
-          active-text="あり"
-          inactive-text="なし"
+          :active-text="$t('common.with_header')"
+          :inactive-text="$t('common.without_header')"
         />
       </el-col>
       <el-col :span="4">
@@ -139,8 +141,8 @@
       </el-col>
     </el-row>
     <el-row class="row">
-      <el-col :span="9">履歴の削除</el-col>
-      <el-col :span="1">終了日</el-col>
+      <el-col :span="9">{{ $t('common.delete_history') }}</el-col>
+      <el-col :span="1">{{ $t('common.end_date') }}</el-col>
       <el-col :span="10">
         <el-date-picker
           v-model="jobsDeleteEndDate"
@@ -236,21 +238,22 @@ export default {
     async handleContainersDelete() {
       let confirmMessage = ''
       if (this.containersDeleteEndDate == null) {
-        confirmMessage = 'すべてのコンテナリソース履歴を削除しますか'
+        confirmMessage = this.$t('messages.delete_container_history_all')
       } else {
-        confirmMessage = `${this.containersDeleteEndDate.getFullYear() +
-          '/' +
-          ('0' + (this.containersDeleteEndDate.getMonth() + 1)).slice(-2) +
-          '/' +
-          ('0' + this.containersDeleteEndDate.getDate()).slice(
-            -2,
-          )}までのコンテナリソース履歴を削除しますか`
+        let d = this.containersDeleteEndDate
+        let formattedDate = `${d.getFullYear()}/${(
+          '0' +
+          (d.getMonth() + 1)
+        ).slice(-2)}/${('0' + d.getDate()).slice(-2)}`
+        confirmMessage = this.$t('messages.delete_container_history_until', {
+          date: formattedDate,
+        })
       }
       // 確認ダイアログ
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {
@@ -299,21 +302,22 @@ export default {
     async handleJobsDelete() {
       let confirmMessage = ''
       if (this.jobsDeleteEndDate == null) {
-        confirmMessage = 'すべてのジョブ実行履歴を削除しますか'
+        confirmMessage = this.$t('messages.delete_job_history_all')
       } else {
-        confirmMessage = `${this.jobsDeleteEndDate.getFullYear() +
-          '/' +
-          ('0' + (this.jobsDeleteEndDate.getMonth() + 1)).slice(-2) +
-          '/' +
-          ('0' + this.jobsDeleteEndDate.getDate()).slice(
-            -2,
-          )}までのジョブ実行履歴を削除しますか`
+        let d = this.jobsDeleteEndDate
+        let formattedDate = `${d.getFullYear()}/${(
+          '0' +
+          (d.getMonth() + 1)
+        ).slice(-2)}/${('0' + d.getDate()).slice(-2)}`
+        confirmMessage = this.$t('messages.delete_job_history_until', {
+          date: formattedDate,
+        })
       }
       // 確認ダイアログ
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {

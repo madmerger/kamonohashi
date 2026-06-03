@@ -3,7 +3,7 @@
   <div>
     <el-row class="row-element" style="padding-top: 50px;">
       <el-col :span="6" class="content-color">
-        既定のテナント
+        {{ $t('labels.default_tenant_label') }}
       </el-col>
       <el-col :span="12">
         <el-select
@@ -24,7 +24,7 @@
     <el-row>
       <el-col class="button-group">
         <el-button type="primary" @click="$emit('defaultTenantUpdate')">
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>

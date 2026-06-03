@@ -27,7 +27,7 @@
       <el-option v-for="t in registeredTags" :key="t" :label="t" :value="t" />
     </el-select>
     <el-button v-else class="button-new-tag" size="small" @click="showTagInput">
-      + 新規タグ
+      {{ $t('common.new_tag') }}
     </el-button>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <kqi-dialog
     :title="title"
     :type="id === null ? 'CREATE' : 'EDIT'"
-    submit-text="作成"
+    :submit-text="$t('common.create')"
     :delete-button-params="deleteButtonParams"
     @submit="submit"
     @delete="deleteTenant"
@@ -11,27 +11,31 @@
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
 
-      <h3>テナント情報</h3>
+      <h3>{{ $t('titles.tenant_info') }}</h3>
       <div class="left-margin">
         <kqi-display-text-form v-if="id !== null" label="ID" :value="id" />
-        <el-form-item v-if="id === null" label="テナント名" prop="tenantName">
+        <el-form-item
+          v-if="id === null"
+          :label="$t('labels.tenant_name')"
+          prop="tenantName"
+        >
           <el-input v-model="form.tenantName" />
         </el-form-item>
         <kqi-display-text-form
           v-else
-          label="テナント名"
+          :label="$t('labels.tenant_name')"
           :value="form.tenantName"
         />
-        <el-form-item label="表示名" prop="displayName">
+        <el-form-item :label="$t('labels.display_name')" prop="displayName">
           <el-input v-model="form.displayName" />
         </el-form-item>
       </div>
-      <el-form-item label="ノートブック無期限実行" required>
+      <el-form-item :label="$t('labels.notebook_unlimited_exec')" required>
         <el-switch
           v-model="form.availableInfiniteTimeNotebook"
           style="width: 100%;"
-          inactive-text="禁止"
-          active-text="許可"
+          :inactive-text="$t('common.forbidden')"
+          :active-text="$t('common.allowed')"
           class="left-margin"
         />
       </el-form-item>
@@ -70,12 +74,6 @@ import KqiUserGroupSelector from '@/components/selector/KqiUserGroupSelector'
 import { mapGetters, mapActions } from 'vuex'
 import validator from '@/util/validator'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
   components: {
     KqiDialog,
@@ -93,6 +91,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       title: '',
       error: null,
@@ -146,9 +149,9 @@ export default {
     await this['registry/fetchRegistries']()
     await this['userGroup/fetchUserGroups']()
     if (this.id === null) {
-      this.title = 'テナント作成'
+      this.title = this.$t('titles.tenant_creation')
     } else {
-      this.title = 'テナント編集'
+      this.title = this.$t('titles.tenant_edit')
       try {
         await this['tenant/fetchDetail'](this.id)
         this.form.tenantName = this.detail.name
@@ -163,8 +166,7 @@ export default {
         this.error = null
         this.deleteButtonParams = {
           isDanger: true,
-          warningText:
-            'テナントを削除すると、テナントに紐づくデータが失われます。処理を続けるにはテナント名を入力してください。',
+          warningText: this.$t('messages.tenant_delete_confirm'),
           confirmText: this.form.tenantName,
         }
       } catch (e) {
@@ -232,12 +234,11 @@ export default {
       if (this.checkUserGroupsChange()) {
         return true
       }
-      let confirmMessage =
-        '紐づけが解除されたユーザグループに属するユーザはこのテナントに参加できなくなります。変更を保存しますか？'
+      let confirmMessage = this.$t('messages.user_group_change_confirm')
       try {
         await this.$confirm(confirmMessage, 'Warning', {
-          confirmButtonText: 'はい',
-          cancelButtonText: 'キャンセル',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         })
         return true

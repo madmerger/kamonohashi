@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="dialog"
-    title="推論実行"
+    :title="$t('titles.inference_execution')"
     :visible.sync="dialogVisible"
     :before-close="closeDialog"
     :close-on-click-modal="false"
@@ -11,7 +11,7 @@
       <el-form ref="runForm" :rules="rules" :model="form">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="推論名" prop="name">
+            <el-form-item :label="$t('labels.inference_name')" prop="name">
               <el-input v-model="form.name" />
             </el-form-item>
             <kqi-training-history-selector
@@ -29,16 +29,16 @@
               :data-sets="dataSets"
               @input="selectDataset"
             />
-            <el-form-item label="データセット作成方式">
+            <el-form-item :label="$t('labels.dataset_creation_method')">
               <el-switch
                 v-model="form.localDataSet"
                 style="width: 100%;"
-                inactive-text="シンボリックリンク"
-                active-text="ローカルコピー"
+                :inactive-text="$t('common.symbolic_link')"
+                :active-text="$t('common.local_copy')"
               />
             </el-form-item>
 
-            <el-form-item label="実行コマンド" prop="entryPoint">
+            <el-form-item :label="$t('labels.entry_point')" prop="entryPoint">
               <el-input
                 v-model="form.entryPoint"
                 type="textarea"
@@ -72,19 +72,19 @@
             <kqi-resource-selector v-model="form.resource" :quota="quota" />
 
             <kqi-environment-variables v-model="form.variables" />
-            <el-form-item label="結果Zip圧縮">
+            <el-form-item :label="$t('labels.result_zip')">
               <el-switch
                 v-model="form.zip"
                 style="width: 100%;"
-                inactive-text="圧縮しない"
-                active-text="圧縮する"
+                :inactive-text="$t('common.no_compress')"
+                :active-text="$t('common.compress')"
               />
             </el-form-item>
             <kqi-partition-selector
               v-model="form.partition"
               :partitions="partitions"
             />
-            <el-form-item label="メモ">
+            <el-form-item :label="$t('labels.memo')">
               <el-input
                 v-model="form.memo"
                 type="textarea"
@@ -94,13 +94,13 @@
           </el-col>
         </el-row>
         <el-row class="right-button-group footer">
-          <el-button @click="emitCancel">キャンセル</el-button>
+          <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
           <el-button
             v-if="(originId !== undefined) | (active === 3)"
             type="primary"
             @click="runInference"
           >
-            実行
+            {{ $t('common.execute') }}
           </el-button>
         </el-row>
       </el-form>
@@ -108,16 +108,19 @@
     <div v-else>
       <el-row :gutter="20">
         <el-steps :active="active" align-center>
-          <el-step title="Step 1" description="推論名 & データセット" />
-          <el-step title="Step 2" description="コンテナ & モデル" />
-          <el-step title="Step 3" description="リソース" />
-          <el-step title="Step 4" description="オプション" />
+          <el-step
+            title="Step 1"
+            :description="$t('steps.inference_name_dataset')"
+          />
+          <el-step title="Step 2" :description="$t('steps.container_model')" />
+          <el-step title="Step 3" :description="$t('labels.resource')" />
+          <el-step title="Step 4" :description="$t('labels.option')" />
         </el-steps>
         <div class="element">
           <!-- step 1 -->
           <el-form v-if="active === 0" ref="form0" :model="form" :rules="rules">
             <el-col :span="12">
-              <el-form-item label="推論名" prop="name">
+              <el-form-item :label="$t('labels.inference_name')" prop="name">
                 <el-input v-model="form.name" />
               </el-form-item>
               <kqi-training-history-selector
@@ -137,12 +140,12 @@
                 :data-sets="dataSets"
                 @input="selectDataset"
               />
-              <el-form-item label="データセット作成方式">
+              <el-form-item :label="$t('labels.dataset_creation_method')">
                 <el-switch
                   v-model="form.localDataSet"
                   style="width: 100%;"
-                  inactive-text="シンボリックリンク"
-                  active-text="ローカルコピー"
+                  :inactive-text="$t('common.symbolic_link')"
+                  :active-text="$t('common.local_copy')"
                 />
               </el-form-item>
             </el-col>
@@ -179,7 +182,7 @@
               />
             </el-col>
             <el-col :span="12">
-              <el-form-item label="実行コマンド" prop="entryPoint">
+              <el-form-item :label="$t('labels.entry_point')" prop="entryPoint">
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -211,19 +214,19 @@
           >
             <el-col>
               <kqi-environment-variables v-model="form.variables" />
-              <el-form-item label="結果Zip圧縮">
+              <el-form-item :label="$t('labels.result_zip')">
                 <el-switch
                   v-model="form.zip"
                   style="width: 100%;"
-                  inactive-text="圧縮しない"
-                  active-text="圧縮する"
+                  :inactive-text="$t('common.no_compress')"
+                  :active-text="$t('common.compress')"
                 />
               </el-form-item>
               <kqi-partition-selector
                 v-model="form.partition"
                 :partitions="partitions"
               />
-              <el-form-item label="メモ">
+              <el-form-item :label="$t('labels.memo')">
                 <el-input
                   v-model="form.memo"
                   type="textarea"
@@ -259,7 +262,7 @@
           type="primary"
           @click="runInference"
         >
-          実行
+          {{ $t('common.execute') }}
         </el-button>
       </el-row>
     </div>
@@ -282,12 +285,6 @@ import registrySelectorUtil from '@/util/registrySelectorUtil'
 import gitSelectorUtil from '@/util/gitSelectorUtil'
 import { mapActions, mapGetters } from 'vuex'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
   components: {
     KqiDisplayError,
@@ -308,6 +305,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       commitsList: [],
       commitsPage: 1,

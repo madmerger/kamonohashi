@@ -27,16 +27,23 @@ export default {
   props: {
     buttonLabel: { type: String, default: '' },
     size: { type: String, default: '' },
-    message: { type: String, default: '削除しますか' },
+    message: {
+      type: String,
+      default() {
+        return this.$t('messages.delete_confirm')
+      },
+    },
     disabled: { type: Boolean, default: false },
   },
   methods: {
     async showConfirm() {
-      let confirmMessage = this.message ? this.message : '削除しますか'
+      let confirmMessage = this.message
+        ? this.message
+        : this.$t('messages.delete_confirm')
       try {
         await this.$confirm(confirmMessage, 'Warning', {
-          confirmButtonText: 'はい',
-          cancelButtonText: 'キャンセル',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         })
         this.$emit('delete')

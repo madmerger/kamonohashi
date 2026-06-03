@@ -36,17 +36,17 @@
             <el-table-column
               align="center"
               prop="status"
-              label="ステータス"
+              :label="$t('labels.status')"
               :width="columnWidth"
             />
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="ノード" width="auto" />
-      <el-table-column label="ユーザ" width="auto" />
+      <el-table-column prop="name" :label="$t('labels.node')" width="auto" />
+      <el-table-column :label="$t('labels.user')" width="auto" />
       <el-table-column
         prop="containerResourceList.length"
-        label="コンテナ"
+        :label="$t('labels.container')"
         width="auto"
       />
       <el-table-column
@@ -58,7 +58,7 @@
       <el-table-column
         align="right"
         prop="memoryInfo"
-        label="メモリ"
+        :label="$t('labels.memory')"
         :width="columnWidth"
       />
       <el-table-column
@@ -67,7 +67,11 @@
         label="GPU"
         :width="columnWidth"
       />
-      <el-table-column align="center" label="ステータス" :width="columnWidth" />
+      <el-table-column
+        align="center"
+        :label="$t('labels.status')"
+        :width="columnWidth"
+      />
     </el-table>
     <router-view @cancel="closeDialog" @done="done" />
   </div>

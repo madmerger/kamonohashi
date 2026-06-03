@@ -10,12 +10,11 @@
     >
       <div id="terminal" />
       <div>
-        コピー: Ctrl+Insert, ペースト: Shift+Insert(Google
-        Chromeの場合Ctrl+Shift+Vでペーストも可能)
+        {{ $t('messages.shell_copy_paste') }}
       </div>
       <el-row :gutter="20" class="footer">
         <el-col class="right-button-group" :span="24">
-          <el-button @click="emitReturn()">戻る</el-button>
+          <el-button @click="emitReturn()">{{ $t('common.back') }}</el-button>
         </el-col>
       </el-row>
     </el-dialog>

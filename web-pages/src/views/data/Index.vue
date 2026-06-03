@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>データ管理</h2>
+    <h2>{{ $t('titles.data_management') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -13,7 +13,7 @@
             v-if="$store.getters['account/isAvailablePreprocessing']"
             @click="openPreprocessingDialog"
           >
-            前処理実行
+            {{ $t('common.run_preprocessing') }}
           </el-button>
           <el-button
             icon="el-icon-edit-outline"
@@ -21,7 +21,7 @@
             plain
             @click="openCreateDialog"
           >
-            新規登録
+            {{ $t('common.new_registration') }}
           </el-button>
         </div>
       </el-col>
@@ -45,8 +45,12 @@
       >
         <el-table-column type="selection" width="55px" />
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="データ名" width="auto" />
-        <el-table-column label="元データ名" width="120px">
+        <el-table-column
+          prop="name"
+          :label="$t('labels.data_name')"
+          width="auto"
+        />
+        <el-table-column :label="$t('labels.parent_data_name')" width="120px">
           <div slot-scope="scope">
             <div v-if="scope.row.isRaw"></div>
             <div v-else>
@@ -54,8 +58,12 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="createdAt" label="登録日時" width="200px" />
-        <el-table-column label="登録者" width="120px">
+        <el-table-column
+          prop="createdAt"
+          :label="$t('labels.created_at')"
+          width="200px"
+        />
+        <el-table-column :label="$t('labels.created_by')" width="120px">
           <template slot-scope="scope">
             <p>
               {{ scope.row.createdBy
@@ -68,11 +76,11 @@
 
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('labels.memo')"
           width="auto"
           class-name="memo-column"
         />
-        <el-table-column prop="tag" label="タグ" width="120px">
+        <el-table-column prop="tag" :label="$t('labels.tag')" width="120px">
           <template slot-scope="scope">
             <span
               v-for="(tag, index) in scope.row.tags"
@@ -111,7 +119,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('data')
 
 export default {
-  title: 'データ管理',
+  title() {
+    return this.$t('titles.data_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -126,11 +136,16 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データ名', type: 'text' },
-        { prop: 'createdAt', name: '登録日時', type: 'date' },
-        { prop: 'createdBy', name: '登録者', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('labels.data_name'), type: 'text' },
+        { prop: 'createdAt', name: this.$t('labels.created_at'), type: 'date' },
+        { prop: 'createdBy', name: this.$t('labels.created_by'), type: 'text' },
+        { prop: 'memo', name: this.$t('labels.memo'), type: 'text' },
+        {
+          prop: 'tag',
+          name: this.$t('labels.tag'),
+          type: 'text',
+          multiple: true,
+        },
       ],
       selections: [],
     }

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h2>クォータ管理</h2>
+    <h2>{{ $t('titles.quota_management') }}</h2>
     <el-row>
       <kqi-display-error :error="error" />
       <el-col class="create-new">
         <el-button icon="el-icon-edit-outline" type="primary" @click="update">
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>
@@ -17,7 +17,11 @@
         border
       >
         <!-- テーブルの各列の表示項目を注入 -->
-        <el-table-column prop="tenantName" label="テナント" width="auto" />
+        <el-table-column
+          prop="tenantName"
+          :label="$t('labels.tenant')"
+          width="auto"
+        />
         <el-table-column prop="cpu" label="CPU" width="auto">
           <template slot-scope="scope">
             <el-input-number
@@ -63,7 +67,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('quota')
 
 export default {
-  title: 'クォータ管理',
+  title() {
+    return this.$t('titles.quota_management')
+  },
   components: {
     KqiDisplayError,
   },

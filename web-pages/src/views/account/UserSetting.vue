@@ -3,21 +3,21 @@
   <div>
     <el-form ref="passForm" :rules="passRules" :model="passForm">
       <el-form-item
-        label="ユーザ表示名"
+        :label="$t('labels.user_display_name')"
         prop="displayName"
         :label-width="labelwidth"
       >
         <el-input v-model="passForm.displayName" type="text" />
       </el-form-item>
       <el-form-item
-        label="現在のパスワード(変更する場合のみ入力)"
+        :label="$t('labels.current_password')"
         prop="currentPassword"
         :label-width="labelwidth"
       >
         <el-input v-model="passForm.currentPassword" type="password" />
       </el-form-item>
       <el-form-item
-        label="新しいパスワード(変更する場合のみ入力)"
+        :label="$t('labels.new_password')"
         prop="password"
         :label-width="labelwidth"
       >
@@ -26,7 +26,7 @@
           style="position: relative; left: -200px; top:24px;"
           class="content-color"
         >
-          （再入力）
+          {{ $t('labels.reenter') }}
         </span>
         <el-input
           v-model="passForm.password[1]"
@@ -36,7 +36,7 @@
       </el-form-item>
       <el-form-item class="button-group">
         <el-button type="primary" @click="handlePassword">
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -63,7 +63,7 @@ export default {
         currentPassword: {
           required: true,
           trigger: 'blur',
-          message: '必須項目です',
+          message: this.$t('common.required_field'),
         },
         password: [
           {
@@ -84,9 +84,9 @@ export default {
   methods: {
     passwordValidator(rule, value, callback) {
       if (!(value[0] && value[1])) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required_field')))
       } else if (!(value[0] === value[1])) {
-        callback(new Error('同一のパスワードを入力してください'))
+        callback(new Error(this.$t('messages.enter_same_password')))
       } else {
         callback()
       }

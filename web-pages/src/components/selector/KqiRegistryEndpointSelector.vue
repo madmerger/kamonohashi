@@ -1,8 +1,8 @@
 <template>
-  <el-form-item label="Dockerレジストリ情報" prop="registry">
+  <el-form-item :label="$t('labels.docker_registry_info')" prop="registry">
     <div class="left-margin">
       <el-row />
-      <el-col :span="6">レジストリ</el-col>
+      <el-col :span="6">{{ $t('labels.registry') }}</el-col>
       <el-select
         class="selectRegistry"
         :value="value.selectedIds"
@@ -24,7 +24,7 @@
         </el-option>
       </el-select>
 
-      <el-col :span="6">デフォルト</el-col>
+      <el-col :span="6">{{ $t('common.default') }}</el-col>
       <el-select
         class="selectRegistry"
         :value="value.defaultId"

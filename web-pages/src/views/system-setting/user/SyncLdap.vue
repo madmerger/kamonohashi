@@ -1,29 +1,31 @@
 <template>
   <el-dialog
     class="dialog"
-    title="LDAPサーバ同期実行"
+    :title="$t('titles.ldap_sync')"
     :visible.sync="dialogVisible"
     :before-close="emitCancel"
     :close-on-click-modal="false"
   >
     <p>
-      LDAPサーバに問い合わせを行い、全ユーザのテナント所属と権限情報の更新を行います。
+      {{ $t('messages.ldap_sync_description') }}
     </p>
-    <p>同期処理には時間がかかる場合があります。</p>
+    <p>{{ $t('messages.ldap_sync_time_warning') }}</p>
     <el-row class="footer">
       <el-form ref="createForm" :model="form" :rules="rules">
         <kqi-display-error :error="error" />
 
-        <el-form-item label="LDAPユーザID" prop="name">
+        <el-form-item :label="$t('labels.ldap_user_id')" prop="name">
           <el-input v-model="form.name" />
         </el-form-item>
-        <el-form-item label="LDAPパスワード" prop="password">
+        <el-form-item :label="$t('labels.ldap_password')" prop="password">
           <el-input v-model="form.password" type="password" />
         </el-form-item>
       </el-form>
       <el-col :span="24" class="right-button-group">
-        <el-button @click="emitCancel">キャンセル</el-button>
-        <el-button type="primary" @click="syncLdap">同期開始</el-button>
+        <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="syncLdap">{{
+          $t('common.sync_start')
+        }}</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -34,16 +36,16 @@ import KqiDisplayError from '@/components/KqiDisplayError'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('user')
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
 export default {
   components: {
     KqiDisplayError,
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         name: '',
@@ -82,12 +84,11 @@ export default {
       })
     },
     async showConfirm() {
-      let confirmMessage =
-        '同期処理を開始しますか？ユーザ数が多い場合、処理完了までに時間がかかる場合があります。'
+      let confirmMessage = this.$t('messages.ldap_sync_confirm')
       try {
         await this.$confirm(confirmMessage, 'Warning', {
-          confirmButtonText: 'はい',
-          cancelButtonText: 'キャンセル',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         })
         return true

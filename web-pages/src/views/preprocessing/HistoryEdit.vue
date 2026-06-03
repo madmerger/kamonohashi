@@ -1,53 +1,66 @@
 <template>
   <el-dialog
     class="dialog"
-    title="前処理履歴詳細"
+    :title="$t('titles.preprocessing_history_detail')"
     :visible="dialogVisible"
     :before-close="handleCancel"
     :close-on-click-modal="false"
   >
     <el-form ref="editForm">
       <kqi-display-error :error="error" />
-      <kqi-display-text-form label="前処理履歴ID" :value="preprocessingId" />
       <kqi-display-text-form
-        label="データID"
+        :label="$t('labels.preprocessing_history_id')"
+        :value="preprocessingId"
+      />
+      <kqi-display-text-form
+        :label="$t('labels.data_id')"
         :value="String(historyDetail.dataId)"
       />
-      <kqi-display-text-form label="データ名" :value="historyDetail.dataName" />
       <kqi-display-text-form
-        label="前処理名"
+        :label="$t('labels.data_name')"
+        :value="historyDetail.dataName"
+      />
+      <kqi-display-text-form
+        :label="$t('labels.preprocessing_name')"
         :value="historyDetail.preprocessName"
       />
       <kqi-display-text-form
-        label="実行日時"
+        :label="$t('labels.execution_time_at')"
         :value="historyDetail.createdAt"
       />
-      <el-form-item label="前処理ログ">
+      <el-form-item :label="$t('labels.preprocessing_log')">
         <br />
         <kqi-download-button
           :download-url="logFile.url"
           :file-name="logFile.fileName"
         />
-        <el-button size="mini" @click="emitLog">閲覧</el-button>
+        <el-button size="mini" @click="emitLog">{{
+          $t('common.view')
+        }}</el-button>
       </el-form-item>
-      <kqi-display-text-form label="ステータス" :value="historyDetail.status" />
+      <kqi-display-text-form
+        :label="$t('labels.status')"
+        :value="historyDetail.status"
+      />
       <div v-if="historyDetail.status === 'Running'">
-        <el-form-item label="操作">
+        <el-form-item :label="$t('labels.operation')">
           <div class="el-input">
-            <el-button @click="emitShell">Shell起動</el-button>
+            <el-button @click="emitShell">{{
+              $t('messages.shell_launch')
+            }}</el-button>
           </div>
         </el-form-item>
       </div>
       <div v-if="historyEvents.length">
         <el-collapse accordion>
-          <el-collapse-item title="ステータス詳細ログ">
+          <el-collapse-item :title="$t('titles.status_detail_log')">
             <div v-for="(event, index) in historyEvents" :key="index">
               <div v-if="event.isError">message:{{ event.message }}</div>
             </div>
           </el-collapse-item>
         </el-collapse>
       </div>
-      <el-form-item v-if="outputDataIds" label="出力データID">
+      <el-form-item v-if="outputDataIds" :label="$t('labels.output_data_id')">
         <div class="outputDataIds">
           <div v-if="outputDataIds.length >= 11">
             <el-button type="primary" @click="viewDataIds = !viewDataIds">
@@ -81,11 +94,11 @@
             icon="el-icon-close"
             @click="handleCancel"
           >
-            閉じる
+            {{ $t('common.close') }}
           </el-button>
           <kqi-delete-button
             class="pull-left btn-update"
-            message="削除しますか（出力データ数が多い場合、処理に時間がかかります）"
+            :message="$t('messages.delete_confirm_output')"
             @delete="handleRemove"
           />
         </el-col>

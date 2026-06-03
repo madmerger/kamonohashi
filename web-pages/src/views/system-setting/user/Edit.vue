@@ -2,7 +2,7 @@
   <kqi-dialog
     :title="title"
     :type="isCreateDialog ? 'CREATE' : 'EDIT'"
-    submit-text="作成"
+    :submit-text="$t('common.create')"
     :delete-button-params="deleteButtonParams"
     @submit="submit"
     @delete="deleteUser"
@@ -12,38 +12,55 @@
       <kqi-display-error :error="error" />
 
       <span v-if="form.serviceType === 1">
-        <el-form-item v-if="isCreateDialog" label="ユーザ名" prop="name">
+        <el-form-item
+          v-if="isCreateDialog"
+          :label="$t('labels.user_name')"
+          prop="name"
+        >
           <el-input v-model="form.name" />
         </el-form-item>
-        <kqi-display-text-form v-else label="ユーザ名" :value="form.name" />
-        <el-form-item label="ユーザ表示名" prop="displayName">
+        <kqi-display-text-form
+          v-else
+          :label="$t('labels.user_name')"
+          :value="form.name"
+        />
+        <el-form-item
+          :label="$t('labels.user_display_name')"
+          prop="displayName"
+        >
           <el-input v-model="form.displayName" />
         </el-form-item>
         <kqi-display-text-form
           v-if="id !== null"
-          label="認証タイプ"
+          :label="$t('labels.auth_type')"
           :value="form.displayServiceType"
         />
         <el-form-item :label="passwordLabel" prop="password">
           <el-input v-model="form.password[0]" type="password" />
-          パスワード（再入力）
+          {{ $t('labels.password_reenter') }}
           <br />
           <el-input v-model="form.password[1]" type="password" />
         </el-form-item>
       </span>
       <span v-else-if="form.serviceType === 2">
-        <kqi-display-text-form label="ユーザ名" :value="form.name" />
-        <kqi-display-text-form label="ユーザ表示名" :value="form.displayName" />
         <kqi-display-text-form
-          label="認証タイプ"
+          :label="$t('labels.user_name')"
+          :value="form.name"
+        />
+        <kqi-display-text-form
+          :label="$t('labels.user_display_name')"
+          :value="form.displayName"
+        />
+        <kqi-display-text-form
+          :label="$t('labels.auth_type')"
           :value="form.displayServiceType"
         />
       </span>
       <span v-else>
-        認証タイプ：不明
+        {{ $t('messages.auth_type_unknown') }}
       </span>
 
-      <el-form-item label="システムロール" prop="roleIds">
+      <el-form-item :label="$t('labels.system_role')" prop="roleIds">
         <kqi-role-selector
           v-model="form.selectedSystemRoleIds"
           :roles="roles"
@@ -71,12 +88,6 @@ import KqiRoleSelector from '@/components/selector/KqiRoleSelector'
 import TenantRoleSelector from '@/views/system-setting/user/TenantRoleSelector'
 import { mapGetters, mapActions } from 'vuex'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: '必須項目です',
-}
-
 export default {
   components: {
     KqiDialog,
@@ -92,27 +103,32 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     let passwordValidator = (rule, value, callback) => {
       // 作成時はパスワード入力必須
       if (this.isCreateDialog && !value[0] && !value[1]) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required_field')))
       }
       // 編集時に両方空の場合は、パスワードは未編集とみなして続行
       if (this.isEditDialog && !value[0] && !value[1]) {
         callback()
       }
       if (!(value[0] === value[1])) {
-        callback(new Error('同一のパスワードを入力してください'))
+        callback(new Error(this.$t('messages.enter_same_password')))
       }
       callback()
     }
     let tenantsValidator = (rule, value, callback) => {
       if (this.form.tenants.selectedTenantIds.length === 0) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required_field')))
       } else {
         this.form.tenants.selectedTenants.forEach(tenant => {
           if (tenant.selectedRoleIds.length === 0) {
-            callback(new Error('ロールが選択されていないテナントがあります'))
+            callback(new Error(this.$t('messages.role_not_selected')))
           }
         })
       }
@@ -168,11 +184,11 @@ export default {
     await this['role/fetchRoles']()
     await this['tenant/fetchTenants']()
     if (this.isCreateDialog) {
-      this.title = 'ユーザ作成'
-      this.passwordLabel = 'パスワード'
+      this.title = this.$t('titles.user_creation')
+      this.passwordLabel = this.$t('labels.password')
     } else {
-      this.title = 'ユーザ編集'
-      this.passwordLabel = 'パスワード（変更する場合のみ入力）'
+      this.title = this.$t('titles.user_edit')
+      this.passwordLabel = this.$t('labels.password_change_only')
       await this['user/fetchDetail'](this.id)
       try {
         this.form.name = this.detail.name
@@ -180,7 +196,7 @@ export default {
         this.form.serviceType = this.detail.serviceType
         this.form.displayServiceType = this.form.serviceType
         if (this.form.serviceType === 1)
-          this.form.displayServiceType = 'ローカル'
+          this.form.displayServiceType = this.$t('common.local')
         if (this.form.serviceType === 2) this.form.displayServiceType = 'LDAP'
         this.detail.systemRoles.forEach(s => {
           this.form.selectedSystemRoleIds.push(s.id)
@@ -226,8 +242,7 @@ export default {
         this.form.error = null
         this.deleteButtonParams = {
           isDanger: true,
-          warningText:
-            'ユーザを削除すると、紐づいているテナントからユーザ情報が失われます。処理を続けるにはユーザ名を入力してください。',
+          warningText: this.$t('messages.user_delete_confirm'),
           confirmText: this.form.name,
         }
       } catch (e) {

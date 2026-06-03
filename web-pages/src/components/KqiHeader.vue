@@ -47,7 +47,7 @@ title
             </el-dropdown-item>
             <hr />
             <el-dropdown-item key="@setting" command="@setting">
-              ユーザ情報設定
+              {{ $t('common.user_settings') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -57,8 +57,23 @@ title
           class="user-label"
           @click="handleLogout"
         >
-          ログアウト
+          {{ $t('common.logout') }}
         </el-button>
+        <el-dropdown
+          trigger="click"
+          class="lang-switcher"
+          @command="handleSwitchLocale"
+        >
+          <span class="el-dropdown-link user-label">
+            {{ currentLocaleLabel }}
+            <i class="el-icon-caret-bottom" />
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="ja">日本語</el-dropdown-item>
+            <el-dropdown-item command="en">English</el-dropdown-item>
+            <el-dropdown-item command="es">Español</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-col>
     </el-row>
   </div>
@@ -72,9 +87,17 @@ export default {
   name: 'Header',
   computed: {
     ...mapGetters(['account', 'isLogined']),
+    currentLocaleLabel() {
+      const labels = { ja: '日本語', en: 'English', es: 'Español' }
+      return labels[this.$i18n.locale] || '日本語'
+    },
   },
   methods: {
     ...mapActions(['switchTenant', 'logout']),
+    handleSwitchLocale(locale) {
+      this.$i18n.locale = locale
+      localStorage.setItem('kamonohashi-locale', locale)
+    },
     omitIfLong(str) {
       return str.length <= 25 ? str : str.substr(0, 25) + '...'
     },
@@ -174,5 +197,10 @@ export default {
   &:focus {
     color: white;
   }
+}
+
+.lang-switcher {
+  margin-left: 15px;
+  cursor: pointer;
 }
 </style>

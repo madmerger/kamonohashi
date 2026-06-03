@@ -1,7 +1,7 @@
 <template>
   <span v-if="Object.keys(dataSet).length !== 0">
     <el-row style="margin-bottom:5px; padding-left:15px; font-size:0.8em;">
-      参考：選択したデータセット【{{ dataSet.name }}】のデータパス、データ名一覧
+      {{ $t('messages.dataset_path_info', { name: dataSet.name }) }}
     </el-row>
     <el-row class="data-list">
       <el-col

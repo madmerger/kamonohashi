@@ -8,7 +8,9 @@
   >
     <el-row type="flex" justify="end">
       <el-col :span="24" class="right-button-group">
-        <el-button @click="emitCopyCreate">コピー実行</el-button>
+        <el-button @click="emitCopyCreate">{{
+          $t('common.copy_execution')
+        }}</el-button>
       </el-col>
     </el-row>
 
@@ -33,17 +35,17 @@
               />
             </span>
           </kqi-display-text-form>
-          <el-form-item label="ノートブック名" prop="name">
+          <el-form-item :label="$t('labels.notebook_name')" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
           <div v-if="detail.parents && detail.parents.length > 0">
-            <el-form-item label="マウントした学習">
+            <el-form-item :label="$t('labels.mounted_training')">
               <br />
               <div :class="{ scroll: detail.parents.length > 3 }">
                 <div v-for="parent in detail.parents" :key="parent.id">
                   <el-popover
                     ref="parentDetail"
-                    title="マウントした学習詳細"
+                    :title="$t('titles.mounted_training_detail')"
                     trigger="hover"
                     width="350"
                     placement="right"
@@ -66,13 +68,13 @@
             </el-form-item>
           </div>
           <div v-if="detail.inferences && detail.inferences.length > 0">
-            <el-form-item label="マウントした推論">
+            <el-form-item :label="$t('labels.mounted_inference')">
               <br />
               <div :class="{ scroll: detail.inferences.length > 3 }">
                 <div v-for="inference in detail.inferences" :key="inference.id">
                   <el-popover
                     ref="parentDetail"
-                    title="マウントした推論詳細"
+                    :title="$t('titles.mounted_inference_detail')"
                     trigger="hover"
                     width="350"
                     placement="right"
@@ -95,10 +97,10 @@
             </el-form-item>
           </div>
           <div v-if="detail.dataSet">
-            <el-form-item label="データセット">
+            <el-form-item :label="$t('labels.dataset')">
               <el-popover
                 ref="dataSetDetail"
-                title="データセット詳細"
+                :title="$t('titles.dataset_detail')"
                 trigger="hover"
                 width="350"
                 placement="right"
@@ -117,14 +119,16 @@
                 {{ detail.dataSet.name }}
               </el-button>
             </el-form-item>
-            <el-form-item label="データセット作成方式">
+            <el-form-item :label="$t('labels.dataset_creation_method')">
               <div class="el-input">
-                <span v-if="detail.localDataSet">ローカルコピー</span>
-                <span v-else>シンボリックリンク</span>
+                <span v-if="detail.localDataSet">{{
+                  $t('common.local_copy')
+                }}</span>
+                <span v-else>{{ $t('common.symbolic_link') }}</span>
               </div>
             </el-form-item>
           </div>
-          <el-form-item label="モデル">
+          <el-form-item :label="$t('labels.model')">
             <div class="el-input">
               <span
                 v-if="detail.gitModel && detail.gitModel.url !== null"
@@ -143,11 +147,11 @@
           </el-form-item>
 
           <kqi-display-text-form
-            label="コンテナイメージ"
+            :label="$t('labels.container_image')"
             :value="detail.containerImage ? detail.containerImage.url : ''"
           />
 
-          <el-form-item label="起動時実行コマンド">
+          <el-form-item :label="$t('labels.startup_command')">
             <el-input
               v-model="detail.entryPoint"
               type="textarea"
@@ -156,7 +160,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="環境変数">
+          <el-form-item :label="$t('labels.environment_variable')">
             <br />
             <div
               v-if="detail.options && detail.options.length > 0"
@@ -173,7 +177,7 @@
           </el-form-item>
 
           <kqi-display-text-form
-            label="作成者"
+            :label="$t('labels.author')"
             :value="
               detail
                 ? detail.displayNameCreatedBy
@@ -182,11 +186,20 @@
                 : ''
             "
           />
-          <kqi-display-text-form label="開始日時" :value="detail.startedAt" />
-          <kqi-display-text-form label="完了日時" :value="detail.completedAt" />
-          <kqi-display-text-form label="待機時間" :value="detail.waitingTime" />
           <kqi-display-text-form
-            label="実行時間"
+            :label="$t('labels.started_at')"
+            :value="detail.startedAt"
+          />
+          <kqi-display-text-form
+            :label="$t('labels.completed_at')"
+            :value="detail.completedAt"
+          />
+          <kqi-display-text-form
+            :label="$t('labels.waiting_time')"
+            :value="detail.waitingTime"
+          />
+          <kqi-display-text-form
+            :label="$t('labels.execution_time')"
             :value="detail.executionTime"
           />
         </el-col>
@@ -196,7 +209,7 @@
             :value="detail ? String(detail.cpu) : '0'"
           />
           <kqi-display-text-form
-            label="メモリ(GB)"
+            :label="$t('labels.memory_gb')"
             :value="detail ? String(detail.memory) : '0'"
           />
           <kqi-display-text-form
@@ -206,19 +219,23 @@
           <div v-if="detail">
             <kqi-display-text-form
               v-if="detail.expiresIn !== 0"
-              label="起動期間(h)"
+              :label="$t('labels.startup_period_h')"
               :value="String(detail.expiresIn / 60 / 60)"
             />
-            <kqi-display-text-form v-else label="起動期間" value="無期限" />
+            <kqi-display-text-form
+              v-else
+              :label="$t('labels.startup_period')"
+              :value="$t('common.no_expiration')"
+            />
           </div>
           <kqi-display-text-form
-            label="パーティション"
+            :label="$t('labels.partition')"
             :value="detail.partition"
           />
           <!-- status: スクリプトがこけたときなどに"failed"になる -->
           <!-- statusType: コンテナの生死等 -->
           <kqi-display-text-form
-            label="ステータス"
+            :label="$t('labels.status')"
             :value="
               detail.status === detail.statusType
                 ? detail.status
@@ -230,7 +247,7 @@
           </div>
           <div v-if="events.length" class="k8s-event">
             <el-collapse accordion>
-              <el-collapse-item title="ステータス詳細ログ">
+              <el-collapse-item :title="$t('titles.status_detail_log')">
                 <div v-for="(event, index) in events" :key="index">
                   <div v-if="event.isError">message:{{ event.message }}</div>
                 </div>
@@ -242,17 +259,19 @@
               detail.statusType === 'Running' || detail.statusType === 'Error'
             "
           >
-            <el-form-item label="操作">
+            <el-form-item :label="$t('labels.operation')">
               <div class="el-input">
                 <kqi-delete-button
-                  button-label="ジョブ停止"
-                  message="停止しますか"
+                  :button-label="$t('messages.job_stop')"
+                  :message="$t('messages.stop_confirm')"
                   @delete="haltNotebook"
                 />
               </div>
               <div v-if="detail.status === 'Running'">
                 <div class="el-input" style="padding: 10px 0;">
-                  <el-button @click="emitShell">Shell起動</el-button>
+                  <el-button @click="emitShell">{{
+                    $t('messages.shell_launch')
+                  }}</el-button>
                 </div>
                 <div>
                   <el-button
@@ -260,21 +279,25 @@
                     icon="el-icon-document"
                     @click="openNotebook"
                   >
-                    ノートブックを開く
+                    {{ $t('messages.open_notebook') }}
                   </el-button>
                 </div>
               </div>
             </el-form-item>
           </div>
-          <el-form-item label="コンテナ出力ファイル">
+          <el-form-item :label="$t('labels.container_output_file')">
             <br />
-            <el-button @click="emitFiles">ファイル一覧</el-button>
+            <el-button @click="emitFiles">{{
+              $t('messages.file_list')
+            }}</el-button>
           </el-form-item>
-          <el-form-item label="ログファイル">
+          <el-form-item :label="$t('labels.log_file')">
             <br />
-            <el-button size="mini" @click="emitLog">ログファイル閲覧</el-button>
+            <el-button size="mini" @click="emitLog">{{
+              $t('messages.log_file_view')
+            }}</el-button>
           </el-form-item>
-          <el-form-item label="メモ">
+          <el-form-item :label="$t('labels.memo')">
             <el-input
               v-model="form.memo"
               type="textarea"
@@ -318,7 +341,13 @@ export default {
   data() {
     return {
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [
+          {
+            required: true,
+            trigger: 'blur',
+            message: this.$t('common.required_field'),
+          },
+        ],
       },
       form: {
         name: null,
@@ -333,7 +362,7 @@ export default {
     ...mapGetters(['detail', 'events', 'endpoint']),
   },
   async created() {
-    this.title = 'ノートブック履歴'
+    this.title = this.$t('titles.notebook_history')
     await this.retrieveData()
     this.form.name = this.detail.name
     this.form.favorite = this.detail.favorite

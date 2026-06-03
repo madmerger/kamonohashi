@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ユーザグループ管理</h2>
+    <h2>{{ $t('titles.user_group_management') }}</h2>
     <el-row :gutter="20">
       <el-col class="right-top-button">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規登録
+          {{ $t('common.new_registration') }}
         </el-button>
       </el-col>
     </el-row>
@@ -20,15 +20,23 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="100px" />
-        <el-table-column prop="name" label="ユーザグループ名" width="300px" />
-        <el-table-column prop="isGroup" label="種別" width="150px">
+        <el-table-column
+          prop="name"
+          :label="$t('labels.user_group_name')"
+          width="300px"
+        />
+        <el-table-column
+          prop="isGroup"
+          :label="$t('labels.type')"
+          width="150px"
+        >
           <template slot-scope="scope">
-            <span v-if="scope.row.isGroup">グループ</span>
+            <span v-if="scope.row.isGroup">{{ $t('common.group') }}</span>
             <span v-else>OU</span>
           </template>
         </el-table-column>
         <el-table-column prop="dn" label="DN" width="auto" />
-        <el-table-column prop="memo" label="メモ" width="auto" />
+        <el-table-column prop="memo" :label="$t('labels.memo')" width="auto" />
       </el-table>
     </el-row>
     <router-view @cancel="closeDialog()" @done="done()" />
@@ -39,7 +47,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('userGroup')
 
 export default {
-  title: 'ユーザグループ管理',
+  title() {
+    return this.$t('titles.user_group_management')
+  },
   computed: {
     ...mapGetters(['userGroups']),
   },

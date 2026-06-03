@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ユーザ管理</h2>
+    <h2>{{ $t('titles.user_management') }}</h2>
     <el-row :gutter="20">
       <el-col class="right-top-button">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openSyncLdapDialog"
         >
-          LDAP同期
+          {{ $t('ldap.ldap_sync') }}
         </el-button>
         <el-button
           icon="el-icon-edit-outline"
@@ -17,7 +17,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規作成
+          {{ $t('common.new_creation') }}
         </el-button>
       </el-col>
     </el-row>
@@ -37,7 +37,11 @@
             >
               <el-table-column label="dummy" width="300px" />
               <el-table-column label="dummy" width="150px" />
-              <el-table-column prop="displayName" label="テナント" width="auto">
+              <el-table-column
+                prop="displayName"
+                :label="$t('labels.tenant')"
+                width="auto"
+              >
                 <template slot-scope="scope">
                   <span
                     class="tenant"
@@ -50,7 +54,11 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column prop="roles" label="ロール" width="auto">
+              <el-table-column
+                prop="roles"
+                :label="$t('labels.role')"
+                width="auto"
+              >
                 <template slot-scope="scope">
                   <span v-for="(role, index) in scope.row.roles" :key="index">
                     <el-tag v-if="role.isCustomed" type="info" class="role-tag">
@@ -75,21 +83,27 @@
 
         <el-table-column
           prop="name"
-          label="ユーザ名"
+          :label="$t('labels.user_name')"
           width="200px"
         /><el-table-column
           prop="displayName"
-          label="ユーザ表示名"
+          :label="$t('labels.user_display_name')"
           width="200px"
         />
-        <el-table-column prop="serviceType" label="認証タイプ" width="150px">
+        <el-table-column
+          prop="serviceType"
+          :label="$t('labels.auth_type')"
+          width="150px"
+        >
           <template slot-scope="scope">
-            <span v-if="scope.row.serviceType === 1">ローカル</span>
+            <span v-if="scope.row.serviceType === 1">{{
+              $t('common.local')
+            }}</span>
             <span v-else-if="scope.row.serviceType === 2">LDAP</span>
             <span v-else>{{ serviceType }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="テナント" width="auto">
+        <el-table-column :label="$t('labels.tenant')" width="auto">
           <template slot-scope="scope">
             <div v-if="showTenants[scope.row.id]">
               <span v-for="(t, index) in scope.row.tenants" :key="index">
@@ -106,7 +120,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="systemRoles" label="ロール" width="auto">
+        <el-table-column
+          prop="systemRoles"
+          :label="$t('labels.role')"
+          width="auto"
+        >
           <template slot-scope="scope">
             <span v-for="role in scope.row.systemRoles" :key="role.id">
               <el-tag type="warning" class="role-tag">
@@ -126,7 +144,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('user')
 
 export default {
-  title: 'ユーザ管理',
+  title() {
+    return this.$t('titles.user_management')
+  },
   data() {
     return { showTenants: {} }
   },
