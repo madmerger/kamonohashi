@@ -86,10 +86,14 @@ namespace Nssol.Platypus.Logic
             var failedSteps = refreshedRun.Steps.Where(s => s.Status == "Failed").ToList();
             if (failedSteps.Any())
             {
-                // 失敗ステップがある場合、残りのPendingステップをSkippedにしてRunをFailedに
                 foreach (var step in refreshedRun.Steps.Where(s => s.Status == "Pending"))
                 {
                     step.Status = "Skipped";
+                }
+                foreach (var step in refreshedRun.Steps.Where(s => s.Status == "Running"))
+                {
+                    step.Status = "Cancelled";
+                    step.CompletedAt = DateTime.Now;
                 }
                 refreshedRun.Status = "Failed";
                 refreshedRun.CompletedAt = DateTime.Now;

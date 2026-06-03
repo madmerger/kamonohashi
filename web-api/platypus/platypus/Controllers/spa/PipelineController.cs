@@ -4,6 +4,7 @@ using Nssol.Platypus.ApiModels.PipelineApiModels;
 using Nssol.Platypus.Controllers.Util;
 using Nssol.Platypus.DataAccess.Core;
 using Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories;
+using Nssol.Platypus.Infrastructure;
 using Nssol.Platypus.Logic.Interfaces;
 using Nssol.Platypus.Models.TenantModels;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプライン一覧を取得
         /// </summary>
         [HttpGet]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(IEnumerable<IndexOutputModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAll()
         {
@@ -60,6 +62,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプライン詳細を取得
         /// </summary>
         [HttpGet("{id}")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(DetailsOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetById([FromRoute] long id)
         {
@@ -99,6 +102,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプラインを作成
         /// </summary>
         [HttpPost]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(DetailsOutputModel), (int)HttpStatusCode.Created)]
         public IActionResult Create([FromBody] CreateInputModel model)
         {
@@ -194,6 +198,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプラインを更新
         /// </summary>
         [HttpPut("{id}")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(DetailsOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update([FromRoute] long id, [FromBody] EditInputModel model)
         {
@@ -300,6 +305,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプラインを削除
         /// </summary>
         [HttpDelete("{id}")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete([FromRoute] long id)
         {
@@ -321,6 +327,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプラインを実行
         /// </summary>
         [HttpPost("{id}/runs")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(RunOutputModel), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> Run([FromRoute] long id)
         {
@@ -354,6 +361,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプライン実行一覧を取得
         /// </summary>
         [HttpGet("{id}/runs")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(IEnumerable<RunOutputModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetRuns([FromRoute] long id)
         {
@@ -366,6 +374,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプライン実行詳細を取得
         /// </summary>
         [HttpGet("runs/{runId}")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(RunOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetRunById([FromRoute] long runId)
         {
@@ -381,6 +390,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// パイプライン実行のステップを完了にする（外部連携用）
         /// </summary>
         [HttpPost("runs/{runId}/steps/{stepId}/complete")]
+        [Filters.PermissionFilter(MenuCode.Pipeline)]
         [ProducesResponseType(typeof(RunOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CompleteStep(
             [FromRoute] long runId,
