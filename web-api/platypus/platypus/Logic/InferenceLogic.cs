@@ -18,6 +18,7 @@ namespace Nssol.Platypus.Logic
         private readonly IInferenceHistoryRepository inferenceHistoryRepository;
         private readonly IClusterManagementLogic clusterManagementLogic;
         private readonly ISlackLogic slackLogic;
+        private readonly INotificationLogic notificationLogic;
         private readonly IResourceMonitorLogic resourceMonitorLogic;
         private readonly ITenantRepository tenantRepository;
         private readonly IUnitOfWork unitOfWork;
@@ -26,6 +27,7 @@ namespace Nssol.Platypus.Logic
             IInferenceHistoryRepository inferenceHistoryRepository,
             IClusterManagementLogic clusterManagementLogic,
             ISlackLogic slackLogic,
+            INotificationLogic notificationLogic,
             IResourceMonitorLogic resourceMonitorLogic,
             ITenantRepository tenantRepository,
             IUnitOfWork unitOfWork,
@@ -34,6 +36,7 @@ namespace Nssol.Platypus.Logic
             this.inferenceHistoryRepository = inferenceHistoryRepository;
             this.clusterManagementLogic = clusterManagementLogic;
             this.slackLogic = slackLogic;
+            this.notificationLogic = notificationLogic;
             this.resourceMonitorLogic = resourceMonitorLogic;
             this.tenantRepository = tenantRepository;
             this.unitOfWork = unitOfWork;
@@ -73,8 +76,8 @@ namespace Nssol.Platypus.Logic
                     await clusterManagementLogic.DeleteContainerAsync(
                         ContainerType.Inferencing, inferenceHistory.Key, tenant.Name, force);
 
-                    // 通知処理
-                    slackLogic.InformJobResult(inferenceHistory);
+                    // 通知処理（Slack + Webhook）
+                    notificationLogic.InformJobResult(inferenceHistory);
                 }
             }
             else

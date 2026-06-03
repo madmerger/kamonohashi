@@ -70,6 +70,10 @@
         /// テナント用リソース管理
         /// </summary>
         TenantResource,
+        /// <summary>
+        /// テナント用Webhook設定
+        /// </summary>
+        TenantWebhook,
 
         /// <summary>
         /// テナント管理

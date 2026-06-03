@@ -307,6 +307,9 @@ let api = {
     },
     get: gen.getApiV2Tenant,
     put: gen.putApiV2Tenant,
+    getWebhook: gen.getApiV2TenantWebhook,
+    putWebhook: gen.putApiV2TenantWebhook,
+    postWebhookTest: gen.postApiV2TenantWebhookTest,
   },
 
   user: {

@@ -1,4 +1,5 @@
 import ManageTenant from '@/views/tenant-setting/tenant/Setting'
+import ManageWebhook from '@/views/tenant-setting/webhook/Index'
 import ManageUserIndex from '@/views/tenant-setting/user/Index'
 import ManageUserEdit from '@/views/tenant-setting/user/Edit'
 import ManageResourceIndex from '@/views/tenant-setting/resource/Index'
@@ -10,6 +11,10 @@ export default [
   {
     path: '/manage/tenant',
     component: ManageTenant,
+  },
+  {
+    path: '/manage/webhook',
+    component: ManageWebhook,
   },
   {
     path: '/manage/user',

@@ -11846,3 +11846,65 @@ export const getApiV2VersionURL = function(parameters = {}) {
   let keys = Object.keys(queryParameters)
   return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
 }
+/**
+ * テナントWebhook設定を取得する
+ * request: getApiV2TenantWebhook
+ */
+export const getApiV2TenantWebhook = function(parameters = {}) {
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  const config = parameters.$config
+  let path = '/api/v2/tenant/webhook'
+  let body
+  let queryParameters = {}
+  let form = {}
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    });
+  }
+  return request('get', domain + path, body, queryParameters, form, config)
+}
+/**
+ * テナントWebhook設定を更新する
+ * request: putApiV2TenantWebhook
+ * @param body - Webhook設定モデル
+ */
+export const putApiV2TenantWebhook = function(parameters = {}) {
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  const config = parameters.$config
+  let path = '/api/v2/tenant/webhook'
+  let body
+  let queryParameters = {}
+  let form = {}
+  if (parameters['body'] !== undefined) {
+    body = parameters['body']
+  }
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    });
+  }
+  return request('put', domain + path, body, queryParameters, form, config)
+}
+/**
+ * テナントWebhookテスト通知を送信する
+ * request: postApiV2TenantWebhookTest
+ * @param body - Webhook設定モデル
+ */
+export const postApiV2TenantWebhookTest = function(parameters = {}) {
+  const domain = parameters.$domain ? parameters.$domain : getDomain()
+  const config = parameters.$config
+  let path = '/api/v2/tenant/webhook/test'
+  let body
+  let queryParameters = {}
+  let form = {}
+  if (parameters['body'] !== undefined) {
+    body = parameters['body']
+  }
+  if (parameters.$queryParameters) {
+    Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
+      queryParameters[parameterName] = parameters.$queryParameters[parameterName]
+    });
+  }
+  return request('post', domain + path, body, queryParameters, form, config)
+}

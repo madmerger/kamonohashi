@@ -49,6 +49,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IGitLogic gitLogic;
         private readonly IClusterManagementLogic clusterManagementLogic;
         private readonly ISlackLogic slackLogic;
+        private readonly INotificationLogic notificationLogic;
         private readonly ContainerManageOptions containerOptions;
         private readonly IUnitOfWork unitOfWork;
 
@@ -72,6 +73,7 @@ namespace Nssol.Platypus.Controllers.spa
             IGitLogic gitLogic,
             IClusterManagementLogic clusterManagementLogic,
             ISlackLogic slackLogic,
+            INotificationLogic notificationLogic,
             IOptions<ContainerManageOptions> containerOptions,
             IUnitOfWork unitOfWork,
             IHttpContextAccessor accessor) : base(accessor)
@@ -92,6 +94,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.gitLogic = gitLogic;
             this.clusterManagementLogic = clusterManagementLogic;
             this.slackLogic = slackLogic;
+            this.notificationLogic = notificationLogic;
             this.containerOptions = containerOptions.Value;
             this.unitOfWork = unitOfWork;
         }
@@ -1265,6 +1268,7 @@ namespace Nssol.Platypus.Controllers.spa
                 ModelState,
                 storageLogic,
                 slackLogic,
+                notificationLogic,
                 inferenceHistoryRepository,
                 tensorBoardContainerRepository,
                 tagRepository,
@@ -1284,6 +1288,7 @@ namespace Nssol.Platypus.Controllers.spa
             ModelStateDictionary modelState,
             IStorageLogic storageLogic,
             ISlackLogic slackLogic,
+            INotificationLogic notificationLogic,
             IInferenceHistoryRepository inferenceHistoryRepository,
             ITensorBoardContainerRepository tensorBoardContainerRepository,
             ITagRepository tagRepository,
@@ -1340,8 +1345,8 @@ namespace Nssol.Platypus.Controllers.spa
                 await clusterManagementLogic.DeleteContainerAsync(
                     ContainerType.Training, trainingHistory.Key, tenant.Name, false);
 
-                // 通知処理
-                slackLogic.InformJobResult(trainingHistory);
+                // 通知処理（Slack + Webhook）
+                notificationLogic.InformJobResult(trainingHistory);
             }
 
             //TensorBoardを起動中だった場合は、そっちも消す
