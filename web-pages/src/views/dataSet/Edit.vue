@@ -152,7 +152,7 @@ export default {
               if (exists || this.that.form.isFlat) {
                 callback()
               } else {
-                callback(new Error(this.$t('common.required')))
+                callback(new Error(this.that.$t('common.required')))
               }
             },
           },
@@ -170,7 +170,7 @@ export default {
               if (exists) {
                 callback()
               } else if (this.that.form.isFlat) {
-                callback(new Error(this.$t('common.required')))
+                callback(new Error(this.that.$t('common.required')))
               }
             },
           },
