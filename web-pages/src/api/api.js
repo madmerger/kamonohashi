@@ -343,6 +343,59 @@ let api = {
     get: gen.getApiV2Version,
   },
 
+  // プロジェクト管理API
+  project: {
+    get: params => axios.get('/api/v2/tenant/projects', { params }),
+    getById: params => axios.get(`/api/v2/tenant/projects/${params.id}`),
+    getMine: params => axios.get('/api/v2/tenant/projects/mine', { params }),
+    post: params => axios.post('/api/v2/tenant/projects', params),
+    put: params => axios.put(`/api/v2/tenant/projects/${params.id}`, params),
+    delete: params => axios.delete(`/api/v2/tenant/projects/${params.id}`),
+    getMembers: params =>
+      axios.get(`/api/v2/tenant/projects/${params.id}/members`),
+    postMember: params =>
+      axios.post(`/api/v2/tenant/projects/${params.id}/members`, params),
+    putMember: params =>
+      axios.put(
+        `/api/v2/tenant/projects/${params.id}/members/${params.userId}`,
+        params,
+      ),
+    deleteMember: params =>
+      axios.delete(
+        `/api/v2/tenant/projects/${params.id}/members/${params.userId}`,
+      ),
+    getResources: params =>
+      axios.get(`/api/v2/tenant/projects/${params.id}/resources`),
+    postResource: params =>
+      axios.post(`/api/v2/tenant/projects/${params.id}/resources`, params),
+    deleteResource: params =>
+      axios.delete(
+        `/api/v2/tenant/projects/${params.id}/resources/${params.resourceMapId}`,
+      ),
+  },
+
+  // リソース権限API
+  resourcePermission: {
+    get: params =>
+      axios.get('/api/v2/tenant/resource-permissions', { params }),
+    post: params => axios.post('/api/v2/tenant/resource-permissions', params),
+    delete: params =>
+      axios.delete(`/api/v2/tenant/resource-permissions/${params.id}`, {
+        params,
+      }),
+    check: params =>
+      axios.get('/api/v2/tenant/resource-permissions/check', { params }),
+  },
+
+  // カスタムロールAPI
+  customRole: {
+    get: params => axios.get('/api/v2/tenant/custom-roles', { params }),
+    getById: params => axios.get(`/api/v2/tenant/custom-roles/${params.id}`),
+    post: params => axios.post('/api/v2/tenant/custom-roles', params),
+    put: params => axios.put(`/api/v2/tenant/custom-roles/${params.id}`, params),
+    delete: params => axios.delete(`/api/v2/tenant/custom-roles/${params.id}`),
+  },
+
   // dataを取り出すメソッド
   f: {
     data(response) {

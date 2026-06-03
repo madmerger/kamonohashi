@@ -146,6 +146,11 @@ namespace Nssol.Platypus.DataAccess
         /// </summary>
         public virtual DbSet<UserGroupTenantMap> UserGroupTenantMaps { get; set; }
 
+        /// <summary>
+        /// カスタムロール
+        /// </summary>
+        public virtual DbSet<CustomRole> CustomRoles { get; set; }
+
         #endregion
 
         #region テナント用DbSet
@@ -268,6 +273,26 @@ namespace Nssol.Platypus.DataAccess
         /// </summary>
         public virtual DbSet<Models.TenantModels.Aquarium.DataSetVersion> AquariumDatasetVersions { get; set; }
 
+        /// <summary>
+        /// プロジェクト
+        /// </summary>
+        public virtual DbSet<Models.TenantModels.Project> Projects { get; set; }
+
+        /// <summary>
+        /// プロジェクトメンバー
+        /// </summary>
+        public virtual DbSet<Models.TenantModels.ProjectMember> ProjectMembers { get; set; }
+
+        /// <summary>
+        /// プロジェクトリソースマッピング
+        /// </summary>
+        public virtual DbSet<Models.TenantModels.ProjectResourceMap> ProjectResourceMaps { get; set; }
+
+        /// <summary>
+        /// リソース権限
+        /// </summary>
+        public virtual DbSet<Models.TenantModels.ResourcePermission> ResourcePermissions { get; set; }
+
         #endregion
 
         #region View
@@ -354,6 +379,20 @@ namespace Nssol.Platypus.DataAccess
                     .IsUnique();
             modelBuilder.Entity<NotebookHistoryParentInferenceMap>()
                     .HasIndex(e => new { e.TenantId, e.NotebookHistoryId, e.ParentId })
+                    .IsUnique();
+
+            // プロジェクト関連のunique制約
+            modelBuilder.Entity<Models.TenantModels.ProjectMember>()
+                    .HasIndex(e => new { e.TenantId, e.ProjectId, e.UserId })
+                    .IsUnique();
+            modelBuilder.Entity<Models.TenantModels.ProjectResourceMap>()
+                    .HasIndex(e => new { e.TenantId, e.ProjectId, e.ResourceType, e.ResourceId })
+                    .IsUnique();
+            modelBuilder.Entity<Models.TenantModels.ResourcePermission>()
+                    .HasIndex(e => new { e.TenantId, e.ResourceType, e.ResourceId, e.UserId })
+                    .IsUnique();
+            modelBuilder.Entity<CustomRole>()
+                    .HasIndex(e => new { e.TenantId, e.Name })
                     .IsUnique();
 
             // DeleteBehaviorの指定
