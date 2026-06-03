@@ -147,6 +147,12 @@ namespace Nssol.Platypus.Controllers.spa
                 {
                     return JsonBadRequest($"Parameter '{param.Name}' must have Min and Max values.");
                 }
+
+                if ((param.Type?.ToLower() == "int" || param.Type?.ToLower() == "float") &&
+                    param.Min.HasValue && param.Max.HasValue && param.Min.Value >= param.Max.Value)
+                {
+                    return JsonBadRequest($"Parameter '{param.Name}' Min must be less than Max.");
+                }
             }
 
             // グリッドサーチの場合、Stepのバリデーション
@@ -294,10 +300,22 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonNotFound($"HPO Job ID {id} is not found.");
             }
 
+            // ジョブがRunning状態でなければメトリクス報告を拒否
+            if (hpoJob.Status != "Running")
+            {
+                return JsonBadRequest($"HPO Job ID {id} is not in Running state. Current status: {hpoJob.Status}");
+            }
+
             var trial = await hpoTrialRepository.GetByIdAsync(trialId);
             if (trial == null || trial.HpoJobId != id)
             {
                 return JsonNotFound($"Trial ID {trialId} is not found in HPO Job {id}.");
+            }
+
+            // トライアルが有効な状態でなければ拒否
+            if (trial.Status != "Pending" && trial.Status != "Running")
+            {
+                return JsonBadRequest($"Trial ID {trialId} is not in a valid state for metric reporting. Current status: {trial.Status}");
             }
 
             trial.MetricValue = model.MetricValue.Value;
@@ -359,7 +377,7 @@ namespace Nssol.Platypus.Controllers.spa
             var trials = hpoTrialRepository.GetByHpoJobId(hpoJob.Id).ToList();
             var completedCount = trials.Count(t => t.Status == "Completed" || t.Status == "Failed" || t.Status == "Cancelled");
 
-            if (completedCount >= hpoJob.MaxTrials)
+            if (completedCount >= hpoJob.MaxTrials && hpoJob.Status == "Running")
             {
                 await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Completed");
                 hpoJob.CompletedAt = DateTime.Now;
