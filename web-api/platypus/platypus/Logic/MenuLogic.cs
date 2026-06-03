@@ -515,7 +515,7 @@ namespace Nssol.Platypus.Logic
         {
             Name = "Webhook設定",
             Description = "テナントのWebhook通知設定",
-            Code = MenuCode.TenantSetting,
+            Code = MenuCode.TenantWebhook,
             Url = "/manage/webhook",
             ShowTopMenu = false,
             ShowSideMenu = true,

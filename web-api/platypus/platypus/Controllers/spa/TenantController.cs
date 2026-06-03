@@ -578,7 +578,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 接続中のテナントのWebhook設定を取得する
         /// </summary>
         [HttpGet("/api/v{api-version:apiVersion}/tenant/webhook")]
-        [PermissionFilter(MenuCode.TenantSetting)]
+        [PermissionFilter(MenuCode.TenantWebhook)]
         [ProducesResponseType(typeof(WebhookSettingOutputModel), (int)HttpStatusCode.OK)]
         public IActionResult GetWebhookSetting()
         {
@@ -603,16 +603,16 @@ namespace Nssol.Platypus.Controllers.spa
         /// </summary>
         /// <param name="model">Webhook設定モデル</param>
         [HttpPut("/api/v{api-version:apiVersion}/tenant/webhook")]
-        [PermissionFilter(MenuCode.TenantSetting)]
+        [PermissionFilter(MenuCode.TenantWebhook)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public IActionResult EditWebhookSetting([FromBody] WebhookSettingInputModel model)
+        public async Task<IActionResult> EditWebhookSetting([FromBody] WebhookSettingInputModel model)
         {
             if (!ModelState.IsValid)
             {
                 return JsonBadRequest("Invalid inputs.");
             }
 
-            Tenant tenant = tenantRepository.Get(CurrentUserInfo.SelectedTenant.Id);
+            var tenant = await tenantRepository.GetTenantForUpdateAsync(CurrentUserInfo.SelectedTenant.Id);
             if (tenant == null)
             {
                 return JsonNotFound($"Tenant Id {CurrentUserInfo.SelectedTenant.Id} is not found.");
@@ -621,7 +621,7 @@ namespace Nssol.Platypus.Controllers.spa
             tenant.WebhookUrl = model.WebhookUrl;
             tenant.SlackNotificationTemplate = model.SlackNotificationTemplate;
             tenant.WebhookNotificationTemplate = model.WebhookNotificationTemplate;
-            unitOfWork.Commit();
+            tenantRepository.Update(tenant, unitOfWork);
 
             return JsonNoContent();
         }
@@ -631,7 +631,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// </summary>
         /// <param name="model">Webhook設定モデル</param>
         [HttpPost("/api/v{api-version:apiVersion}/tenant/webhook/test")]
-        [PermissionFilter(MenuCode.TenantSetting)]
+        [PermissionFilter(MenuCode.TenantWebhook)]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> SendWebhookTestNotification([FromBody] WebhookSettingInputModel model)
         {
