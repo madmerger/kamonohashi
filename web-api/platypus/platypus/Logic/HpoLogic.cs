@@ -5,6 +5,7 @@ using Nssol.Platypus.Models.TenantModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nssol.Platypus.Logic
@@ -17,7 +18,8 @@ namespace Nssol.Platypus.Logic
         private readonly IHpoJobRepository hpoJobRepository;
         private readonly IHpoTrialRepository hpoTrialRepository;
         private readonly IUnitOfWork unitOfWork;
-        private static readonly Random random = new Random();
+        private static readonly ThreadLocal<Random> random =
+            new ThreadLocal<Random>(() => new Random(Guid.NewGuid().GetHashCode()));
 
         public HpoLogic(
             IHpoJobRepository hpoJobRepository,
@@ -105,18 +107,18 @@ namespace Nssol.Platypus.Logic
                     case "int":
                         int intMin = (int)(param.Min ?? 0);
                         int intMax = (int)(param.Max ?? 100);
-                        parameters[param.Name] = random.Next(intMin, intMax + 1).ToString();
+                        parameters[param.Name] = random.Value.Next(intMin, intMax + 1).ToString();
                         break;
                     case "float":
                         double floatMin = param.Min ?? 0.0;
                         double floatMax = param.Max ?? 1.0;
-                        double value = floatMin + random.NextDouble() * (floatMax - floatMin);
+                        double value = floatMin + random.Value.NextDouble() * (floatMax - floatMin);
                         parameters[param.Name] = value.ToString("G6");
                         break;
                     case "categorical":
                         if (param.Values != null && param.Values.Count > 0)
                         {
-                            parameters[param.Name] = param.Values[random.Next(param.Values.Count)];
+                            parameters[param.Name] = param.Values[random.Value.Next(param.Values.Count)];
                         }
                         break;
                 }
@@ -151,7 +153,7 @@ namespace Nssol.Platypus.Logic
             var parameters = new Dictionary<string, string>();
 
             // Exploitation (70%) vs Exploration (30%)
-            bool exploit = random.NextDouble() < 0.7;
+            bool exploit = random.Value.NextDouble() < 0.7;
 
             foreach (var param in searchSpace)
             {
@@ -167,18 +169,18 @@ namespace Nssol.Platypus.Logic
                         case "int":
                             int intMin = (int)(param.Min ?? 0);
                             int intMax = (int)(param.Max ?? 100);
-                            parameters[param.Name] = random.Next(intMin, intMax + 1).ToString();
+                            parameters[param.Name] = random.Value.Next(intMin, intMax + 1).ToString();
                             break;
                         case "float":
                             double floatMin = param.Min ?? 0.0;
                             double floatMax = param.Max ?? 1.0;
-                            double value = floatMin + random.NextDouble() * (floatMax - floatMin);
+                            double value = floatMin + random.Value.NextDouble() * (floatMax - floatMin);
                             parameters[param.Name] = value.ToString("G6");
                             break;
                         case "categorical":
                             if (param.Values != null && param.Values.Count > 0)
                             {
-                                parameters[param.Name] = param.Values[random.Next(param.Values.Count)];
+                                parameters[param.Name] = param.Values[random.Value.Next(param.Values.Count)];
                             }
                             break;
                     }
@@ -201,7 +203,7 @@ namespace Nssol.Platypus.Logic
                         int intMin = (int)(param.Min ?? 0);
                         int intMax = (int)(param.Max ?? 100);
                         int range = (intMax - intMin) / 5; // 探索範囲の20%
-                        int perturbedInt = intVal + random.Next(-range, range + 1);
+                        int perturbedInt = intVal + random.Value.Next(-range, range + 1);
                         return Math.Max(intMin, Math.Min(intMax, perturbedInt)).ToString();
                     }
                     return bestValue;
@@ -211,7 +213,7 @@ namespace Nssol.Platypus.Logic
                         double floatMin = param.Min ?? 0.0;
                         double floatMax = param.Max ?? 1.0;
                         double floatRange = (floatMax - floatMin) * 0.2; // 探索範囲の20%
-                        double perturbedFloat = floatVal + (random.NextDouble() * 2 - 1) * floatRange;
+                        double perturbedFloat = floatVal + (random.Value.NextDouble() * 2 - 1) * floatRange;
                         return Math.Max(floatMin, Math.Min(floatMax, perturbedFloat)).ToString("G6");
                     }
                     return bestValue;
@@ -219,7 +221,7 @@ namespace Nssol.Platypus.Logic
                     // カテゴリカルの場合はランダムに選択
                     if (param.Values != null && param.Values.Count > 0)
                     {
-                        return param.Values[random.Next(param.Values.Count)];
+                        return param.Values[random.Value.Next(param.Values.Count)];
                     }
                     return bestValue;
                 default:

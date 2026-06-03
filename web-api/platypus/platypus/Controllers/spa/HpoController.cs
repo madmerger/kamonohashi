@@ -49,7 +49,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 全HPOジョブのIDと名前を取得
         /// </summary>
         [HttpGet("simple")]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType(typeof(IEnumerable<HpoSimpleOutputModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllSimple()
         {
@@ -61,7 +61,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 全HPOジョブを取得（ページング対応）
         /// </summary>
         [HttpGet]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType(typeof(IEnumerable<IndexOutputModel>), (int)HttpStatusCode.OK)]
         public IActionResult GetAll([FromQuery] int? perPage, [FromQuery] int page = 1, bool withTotal = false)
         {
@@ -83,7 +83,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 指定されたIDのHPOジョブ詳細を取得
         /// </summary>
         [HttpGet("{id}")]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType(typeof(DetailsOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetById(long id)
         {
@@ -100,7 +100,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 新規HPOジョブを作成して実行開始する
         /// </summary>
         [HttpPost("run")]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType(typeof(IndexOutputModel), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> Create([FromBody] CreateInputModel model)
         {
@@ -199,7 +199,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// HPOジョブを停止する
         /// </summary>
         [HttpPost("{id}/halt")]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType(typeof(IndexOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Halt(long id)
         {
@@ -223,7 +223,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// HPOジョブを削除する
         /// </summary>
         [HttpDelete("{id}")]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(long id)
         {
@@ -257,7 +257,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// トライアルのメトリクスを報告する（学習スクリプトから呼ばれる）
         /// </summary>
         [HttpPut("{id}/trials/{trialId}/metrics")]
-        [Filters.PermissionFilter(MenuCode.Training)]
+        [Filters.PermissionFilter(MenuCode.Hpo)]
         [ProducesResponseType(typeof(TrialOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> ReportMetrics(long id, long trialId, [FromBody] ReportMetricsInputModel model)
         {
@@ -278,7 +278,7 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonNotFound($"Trial ID {trialId} is not found in HPO Job {id}.");
             }
 
-            trial.MetricValue = model.MetricValue;
+            trial.MetricValue = model.MetricValue.Value;
             trial.Status = "Completed";
             trial.CompletedAt = DateTime.Now;
 
@@ -344,6 +344,6 @@ namespace Nssol.Platypus.Controllers.spa
         /// メトリクス値
         /// </summary>
         [System.ComponentModel.DataAnnotations.Required]
-        public double MetricValue { get; set; }
+        public double? MetricValue { get; set; }
     }
 }

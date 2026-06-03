@@ -441,7 +441,7 @@ namespace Nssol.Platypus.Logic
             Description = "ハイパーパラメータ最適化ジョブの管理",
             DescriptionEn = "Managing Hyperparameter Optimization Jobs",
             Category = "pl-training",
-            Code = MenuCode.Training,
+            Code = MenuCode.Hpo,
             Url = "/hpo",
             ShowTopMenu = true,
             ShowSideMenu = true,
