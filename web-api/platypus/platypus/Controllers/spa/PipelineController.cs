@@ -107,6 +107,19 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonBadRequest("Invalid inputs.");
             }
 
+            int nodeCount = model.Nodes?.Count() ?? 0;
+            if (model.Edges != null)
+            {
+                foreach (var edgeInput in model.Edges)
+                {
+                    if (edgeInput.SourceNodeIndex < 0 || edgeInput.SourceNodeIndex >= nodeCount ||
+                        edgeInput.TargetNodeIndex < 0 || edgeInput.TargetNodeIndex >= nodeCount)
+                    {
+                        return JsonBadRequest("Edge node index is out of range.");
+                    }
+                }
+            }
+
             var pipeline = new Pipeline
             {
                 Name = model.Name,
@@ -115,7 +128,6 @@ namespace Nssol.Platypus.Controllers.spa
             pipelineRepository.Add(pipeline);
             unitOfWork.Commit();
 
-            // ノードの追加
             var nodeList = new List<PipelineNode>();
             if (model.Nodes != null)
             {
@@ -136,16 +148,11 @@ namespace Nssol.Platypus.Controllers.spa
                 unitOfWork.Commit();
             }
 
-            // エッジの追加
+            var edgeList = new List<PipelineEdge>();
             if (model.Edges != null)
             {
                 foreach (var edgeInput in model.Edges)
                 {
-                    if (edgeInput.SourceNodeIndex < 0 || edgeInput.SourceNodeIndex >= nodeList.Count ||
-                        edgeInput.TargetNodeIndex < 0 || edgeInput.TargetNodeIndex >= nodeList.Count)
-                    {
-                        return JsonBadRequest("Edge node index is out of range.");
-                    }
                     var edge = new PipelineEdge
                     {
                         PipelineId = pipeline.Id,
@@ -153,6 +160,7 @@ namespace Nssol.Platypus.Controllers.spa
                         TargetNodeId = nodeList[edgeInput.TargetNodeIndex].Id,
                     };
                     pipelineRepository.AddEdge(edge);
+                    edgeList.Add(edge);
                 }
                 unitOfWork.Commit();
             }
@@ -171,10 +179,11 @@ namespace Nssol.Platypus.Controllers.spa
                     PositionY = n.PositionY,
                     JobParams = n.JobParams,
                 }),
-                Edges = model.Edges?.Select((e, i) => new EdgeOutputModel
+                Edges = edgeList.Select(e => new EdgeOutputModel
                 {
-                    SourceNodeId = nodeList[e.SourceNodeIndex].Id,
-                    TargetNodeId = nodeList[e.TargetNodeIndex].Id,
+                    Id = e.Id,
+                    SourceNodeId = e.SourceNodeId,
+                    TargetNodeId = e.TargetNodeId,
                 }),
                 CreatedAt = pipeline.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss"),
                 ModifiedAt = pipeline.ModifiedAt.ToString("yyyy/MM/dd HH:mm:ss"),
@@ -193,6 +202,19 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonBadRequest("Invalid inputs.");
             }
 
+            int nodeCount = model.Nodes?.Count() ?? 0;
+            if (model.Edges != null)
+            {
+                foreach (var edgeInput in model.Edges)
+                {
+                    if (edgeInput.SourceNodeIndex < 0 || edgeInput.SourceNodeIndex >= nodeCount ||
+                        edgeInput.TargetNodeIndex < 0 || edgeInput.TargetNodeIndex >= nodeCount)
+                    {
+                        return JsonBadRequest("Edge node index is out of range.");
+                    }
+                }
+            }
+
             var pipeline = await pipelineRepository.GetByIdWithChildrenAsync(id);
             if (pipeline == null)
             {
@@ -202,7 +224,6 @@ namespace Nssol.Platypus.Controllers.spa
             pipeline.Name = model.Name;
             pipeline.Memo = model.Memo;
 
-            // 既存ノード・エッジを削除して再作成
             pipelineRepository.DeleteEdges(pipeline.Id);
             pipelineRepository.DeleteNodes(pipeline.Id);
             unitOfWork.Commit();
@@ -227,15 +248,11 @@ namespace Nssol.Platypus.Controllers.spa
                 unitOfWork.Commit();
             }
 
+            var edgeList = new List<PipelineEdge>();
             if (model.Edges != null)
             {
                 foreach (var edgeInput in model.Edges)
                 {
-                    if (edgeInput.SourceNodeIndex < 0 || edgeInput.SourceNodeIndex >= nodeList.Count ||
-                        edgeInput.TargetNodeIndex < 0 || edgeInput.TargetNodeIndex >= nodeList.Count)
-                    {
-                        return JsonBadRequest("Edge node index is out of range.");
-                    }
                     var edge = new PipelineEdge
                     {
                         PipelineId = pipeline.Id,
@@ -243,6 +260,7 @@ namespace Nssol.Platypus.Controllers.spa
                         TargetNodeId = nodeList[edgeInput.TargetNodeIndex].Id,
                     };
                     pipelineRepository.AddEdge(edge);
+                    edgeList.Add(edge);
                 }
                 unitOfWork.Commit();
             }
@@ -260,6 +278,12 @@ namespace Nssol.Platypus.Controllers.spa
                     PositionX = n.PositionX,
                     PositionY = n.PositionY,
                     JobParams = n.JobParams,
+                }),
+                Edges = edgeList.Select(e => new EdgeOutputModel
+                {
+                    Id = e.Id,
+                    SourceNodeId = e.SourceNodeId,
+                    TargetNodeId = e.TargetNodeId,
                 }),
                 CreatedAt = pipeline.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss"),
                 ModifiedAt = pipeline.ModifiedAt.ToString("yyyy/MM/dd HH:mm:ss"),
