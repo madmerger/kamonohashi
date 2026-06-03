@@ -297,11 +297,8 @@ namespace Nssol.Platypus.Controllers.spa
             hpoJobRepository.Delete(hpoJob);
             unitOfWork.Commit();
 
-            // ロックのクリーンアップ
-            if (_jobLocks.TryRemove(id, out var removedLock))
-            {
-                removedLock.Dispose();
-            }
+            // ロックのクリーンアップ（Disposeはしない：並行リクエストがまだ参照を保持している可能性がある）
+            _jobLocks.TryRemove(id, out _);
 
             return JsonNoContent();
         }
