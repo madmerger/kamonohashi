@@ -235,8 +235,18 @@ namespace Nssol.Platypus.Controllers.spa
             hpoJobRepository.Add(hpoJob);
             unitOfWork.Commit();
 
-            // 初期トライアルを生成する
-            await GenerateTrialsAsync(hpoJob);
+            // 初期トライアルを生成する（失敗時はジョブをFailedにする）
+            try
+            {
+                await GenerateTrialsAsync(hpoJob);
+            }
+            catch (Exception)
+            {
+                await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Failed");
+                hpoJob.CompletedAt = DateTime.Now;
+                unitOfWork.Commit();
+                return JsonError(HttpStatusCode.InternalServerError, "Failed to generate initial trials. The HPO job has been marked as Failed.");
+            }
 
             var result = await hpoJobRepository.GetIncludeTrialsAsync(hpoJob.Id);
             return JsonCreated(new IndexOutputModel(result));
