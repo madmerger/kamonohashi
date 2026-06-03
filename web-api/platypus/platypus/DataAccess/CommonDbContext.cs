@@ -245,6 +245,27 @@ namespace Nssol.Platypus.DataAccess
         public virtual DbSet<NotebookHistoryParentInferenceMap> NotebookHistoryParentInferenceMaps { get; set; }
 
         /// <summary>
+        /// パイプライン
+        /// </summary>
+        public virtual DbSet<Pipeline> Pipelines { get; set; }
+        /// <summary>
+        /// パイプラインノード
+        /// </summary>
+        public virtual DbSet<PipelineNode> PipelineNodes { get; set; }
+        /// <summary>
+        /// パイプラインエッジ
+        /// </summary>
+        public virtual DbSet<PipelineEdge> PipelineEdges { get; set; }
+        /// <summary>
+        /// パイプライン実行
+        /// </summary>
+        public virtual DbSet<PipelineRun> PipelineRuns { get; set; }
+        /// <summary>
+        /// パイプライン実行ステップ
+        /// </summary>
+        public virtual DbSet<PipelineRunStep> PipelineRunSteps { get; set; }
+
+        /// <summary>
         /// 実験
         /// </summary>
         public virtual DbSet<Experiment> Experiments { get; set; }
@@ -355,6 +376,35 @@ namespace Nssol.Platypus.DataAccess
             modelBuilder.Entity<NotebookHistoryParentInferenceMap>()
                     .HasIndex(e => new { e.TenantId, e.NotebookHistoryId, e.ParentId })
                     .IsUnique();
+
+            // PipelineEdge の SourceNode / TargetNode は同一テーブルへの複数FK
+            modelBuilder.Entity<PipelineEdge>()
+                .HasOne(e => e.SourceNode)
+                .WithMany()
+                .HasForeignKey(e => e.SourceNodeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PipelineEdge>()
+                .HasOne(e => e.TargetNode)
+                .WithMany()
+                .HasForeignKey(e => e.TargetNodeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PipelineRunStep の TrainingHistory / InferenceHistory / PreprocessHistory
+            modelBuilder.Entity<PipelineRunStep>()
+                .HasOne(s => s.TrainingHistory)
+                .WithMany()
+                .HasForeignKey(s => s.TrainingHistoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PipelineRunStep>()
+                .HasOne(s => s.InferenceHistory)
+                .WithMany()
+                .HasForeignKey(s => s.InferenceHistoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PipelineRunStep>()
+                .HasOne(s => s.PreprocessHistory)
+                .WithMany()
+                .HasForeignKey(s => s.PreprocessHistoryId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // DeleteBehaviorの指定
             // モデルのアノテーションで指定できるとベターだが設定方法が不明なので、ここで実装している。

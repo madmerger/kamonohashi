@@ -343,6 +343,27 @@ let api = {
     get: gen.getApiV2Version,
   },
 
+  pipeline: {
+    get: params => axios.get('/api/v2/pipelines', { params }),
+    getById: params => axios.get('/api/v2/pipelines/' + params.id),
+    post: params => axios.post('/api/v2/pipelines', params.body),
+    put: params => axios.put('/api/v2/pipelines/' + params.id, params.body),
+    delete: params => axios.delete('/api/v2/pipelines/' + params.id),
+    postRun: params => axios.post('/api/v2/pipelines/' + params.id + '/runs'),
+    getRuns: params => axios.get('/api/v2/pipelines/' + params.id + '/runs'),
+    getRunById: params => axios.get('/api/v2/pipelines/runs/' + params.runId),
+    completeStep: params =>
+      axios.post(
+        '/api/v2/pipelines/runs/' +
+          params.runId +
+          '/steps/' +
+          params.stepId +
+          '/complete',
+        null,
+        { params: { status: params.status } },
+      ),
+  },
+
   // dataを取り出すメソッド
   f: {
     data(response) {

@@ -132,5 +132,9 @@
         /// アクアリウムデータセット
         /// </summary>
         AquariumDataSet,
+        /// <summary>
+        /// パイプライン管理
+        /// </summary>
+        Pipeline,
     }
 }

@@ -21,6 +21,7 @@ import tenant from './modules/tenant'
 import training from './modules/training'
 import user from './modules/user'
 import userGroup from './modules/userGroup'
+import pipeline from './modules/pipeline'
 import version from './modules/version'
 
 Vue.use(Vuex)
@@ -47,6 +48,7 @@ export default new Vuex.Store({
     training,
     user,
     userGroup,
+    pipeline,
     version,
   },
   state: {
