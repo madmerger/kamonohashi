@@ -60,9 +60,17 @@ namespace Nssol.Platypus.DataAccess.Repositories.TenantRepositories
             return await context.PipelineRuns
                 .Include(r => r.Steps)
                     .ThenInclude(s => s.PipelineNode)
+                .Include(r => r.Pipeline)
                 .Where(r => r.TenantId == CurrentTenantId && r.PipelineId == pipelineId)
                 .OrderByDescending(r => r.Id)
                 .ToListAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> HasRunsAsync(long pipelineId)
+        {
+            return await context.PipelineRuns
+                .AnyAsync(r => r.TenantId == CurrentTenantId && r.PipelineId == pipelineId);
         }
 
         /// <inheritdoc/>

@@ -51,6 +51,11 @@ namespace Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories
         void AddRunStep(PipelineRunStep step);
 
         /// <summary>
+        /// 指定パイプラインに実行履歴があるか確認
+        /// </summary>
+        Task<bool> HasRunsAsync(long pipelineId);
+
+        /// <summary>
         /// 指定パイプラインのノードを全削除
         /// </summary>
         void DeleteNodes(long pipelineId);

@@ -221,6 +221,12 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonNotFound($"Pipeline ID {id} is not found.");
             }
 
+            var hasRuns = await pipelineRepository.HasRunsAsync(id);
+            if (hasRuns)
+            {
+                return JsonBadRequest("Cannot modify pipeline structure while execution history exists. Delete runs first.");
+            }
+
             pipeline.Name = model.Name;
             pipeline.Memo = model.Memo;
 
@@ -381,6 +387,11 @@ namespace Nssol.Platypus.Controllers.spa
             [FromRoute] long stepId,
             [FromQuery] string status = "Completed")
         {
+            if (status != "Completed" && status != "Failed")
+            {
+                return JsonBadRequest("Status must be 'Completed' or 'Failed'.");
+            }
+
             var run = await pipelineRepository.GetRunByIdAsync(runId);
             if (run == null)
             {

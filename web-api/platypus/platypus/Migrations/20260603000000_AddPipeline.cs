@@ -180,7 +180,7 @@ namespace Nssol.Platypus.Migrations
                         column: x => x.PipelineNodeId,
                         principalTable: "PipelineNodes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PipelineRunSteps_PipelineRuns_PipelineRunId",
                         column: x => x.PipelineRunId,
