@@ -632,7 +632,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// <param name="model">Webhook設定モデル</param>
         [HttpPost("/api/v{api-version:apiVersion}/tenant/webhook/test")]
         [PermissionFilter(MenuCode.TenantWebhook)]
-        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Result<string, string>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> SendWebhookTestNotification([FromBody] WebhookSettingInputModel model)
         {
             var result = await notificationLogic.InformWebhookTest(model.WebhookUrl);

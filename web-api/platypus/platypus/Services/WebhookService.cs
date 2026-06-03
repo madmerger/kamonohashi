@@ -25,29 +25,29 @@ namespace Nssol.Platypus.Services
         /// <param name="model">Webhook送信モデル</param>
         public async void SendWebhookAsync(WebhookSendModel model)
         {
-            string body;
-            if (!string.IsNullOrEmpty(model.CustomTemplate))
-            {
-                body = ReplaceTemplatePlaceholders(model.CustomTemplate, model);
-            }
-            else
-            {
-                body = await RenderEngine.CompileRenderAsync("webhook_notification.json", new
-                {
-                    Event = model.Event,
-                    Id = model.Id,
-                    Name = model.Name,
-                    TenantName = model.Tenant?.DisplayName,
-                    CreatedBy = model.CreatedBy,
-                    Status = model.Status,
-                    Url = model.Url,
-                    JobType = model.JobType,
-                    Message = model.Message
-                });
-            }
-
             try
             {
+                string body;
+                if (!string.IsNullOrEmpty(model.CustomTemplate))
+                {
+                    body = ReplaceTemplatePlaceholders(model.CustomTemplate, model);
+                }
+                else
+                {
+                    body = await RenderEngine.CompileRenderAsync("webhook_notification.json", new
+                    {
+                        Event = model.Event,
+                        Id = model.Id,
+                        Name = model.Name,
+                        TenantName = model.Tenant?.DisplayName,
+                        CreatedBy = model.CreatedBy,
+                        Status = model.Status,
+                        Url = model.Url,
+                        JobType = model.JobType,
+                        Message = model.Message
+                    });
+                }
+
                 var uri = new Uri(model.WebhookUrl);
                 var response = await SendPostRequestAsync(new RequestParam()
                 {
@@ -60,17 +60,9 @@ namespace Nssol.Platypus.Services
                     LogWarning("Webhookメッセージ送信に失敗: " + response.Error);
                 }
             }
-            catch (InvalidOperationException)
+            catch (Exception ex)
             {
-                LogWarning("Webhookメッセージ送信に失敗: URLに誤りがあります");
-            }
-            catch (HttpRequestException)
-            {
-                LogWarning("Webhookメッセージ送信に失敗: URLに誤りがあります");
-            }
-            catch (UriFormatException)
-            {
-                LogWarning("Webhookメッセージ送信に失敗: URL形式が不正です");
+                LogWarning("Webhookメッセージ送信に失敗: " + ex.Message);
             }
         }
 
