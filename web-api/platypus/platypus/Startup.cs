@@ -144,7 +144,15 @@ namespace Nssol.Platypus
             services.AddTransient<IUserGroupLogic, UserGroupLogic>();
 
             // ServiceのDI設定
-            services.AddTransient<IClusterManagementService, KubernetesService>();
+            var containerMode = Configuration.GetSection("ContainerManageOptions")["Mode"];
+            if (string.Equals(containerMode, "Docker", System.StringComparison.OrdinalIgnoreCase))
+            {
+                services.AddTransient<IClusterManagementService, DockerService>();
+            }
+            else
+            {
+                services.AddTransient<IClusterManagementService, KubernetesService>();
+            }
             services.AddTransient<IObjectStorageService, ObjectStorageS3Service>();
             services.AddTransient<IVersionService, VersionService>();
             services.AddTransient<ISlackService, SlackService>();

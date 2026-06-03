@@ -12,6 +12,26 @@ namespace Nssol.Platypus.Infrastructure.Options
     public class ContainerManageOptions
     {
         /// <summary>
+        /// コンテナ管理モード ("Kubernetes" or "Docker")
+        /// </summary>
+        public string Mode { get; set; }
+
+        /// <summary>
+        /// Dockerモードかどうかを判定する
+        /// </summary>
+        public bool IsDockerMode => string.Equals(Mode, "Docker", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Dockerデーモンの接続先URI (例: "unix:///var/run/docker.sock" or "npipe://./pipe/docker_engine")
+        /// </summary>
+        public string DockerEndpoint { get; set; }
+
+        /// <summary>
+        /// NFSマウントの代替となるローカルベースパス
+        /// </summary>
+        public string LocalStorageBasePath { get; set; }
+
+        /// <summary>
         /// コンテナ管理サービス(e.g. k8s)のベースURL
         /// </summary>
         public string ContainerServiceBaseUrl
@@ -58,11 +78,23 @@ namespace Nssol.Platypus.Infrastructure.Options
         {
             get
             {
+                // Dockerモードではk8sトークン不要
+                if (string.Equals(Mode, "Docker", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "local-docker-token";
+                }
                 // 開発環境は環境変数からtoken取得。本番はk8sの用意するファイルから読む
                 string k8sApiKeyOfEnv = Environment.GetEnvironmentVariable("ContainerManageOptions__ResourceManageKey");
                 if (string.IsNullOrEmpty(k8sApiKeyOfEnv))
                 {
-                    return File.ReadAllText(@"/var/run/secrets/kubernetes.io/serviceaccount/token");
+                    try
+                    {
+                        return File.ReadAllText(@"/var/run/secrets/kubernetes.io/serviceaccount/token");
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
                 else
                 {

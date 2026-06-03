@@ -71,6 +71,10 @@ namespace Nssol.Platypus.Logic
         /// </summary>
         private async Task<string> GetTokenAsync(bool force)
         {
+            if (containerOptions.IsDockerMode)
+            {
+                return "local-docker-token";
+            }
             if (force)
             {
                 return containerOptions.ResourceManageKey;
@@ -1619,6 +1623,10 @@ namespace Nssol.Platypus.Logic
         /// </summary>
         public async Task<string> GetUserAccessTokenAsync()
         {
+            if (containerOptions.IsDockerMode)
+            {
+                return "local-docker-token";
+            }
             string token = userRepository.GetClusterToken(CurrentUserInfo.Id, CurrentUserInfo.SelectedTenant.Id);
 
             if (token == null)
