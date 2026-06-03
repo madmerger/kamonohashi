@@ -7,6 +7,7 @@ using Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories;
 using Nssol.Platypus.Filters;
 using Nssol.Platypus.Infrastructure;
 using Nssol.Platypus.Models.TenantModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -189,6 +190,10 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return JsonBadRequest("Invalid inputs.");
             }
+            if (!Enum.IsDefined(typeof(ProjectRoleType), model.RoleType))
+            {
+                return JsonBadRequest("Invalid RoleType value.");
+            }
 
             var project = await projectRepository.GetByIdAsync(id);
             if (project == null)
@@ -224,6 +229,11 @@ namespace Nssol.Platypus.Controllers.spa
         [ProducesResponseType(typeof(MemberOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateMember(long id, long userId, [FromBody] MemberInputModel model)
         {
+            if (!Enum.IsDefined(typeof(ProjectRoleType), model.RoleType))
+            {
+                return JsonBadRequest("Invalid RoleType value.");
+            }
+
             var member = await projectRepository.GetMemberAsync(id, userId);
             if (member == null)
             {

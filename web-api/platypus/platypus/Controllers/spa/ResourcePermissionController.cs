@@ -59,6 +59,14 @@ namespace Nssol.Platypus.Controllers.spa
             {
                 return JsonBadRequest("Invalid inputs.");
             }
+            if (!Enum.IsDefined(typeof(ResourceType2), model.ResourceType))
+            {
+                return JsonBadRequest("Invalid ResourceType value.");
+            }
+            if (!Enum.IsDefined(typeof(ProjectRoleType), model.AccessLevel))
+            {
+                return JsonBadRequest("Invalid AccessLevel value.");
+            }
 
             var permission = new ResourcePermission
             {
