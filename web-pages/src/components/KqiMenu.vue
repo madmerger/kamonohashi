@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sidebar-wrapper">
     <el-menu
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
@@ -49,7 +49,7 @@
     </el-menu>
 
     <!--スクロール調整-->
-    <div style="background-color: transparent; height: 200px; width: 1px;" />
+    <div style="height: 60px; width: 1px;" />
   </div>
 </template>
 
@@ -118,8 +118,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$sidebar-bg: #1e293b;
+$sidebar-text: #cbd5e1;
+$primary: #6366f1;
+
+.sidebar-wrapper {
+  background-color: $sidebar-bg;
+}
+
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 240px;
   min-height: 50px;
 }
 
@@ -142,19 +150,22 @@ export default {
 }
 
 .el-menu-item.is-active {
-  background-color: transparent;
-  color: #409eff;
-  border-left: 5px solid #409eff;
+  background-color: rgba(79, 70, 229, 0.15) !important;
+  color: #a5b4fc !important;
+  border-left: 3px solid $primary;
+  border-radius: 0;
 }
 
 .el-icon-info {
   margin-right: 10px;
+  color: $sidebar-text;
 }
 
 .icon {
-  color: #666666;
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+  color: $sidebar-text;
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 </style>
