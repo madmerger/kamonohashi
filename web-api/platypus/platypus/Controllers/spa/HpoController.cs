@@ -273,9 +273,6 @@ namespace Nssol.Platypus.Controllers.spa
                 jobLock.Release();
             }
 
-            // ロックのクリーンアップ
-            _jobLocks.TryRemove(id, out _);
-
             return JsonOK(new IndexOutputModel(hpoJob));
         }
 
@@ -309,9 +306,6 @@ namespace Nssol.Platypus.Controllers.spa
 
             hpoJobRepository.Delete(hpoJob);
             unitOfWork.Commit();
-
-            // ロックのクリーンアップ（Disposeはしない：並行リクエストがまだ参照を保持している可能性がある）
-            _jobLocks.TryRemove(id, out _);
 
             return JsonNoContent();
         }
@@ -411,7 +405,6 @@ namespace Nssol.Platypus.Controllers.spa
         {
             var jobLock = _jobLocks.GetOrAdd(hpoJob.Id, _ => new SemaphoreSlim(1, 1));
             await jobLock.WaitAsync();
-            bool shouldRemoveLock = false;
             try
             {
                 // DBから最新のステータスを取得（別リクエストでHaltされた可能性がある）
@@ -429,7 +422,6 @@ namespace Nssol.Platypus.Controllers.spa
                     await hpoJobRepository.UpdateStatusAsync(hpoJob.Id, "Completed");
                     hpoJob.CompletedAt = DateTime.Now;
                     unitOfWork.Commit();
-                    shouldRemoveLock = true;
                 }
                 else if (hpoJob.Algorithm.ToLower() == "bayes")
                 {
@@ -457,10 +449,7 @@ namespace Nssol.Platypus.Controllers.spa
                 jobLock.Release();
             }
 
-            if (shouldRemoveLock)
-            {
-                _jobLocks.TryRemove(hpoJob.Id, out _);
-            }
+
         }
     }
 

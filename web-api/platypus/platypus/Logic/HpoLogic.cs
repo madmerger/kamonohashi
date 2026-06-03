@@ -219,7 +219,8 @@ namespace Nssol.Platypus.Logic
                     {
                         int intMin = (int)(param.Min ?? 0);
                         int intMax = (int)(param.Max ?? 100);
-                        int range = Math.Max(1, (intMax - intMin) / 5); // 探索範囲の20%、最低1
+                        long rangeLong = (long)intMax - (long)intMin;
+                        int range = Math.Max(1, (int)Math.Min(rangeLong / 5, int.MaxValue));
                         int perturbedInt = intVal + random.Value.Next(-range, range + 1);
                         return Math.Max(intMin, Math.Min(intMax, perturbedInt)).ToString();
                     }
@@ -258,7 +259,8 @@ namespace Nssol.Platypus.Logic
                     int intMax = (int)(param.Max ?? 10);
                     int intStep = (int)(param.Step ?? 1);
                     if (intStep <= 0) intStep = 1;
-                    return ((intMax - intMin) / intStep) + 1;
+                    long intRange = (long)intMax - (long)intMin;
+                    return (int)Math.Min(intRange / intStep + 1, int.MaxValue);
                 case "float":
                     double floatMin = param.Min ?? 0.0;
                     double floatMax = param.Max ?? 1.0;
