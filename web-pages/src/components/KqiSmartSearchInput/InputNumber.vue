@@ -45,8 +45,16 @@ export default {
         { name: this.$t('common.equals'), detail: '= equals', symbol: '=' },
         { name: this.$t('common.gte'), detail: '', symbol: '>=' },
         { name: this.$t('common.lte'), detail: '', symbol: '<=' },
-        { name: this.$t('common.gt'), detail: '超過', symbol: '>' },
-        { name: this.$t('common.lt'), detail: '未満', symbol: '<' },
+        {
+          name: this.$t('common.gt'),
+          detail: this.$t('common.gt_detail'),
+          symbol: '>',
+        },
+        {
+          name: this.$t('common.lt'),
+          detail: this.$t('common.lt_detail'),
+          symbol: '<',
+        },
       ],
     }
   },

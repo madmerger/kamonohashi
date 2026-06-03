@@ -7,7 +7,7 @@
       <el-col align="right">
         <el-popover
           ref="allocatableNodeInfo"
-          :title="$t('messages.node_info')"
+          :title="$t('titles.node_info')"
           trigger="hover"
         >
           <kqi-allocatable-node-info :allocatable-nodes="nodes" />
@@ -19,7 +19,7 @@
           plain
           size="mini"
         >
-          {{ $t('messages.node_info') }}
+          {{ $t('titles.node_info') }}
         </el-button>
       </el-col>
     </el-row>
