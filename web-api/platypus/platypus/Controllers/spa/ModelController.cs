@@ -4,6 +4,8 @@ using Nssol.Platypus.ApiModels.ModelApiModels;
 using Nssol.Platypus.Controllers.Util;
 using Nssol.Platypus.DataAccess.Core;
 using Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories;
+using Nssol.Platypus.Filters;
+using Nssol.Platypus.Infrastructure;
 using Nssol.Platypus.Models.TenantModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +47,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// モデル一覧を取得
         /// </summary>
         [HttpGet]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(IEnumerable<IndexOutputModel>), (int)HttpStatusCode.OK)]
         public IActionResult GetAll()
         {
@@ -57,6 +60,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 指定されたIDのモデル詳細を取得
         /// </summary>
         [HttpGet("{id}")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(DetailsOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetById([FromRoute] long id)
         {
@@ -72,6 +76,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// モデルを新規作成
         /// </summary>
         [HttpPost]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(IndexOutputModel), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> Create([FromBody] CreateInputModel model)
         {
@@ -101,6 +106,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// モデルを編集
         /// </summary>
         [HttpPut("{id}")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(IndexOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Edit([FromRoute] long id, [FromBody] EditInputModel model)
         {
@@ -112,6 +118,10 @@ namespace Nssol.Platypus.Controllers.spa
 
             if (model.Name != null)
             {
+                if (model.Name != existing.Name && await modelRepository.ExistsByNameAsync(model.Name))
+                {
+                    return JsonConflict($"Model name '{model.Name}' already exists.");
+                }
                 existing.Name = model.Name;
             }
             if (model.Description != null)
@@ -129,6 +139,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// モデルを削除
         /// </summary>
         [HttpDelete("{id}")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete([FromRoute] long id)
         {
@@ -148,6 +159,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 指定モデルのバージョン一覧を取得
         /// </summary>
         [HttpGet("{id}/versions")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(IEnumerable<VersionOutputModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetVersions([FromRoute] long id)
         {
@@ -166,6 +178,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// 指定モデルにバージョンを追加
         /// </summary>
         [HttpPost("{id}/versions")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(VersionOutputModel), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateVersion([FromRoute] long id, [FromBody] CreateVersionInputModel input)
         {
@@ -206,6 +219,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// バージョンのステータスを更新
         /// </summary>
         [HttpPut("{id}/versions/{versionId}")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType(typeof(VersionOutputModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> EditVersion([FromRoute] long id, [FromRoute] long versionId, [FromBody] EditVersionInputModel input)
         {
@@ -234,6 +248,7 @@ namespace Nssol.Platypus.Controllers.spa
         /// バージョンを削除
         /// </summary>
         [HttpDelete("{id}/versions/{versionId}")]
+        [PermissionFilter(MenuCode.Model)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteVersion([FromRoute] long id, [FromRoute] long versionId)
         {
