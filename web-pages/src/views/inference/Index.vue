@@ -155,7 +155,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('inference')
 
 export default {
-  title: this.$t('titles.inference_management'),
+  title() {
+    return this.$t('titles.inference_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,

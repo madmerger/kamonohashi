@@ -27,7 +27,12 @@ export default {
   props: {
     buttonLabel: { type: String, default: '' },
     size: { type: String, default: '' },
-    message: { type: String, default: this.$t('messages.delete_confirm') },
+    message: {
+      type: String,
+      default() {
+        return this.$t('messages.delete_confirm')
+      },
+    },
     disabled: { type: Boolean, default: false },
   },
   methods: {

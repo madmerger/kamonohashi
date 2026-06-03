@@ -51,12 +51,6 @@ import KqiDisplayTextForm from '@/components/KqiDisplayTextForm'
 import KqiRoleSelector from '@/components/selector/KqiRoleSelector'
 import { mapGetters, mapActions } from 'vuex'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
-
 export default {
   components: {
     KqiDialog,
@@ -71,6 +65,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         tenantRoleIds: [],

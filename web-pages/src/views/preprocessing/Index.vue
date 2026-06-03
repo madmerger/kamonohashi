@@ -96,7 +96,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('preprocessing')
 
 export default {
-  title: this.$t('titles.preprocessing_management'),
+  title() {
+    return this.$t('titles.preprocessing_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,

@@ -243,7 +243,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('training')
 
 export default {
-  title: this.$t('titles.training_management'),
+  title() {
+    return this.$t('titles.training_management')
+  },
   components: {
     KqiPagination,
     Search,

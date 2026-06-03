@@ -99,7 +99,9 @@ import KqiDisplayError from '@/components/KqiDisplayError'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  title: this.$t('titles.menu_access_management'),
+  title() {
+    return this.$t('titles.menu_access_management')
+  },
   components: {
     KqiDisplayError,
   },

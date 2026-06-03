@@ -74,12 +74,6 @@ import KqiUserGroupSelector from '@/components/selector/KqiUserGroupSelector'
 import { mapGetters, mapActions } from 'vuex'
 import validator from '@/util/validator'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
-
 export default {
   components: {
     KqiDialog,
@@ -97,6 +91,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       title: '',
       error: null,

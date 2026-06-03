@@ -206,7 +206,9 @@ export default {
     },
     heading: {
       type: String,
-      default: this.$t('labels.model'),
+      default() {
+        return this.$t('labels.model')
+      },
     },
     // リポジトリ取得中フラグ
     loadingRepositories: {

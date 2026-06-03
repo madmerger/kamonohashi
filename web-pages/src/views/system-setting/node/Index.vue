@@ -75,7 +75,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('node')
 
 export default {
-  title: this.$t('titles.node_management'), //<title>設定
+  title() {
+    return this.$t('titles.node_management')
+  }, //<title>設定
   components: {
     KqiPagination,
   },

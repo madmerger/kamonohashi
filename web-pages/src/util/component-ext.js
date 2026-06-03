@@ -11,7 +11,7 @@ export default {
       if (msg) {
         this.$notify.success({ title: msg })
       } else {
-        this.$notify.success({ title: '正常に処理されました' })
+        this.$notify.success({ title: this.$t('messages.process_success') })
       }
     },
   },

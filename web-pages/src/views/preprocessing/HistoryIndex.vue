@@ -87,7 +87,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('preprocessing')
 
 export default {
-  title: this.$t('titles.preprocessing_history'),
+  title() {
+    return this.$t('titles.preprocessing_history')
+  },
   components: {
     KqiDisplayError,
     KqiPagination,

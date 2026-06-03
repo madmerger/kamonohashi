@@ -36,16 +36,16 @@ import KqiDisplayError from '@/components/KqiDisplayError'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('user')
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
 export default {
   components: {
     KqiDisplayError,
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         name: '',

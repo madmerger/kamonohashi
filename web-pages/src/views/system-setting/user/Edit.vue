@@ -88,12 +88,6 @@ import KqiRoleSelector from '@/components/selector/KqiRoleSelector'
 import TenantRoleSelector from '@/views/system-setting/user/TenantRoleSelector'
 import { mapGetters, mapActions } from 'vuex'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
-
 export default {
   components: {
     KqiDialog,
@@ -109,6 +103,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     let passwordValidator = (rule, value, callback) => {
       // 作成時はパスワード入力必須
       if (this.isCreateDialog && !value[0] && !value[1]) {

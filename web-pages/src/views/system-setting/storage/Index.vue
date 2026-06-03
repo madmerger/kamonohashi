@@ -52,7 +52,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('storage')
 
 export default {
-  title: this.$t('titles.storage_management'),
+  title() {
+    return this.$t('titles.storage_management')
+  },
   computed: {
     ...mapGetters(['storages']),
   },

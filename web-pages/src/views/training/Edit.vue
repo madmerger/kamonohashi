@@ -249,7 +249,7 @@
             <el-form-item :label="$t('labels.operation')">
               <div class="el-input">
                 <kqi-job-stop-button
-                  button-:label="$t('messages.job_stop')"
+                  :button-label="$t('messages.job_stop')"
                   :title="$t('messages.job_stop_confirm')"
                   @halt="handleHalt"
                   @userCancel="handleUserCancel"

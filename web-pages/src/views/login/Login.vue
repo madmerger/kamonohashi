@@ -49,18 +49,19 @@
 import KqiDisplayError from '@/components/KqiDisplayError'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions } = createNamespacedHelpers('account')
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
-
 export default {
-  title: this.$t('common.login'),
+  title() {
+    return this.$t('common.login')
+  },
   components: {
     KqiDisplayError,
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     let err = null
     if (this.$route.query.timeout) {
       err = Error(this.$t('messages.auth_error'))

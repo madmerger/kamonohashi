@@ -71,7 +71,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('dataSet')
 
 export default {
-  title: this.$t('titles.dataset_management'),
+  title() {
+    return this.$t('titles.dataset_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,

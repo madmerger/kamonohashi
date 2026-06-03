@@ -39,7 +39,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('cluster')
 
 export default {
-  title: this.$t('titles.tenant_resource_management'),
+  title() {
+    return this.$t('titles.tenant_resource_management')
+  },
   components: {
     KqiQuotaInfo,
   },

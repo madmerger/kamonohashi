@@ -346,6 +346,9 @@ export default {
 
   // Messages
   messages: {
+    process_success: '正常に処理されました',
+    please_login: 'ログインしてください',
+    no_valid_auth: '有効な認証情報がありません',
     auth_error: '認証エラー：ログインしてください。',
     select_one_file: 'ファイルを1つ以上選択してください',
     max_files: '1データの最大ファイル数は{max}です',

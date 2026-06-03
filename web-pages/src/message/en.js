@@ -346,6 +346,9 @@ export default {
 
   // Messages
   messages: {
+    process_success: 'Successfully processed',
+    please_login: 'Please log in',
+    no_valid_auth: 'No valid authentication information',
     auth_error: 'Authentication error: Please log in.',
     select_one_file: 'Please select at least one file',
     max_files: 'Maximum number of files per data is {max}',

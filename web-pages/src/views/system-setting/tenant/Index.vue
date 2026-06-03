@@ -48,7 +48,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('tenant')
 
 export default {
-  title: this.$t('titles.tenant_management'),
+  title() {
+    return this.$t('titles.tenant_management')
+  },
   computed: {
     ...mapGetters(['tenants']),
   },

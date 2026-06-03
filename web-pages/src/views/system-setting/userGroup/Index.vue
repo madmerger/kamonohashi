@@ -47,7 +47,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('userGroup')
 
 export default {
-  title: this.$t('titles.user_group_management'),
+  title() {
+    return this.$t('titles.user_group_management')
+  },
   computed: {
     ...mapGetters(['userGroups']),
   },

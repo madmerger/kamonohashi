@@ -78,12 +78,6 @@ import { createNamespacedHelpers } from 'vuex'
 
 const defaultProtocol = 'https://'
 const { mapGetters, mapActions } = createNamespacedHelpers('registry')
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
-
 export default {
   components: {
     KqiDialog,
@@ -96,6 +90,11 @@ export default {
     },
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       form: {
         name: null,

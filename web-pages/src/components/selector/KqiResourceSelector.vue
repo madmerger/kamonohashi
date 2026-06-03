@@ -122,9 +122,9 @@ export default {
     warnMessage() {
       if (this.originChangedList.length > 0) {
         return (
-          '元々の要求リソースから' +
+          this.$t('messages.resource_changed_from_original') +
           this.originChangedList.join(',') +
-          'の値が変更されています。'
+          this.$t('messages.resource_value_changed')
         )
       }
       return null
@@ -191,7 +191,9 @@ export default {
         // メッセージがあればエラーメッセージに格納し表示する。
         if (message.length > 0) {
           this.errors.push(
-            'ノードに要求分の' + message.join(',') + 'のリソースがありません。',
+            this.$t('messages.node_no_resource', {
+              resources: message.join(','),
+            }),
           )
 
           // エラーを出力したら抜ける
@@ -206,7 +208,7 @@ export default {
             n.allocatableGpu >= this.value.gpu,
         )
         if (allocatableNodes.length == 0) {
-          this.errors.push('要求分のリソースで実行可能なノードがありません。')
+          this.errors.push(this.$t('messages.no_executable_node'))
 
           // エラーを出力したら抜ける
           return

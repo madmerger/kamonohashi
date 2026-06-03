@@ -61,7 +61,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('role')
 
 export default {
-  title: this.$t('titles.role_management'),
+  title() {
+    return this.$t('titles.role_management')
+  },
   computed: {
     ...mapGetters(['roles']),
   },

@@ -56,7 +56,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('user')
 
 export default {
-  title: this.$t('titles.tenant_user_management'),
+  title() {
+    return this.$t('titles.tenant_user_management')
+  },
   data() {
     return {
       tenantEditDialogVisible: false,

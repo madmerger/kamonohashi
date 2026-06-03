@@ -65,7 +65,9 @@ export default {
     },
     submitText: {
       type: String,
-      default: this.$t('common.register'),
+      default() {
+        return this.$t('common.register')
+      },
     },
     disabledParams: {
       type: Object,

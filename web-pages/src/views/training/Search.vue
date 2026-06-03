@@ -190,7 +190,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('training')
 
 export default {
-  title: this.$t('common.detailed_search'),
+  title() {
+    return this.$t('common.detailed_search')
+  },
   components: {
     MultiInput,
     KqiDisplayError,

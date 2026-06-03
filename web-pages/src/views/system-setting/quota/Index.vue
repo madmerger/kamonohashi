@@ -67,7 +67,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('quota')
 
 export default {
-  title: this.$t('titles.quota_management'),
+  title() {
+    return this.$t('titles.quota_management')
+  },
   components: {
     KqiDisplayError,
   },

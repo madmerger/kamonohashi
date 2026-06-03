@@ -69,7 +69,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('version')
 
 export default {
-  title: this.$t('common.version_info'),
+  title() {
+    return this.$t('common.version_info')
+  },
   computed: {
     ...mapGetters(['version']),
   },

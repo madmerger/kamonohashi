@@ -37,7 +37,9 @@ export default {
     },
     emptyMessage: {
       type: String,
-      default: this.$t('messages.no_available_nodes'),
+      default() {
+        return this.$t('messages.no_available_nodes')
+      },
     },
   },
 }

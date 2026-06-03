@@ -262,7 +262,7 @@
             <el-form-item :label="$t('labels.operation')">
               <div class="el-input">
                 <kqi-delete-button
-                  button-:label="$t('messages.job_stop')"
+                  :button-label="$t('messages.job_stop')"
                   :message="$t('messages.stop_confirm')"
                   @delete="haltNotebook"
                 />

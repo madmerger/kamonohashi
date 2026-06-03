@@ -129,7 +129,9 @@ const { mapGetters, mapActions } = createNamespacedHelpers('notebook')
 const kqiHost = process.env.VUE_APP_KAMONOHASHI_HOST || window.location.hostname
 
 export default {
-  title: this.$t('titles.notebook_management'),
+  title() {
+    return this.$t('titles.notebook_management')
+  },
   components: {
     KqiPagination,
     KqiSmartSearchInput,

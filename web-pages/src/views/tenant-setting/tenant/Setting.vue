@@ -67,14 +67,10 @@ import KqiRegistryEndpointSelector from '@/components/selector/KqiRegistryEndpoi
 import { mapGetters, mapActions } from 'vuex'
 import validator from '@/util/validator'
 
-const formRule = {
-  required: true,
-  trigger: 'blur',
-  message: this.$t('common.required_field'),
-}
-
 export default {
-  title: this.$t('titles.tenant_setting'),
+  title() {
+    return this.$t('titles.tenant_setting')
+  },
   components: {
     KqiDisplayError,
     KqiDisplayTextForm,
@@ -82,6 +78,11 @@ export default {
     KqiRegistryEndpointSelector,
   },
   data() {
+    const formRule = {
+      required: true,
+      trigger: 'blur',
+      message: this.$t('common.required_field'),
+    }
     return {
       error: null,
 

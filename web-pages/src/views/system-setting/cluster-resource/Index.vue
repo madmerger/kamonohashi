@@ -42,7 +42,9 @@
 
 <script>
 export default {
-  title: this.$t('titles.resource_usage'),
+  title() {
+    return this.$t('titles.resource_usage')
+  },
   data: function() {
     return {
       mode: '',

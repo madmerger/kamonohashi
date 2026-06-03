@@ -346,6 +346,9 @@ export default {
 
   // Messages
   messages: {
+    process_success: 'Procesado exitosamente',
+    please_login: 'Inicie sesión',
+    no_valid_auth: 'No hay información de autenticación válida',
     auth_error: 'Error de autenticación: Por favor, inicie sesión.',
     select_one_file: 'Seleccione al menos un archivo',
     max_files: 'El número máximo de archivos por dato es {max}',

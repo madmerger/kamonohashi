@@ -44,7 +44,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('account')
 
 export default {
-  title: this.$t('titles.dashboard'),
+  title() {
+    return this.$t('titles.dashboard')
+  },
   data() {
     return {}
   },

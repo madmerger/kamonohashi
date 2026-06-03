@@ -61,7 +61,9 @@
 
 <script>
 export default {
-  title: this.$t('titles.error'),
+  title() {
+    return this.$t('titles.error')
+  },
 
   data() {
     return {

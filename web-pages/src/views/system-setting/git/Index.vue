@@ -49,7 +49,9 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('git')
 
 export default {
-  title: this.$t('titles.git_management'), //<title>設定
+  title() {
+    return this.$t('titles.git_management')
+  }, //<title>設定
   computed: {
     ...mapGetters(['endpoints']),
   },

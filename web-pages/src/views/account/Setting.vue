@@ -144,7 +144,9 @@ import WebhookSetting from './WebhookSetting'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  title: this.$t('titles.user_info_settings'),
+  title() {
+    return this.$t('titles.user_info_settings')
+  },
   components: {
     KqiDisplayError,
     TenantInfo,
