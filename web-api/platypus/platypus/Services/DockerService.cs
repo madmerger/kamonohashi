@@ -102,9 +102,7 @@ namespace Nssol.Platypus.Services
                     {
                         string localPath = ConvertNfsToLocalPath(nfs);
                         string readOnlyFlag = nfs.ReadOnly ? ":ro" : "";
-                        string mountPath = string.IsNullOrEmpty(nfs.SubPath)
-                            ? nfs.MountPath
-                            : nfs.MountPath;
+                        string mountPath = nfs.MountPath;
                         binds.Add($"{localPath}:{mountPath}{readOnlyFlag}");
                     }
                 }
