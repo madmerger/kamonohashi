@@ -5,7 +5,7 @@
       :value="quota.cpu ? quota.cpu : '無制限'"
     />
     <kqi-display-text-form
-      label="メモリ"
+      :label="$t('common.memory')"
       :value="quota.memory ? quota.memory + ' GB' : '無制限'"
     />
     <kqi-display-text-form

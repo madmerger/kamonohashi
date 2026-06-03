@@ -55,7 +55,7 @@
 
     <el-row>
       <!-- タグの選択 -->
-      <el-col :span="6" :offset="1">タグ</el-col>
+      <el-col :span="6" :offset="1">{{ $t('common.tag') }}</el-col>
       <el-col :span="12">
         <el-select
           :value="value.tag"

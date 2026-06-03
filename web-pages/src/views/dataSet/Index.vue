@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>データセット管理</h2>
+    <h2>{{ $t('dataset.title') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -35,14 +35,14 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="データセット名" width="auto" />
+        <el-table-column prop="name" :label="$t('dataset.datasetName')" width="auto" />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('common.memo')"
           width="auto"
           class-name="memo-column"
         />
-        <el-table-column prop="createdAt" label="登録日時" width="170px" />
+        <el-table-column prop="createdAt" :label="$t('common.createdDate')" width="170px" />
       </el-table>
     </el-row>
     <el-row>
@@ -63,7 +63,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('dataSet')
 
 export default {
-  title: 'データセット管理',
+  title: 'dataset.title',
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -77,9 +77,9 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データセット名', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'createdAt', name: '登録日時', type: 'date' },
+        { prop: 'name', name: this.$t('dataset.datasetName'), type: 'text' },
+        { prop: 'memo', name: this.$t('common.memo'), type: 'text' },
+        { prop: 'createdAt', name: this.$t('common.createdDate'), type: 'date' },
       ],
       tableData: [],
     }

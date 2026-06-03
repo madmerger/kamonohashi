@@ -57,7 +57,7 @@
 
 <script>
 export default {
-  title: 'エラー',
+  title: 'common.error',
 
   data() {
     return {

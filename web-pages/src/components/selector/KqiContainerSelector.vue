@@ -2,7 +2,7 @@
 <!--description: イメージ名、タグ名を指定するドロップダウンをそれぞれ表示する,-->
 
 <template>
-  <el-form-item label="コンテナイメージ" prop="containerImage">
+  <el-form-item :label="$t('common.containerImage')" prop="containerImage">
     <el-row></el-row>
     <el-row>
       <!-- レジストリの選択 -->
@@ -55,7 +55,7 @@
 
     <el-row>
       <!-- タグの選択 -->
-      <el-col :span="6" :offset="1">タグ</el-col>
+      <el-col :span="6" :offset="1">{{ $t('common.tag') }}</el-col>
       <el-col :span="12">
         <el-select
           :value="value.tag"

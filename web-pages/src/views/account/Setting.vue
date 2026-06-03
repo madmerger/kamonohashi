@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ユーザ情報設定</h2>
+    <h2>{{ $t('header.userSettings') }}</h2>
     <div class="parent-container">
       <!-- 選択中テナント情報 -->
       <tenant-info
@@ -144,7 +144,7 @@ import WebhookSetting from './WebhookSetting'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  title: 'ユーザ情報設定',
+  title: 'header.userSettings',
   components: {
     KqiDisplayError,
     TenantInfo,

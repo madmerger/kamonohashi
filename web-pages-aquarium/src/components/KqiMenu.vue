@@ -50,7 +50,7 @@
       </div>
       <el-menu-item index="/version" @click="handleClick('/version')">
         <i class="el-icon-info" />
-        <span>バージョン情報</span>
+        <span>{{ $t('menu.versionInfo') }}</span>
       </el-menu-item>
     </el-menu>
 

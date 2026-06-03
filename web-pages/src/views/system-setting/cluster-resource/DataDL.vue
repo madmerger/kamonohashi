@@ -249,8 +249,8 @@ export default {
       // 確認ダイアログ
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {
@@ -312,8 +312,8 @@ export default {
       // 確認ダイアログ
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {

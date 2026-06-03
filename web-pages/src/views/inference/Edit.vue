@@ -8,7 +8,7 @@
   >
     <el-row type="flex" justify="end">
       <el-col :span="24" class="right-button-group">
-        <el-button @click="emitCopyCreate">コピー実行</el-button>
+        <el-button @click="emitCopyCreate">{{ $t('common.copyExecute') }}</el-button>
       </el-col>
     </el-row>
 
@@ -33,16 +33,16 @@
               />
             </span>
           </kqi-display-text-form>
-          <el-form-item label="推論名" prop="name">
+          <el-form-item :label="$t('inference.inferenceName')" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
 
           <div v-if="detail.parents && detail.parents.length > 0">
-            <el-form-item label="マウントした学習">
+            <el-form-item :label="$t('common.mountedTraining')">
               <div v-for="parent in detail.parents" :key="parent.id">
                 <el-popover
                   ref="parentDetail"
-                  title="マウントした学習詳細"
+                  :title="$t('common.mountedTrainingDetail')"
                   trigger="hover"
                   width="350"
                   placement="right"
@@ -66,7 +66,7 @@
           <div
             v-if="detail.parentInferences && detail.parentInferences.length > 0"
           >
-            <el-form-item label="マウントした推論">
+            <el-form-item :label="$t('common.mountedInference')">
               <br />
               <div :class="{ scroll: detail.parentInferences.length > 3 }">
                 <div
@@ -75,7 +75,7 @@
                 >
                   <el-popover
                     ref="parentDetail"
-                    title="マウントした推論詳細"
+                    :title="$t('common.mountedInferenceDetail')"
                     trigger="hover"
                     width="350"
                     placement="right"
@@ -98,10 +98,10 @@
             </el-form-item>
           </div>
           <div v-if="detail.dataSet">
-            <el-form-item label="データセット">
+            <el-form-item :label="$t('common.dataset')">
               <el-popover
                 ref="dataSetDetail"
-                title="データセット詳細"
+                :title="$t('common.datasetDetail')"
                 trigger="hover"
                 width="350"
                 placement="right"
@@ -121,14 +121,14 @@
               </el-button>
             </el-form-item>
           </div>
-          <el-form-item label="データセット作成方式">
+          <el-form-item :label="$t('common.datasetCreateMethod')">
             <div class="el-input">
-              <span v-if="detail.localDataSet">ローカルコピー</span>
-              <span v-else>シンボリックリンク</span>
+              <span v-if="detail.localDataSet">{{ $t('common.localCopy') }}</span>
+              <span v-else>{{ $t('common.symlink') }}</span>
             </div>
           </el-form-item>
 
-          <el-form-item label="モデル">
+          <el-form-item :label="$t('common.model')">
             <div class="el-input">
               <span v-if="detail.gitModel" style="padding-left: 3px;">
                 <a :href="detail.gitModel.url" target="_blank">
@@ -144,11 +144,11 @@
           </el-form-item>
 
           <kqi-display-text-form
-            label="コンテナイメージ"
+            :label="$t('common.containerImage')"
             :value="detail.containerImage ? detail.containerImage.url : ''"
           />
 
-          <label>実行コマンド</label>
+          <label>{{ $t('common.command') }}</label>
           <el-input
             v-model="detail.entryPoint"
             type="textarea"
@@ -156,7 +156,7 @@
             :readonly="true"
           />
 
-          <el-form-item label="メモ">
+          <el-form-item :label="$t('common.memo')">
             <el-input
               v-model="form.memo"
               type="textarea"
@@ -164,7 +164,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="環境変数">
+          <el-form-item :label="$t('common.envVars')">
             <br />
             <div
               v-if="detail.options && detail.options.length > 0"
@@ -180,7 +180,7 @@
             </div>
           </el-form-item>
           <kqi-display-text-form
-            label="実行者"
+            :label="$t('common.executor')"
             :value="
               detail
                 ? detail.displayNameCreatedBy
@@ -189,8 +189,8 @@
                 : ''
             "
           />
-          <kqi-display-text-form label="開始日時" :value="detail.createdAt" />
-          <kqi-display-text-form label="完了日時" :value="detail.completedAt" />
+          <kqi-display-text-form :label="$t('common.startDate')" :value="detail.createdAt" />
+          <kqi-display-text-form :label="$t('common.endDate')" :value="detail.completedAt" />
         </el-col>
 
         <el-col :span="12">
@@ -199,7 +199,7 @@
             :value="detail ? String(detail.cpu) : '0'"
           />
           <kqi-display-text-form
-            label="メモリ(GB)"
+            :label="$t('common.memoryGB')"
             :value="detail ? String(detail.memory) : '0'"
           />
           <kqi-display-text-form
@@ -207,13 +207,13 @@
             :value="detail ? String(detail.gpu) : '0'"
           />
           <kqi-display-text-form
-            label="パーティション"
+            :label="$t('common.partition')"
             :value="detail.partition"
           />
           <!-- status: スクリプトがこけたときなどに"failed"になる -->
           <!-- statusType: コンテナの生死等 -->
           <kqi-display-text-form
-            label="ステータス"
+            :label="$t('common.status')"
             :value="
               detail.status === detail.statusType
                 ? detail.status
@@ -225,7 +225,7 @@
           </div>
           <div v-if="events.length" class="k8s-event">
             <el-collapse accordion>
-              <el-collapse-item title="ステータス詳細ログ">
+              <el-collapse-item :title="$t('common.statusDetailLog')">
                 <div v-for="(event, index) in events" :key="index">
                   <div v-if="event.isError">message:{{ event.message }}</div>
                 </div>
@@ -237,29 +237,29 @@
               detail.statusType === 'Running' || detail.statusType === 'Error'
             "
           >
-            <el-form-item label="操作">
+            <el-form-item :label="$t('common.operation')">
               <div class="el-input">
                 <kqi-job-stop-button
                   button-label="ジョブ停止"
-                  title="ジョブを停止しますか"
+                  :title="$t('common.confirmStopJob')"
                   @halt="handleHalt"
                   @userCancel="handleUserCancel"
                 />
               </div>
               <div v-if="detail.status === 'Running'">
                 <div class="el-input" style="padding: 10px 0;">
-                  <el-button @click="emitShell">Shell起動</el-button>
+                  <el-button @click="emitShell">{{ $t('common.startShell') }}</el-button>
                 </div>
               </div>
             </el-form-item>
           </div>
-          <el-form-item label="コンテナ出力ファイル">
+          <el-form-item :label="$t('common.outputFiles')">
             <br />
-            <el-button @click="emitFiles">ファイル一覧</el-button>
+            <el-button @click="emitFiles">{{ $t('common.fileList') }}</el-button>
           </el-form-item>
           <el-form-item
             v-if="detail.zip === false"
-            label="一括ダウンロードコマンド"
+            :label="$t('common.batchDownloadCmd')"
           >
             <el-input
               :value="
@@ -268,15 +268,15 @@
               :readonly="true"
             />
           </el-form-item>
-          <el-form-item label="結果Zip圧縮">
+          <el-form-item :label="$t('common.resultZip')">
             <div class="el-input">
-              <span v-if="detail.zip">圧縮する</span>
-              <span v-else>圧縮しない</span>
+              <span v-if="detail.zip">{{ $t('common.compress') }}</span>
+              <span v-else>{{ $t('common.noCompress') }}</span>
             </div>
           </el-form-item>
-          <el-form-item label="添付ファイル">
+          <el-form-item :label="$t('common.attachedFiles')">
             <br />
-            <el-button size="mini" @click="emitLog">ログファイル閲覧</el-button>
+            <el-button size="mini" @click="emitLog">{{ $t('common.viewLogFiles') }}</el-button>
             <kqi-file-manager
               v-if="uploadedFiles.length > 0"
               type="InferenceHistoryAttachedFiles"
@@ -332,7 +332,7 @@ export default {
           {
             required: true,
             trigger: 'blur',
-            message: '必須項目です',
+            message: this.$t('common.required'),
           },
         ],
       },
@@ -507,7 +507,7 @@ export default {
         this.$notify.info({
           title: 'Information',
           message:
-            'ステータスがCompletedまたはUserCanceledの学習のみ推論を実行できます。',
+            this.$t('training.onlyCompletedOrCanceled'),
         })
       }
     },

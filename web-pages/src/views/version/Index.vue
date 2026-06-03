@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>バージョン情報</h2>
+    <h2>{{ $t('menu.versionInfo') }}</h2>
     <el-card class="box-card">
       <div slot="header">
         <span>About</span>
@@ -31,7 +31,7 @@
         <br />
         <el-row class="version">
           <el-col :span="4" style="text-align: center;">
-            {{ 'バージョン :' }}
+            {{ $t('version.versionLabel') }}
           </el-col>
           <el-col :span="20">
             <div style="margin-bottom: 20px;">
@@ -69,7 +69,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('version')
 
 export default {
-  title: 'バージョン情報',
+  title: 'menu.versionInfo',
   computed: {
     ...mapGetters(['version']),
   },

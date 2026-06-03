@@ -15,10 +15,10 @@
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
       <el-row v-if="isCreateDialog">
-        <el-form-item label="データセット名" prop="name">
+        <el-form-item :label="$t('dataset.datasetName')" prop="name">
           <el-input v-model="form.name" />
         </el-form-item>
-        <el-form-item label="メモ" prop="memo">
+        <el-form-item :label="$t('common.memo')" prop="memo">
           <el-input v-model="form.memo" type="textarea" />
         </el-form-item>
         <el-form-item label="配置種別">
@@ -30,10 +30,10 @@
           <el-form-item label="ID">
             <kqi-display-text-form v-model="id" />
           </el-form-item>
-          <el-form-item label="データセット名" prop="name">
+          <el-form-item :label="$t('dataset.datasetName')" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
-          <el-form-item label="メモ" prop="memo">
+          <el-form-item :label="$t('common.memo')" prop="memo">
             <el-input v-model="form.memo" type="textarea" />
           </el-form-item>
         </el-col>
@@ -42,7 +42,7 @@
             <kqi-display-text-form v-if="isLocked" value="不可" />
             <kqi-display-text-form v-else value="可" />
           </el-form-item>
-          <el-form-item label="登録者">
+          <el-form-item :label="$t('common.createdBy')">
             <kqi-display-text-form
               :value="
                 detail
@@ -56,7 +56,7 @@
               "
             />
           </el-form-item>
-          <el-form-item label="登録日時">
+          <el-form-item :label="$t('common.createdDate')">
             <kqi-display-text-form v-model="detail.createdAt" />
           </el-form-item>
           <el-form-item label="配置種別">
@@ -136,7 +136,7 @@ export default {
       dialogVisible: true,
       error: null,
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
         entries: [
           {
             required: true,
@@ -152,7 +152,7 @@ export default {
               if (exists || this.that.form.isFlat) {
                 callback()
               } else {
-                callback(new Error('必須項目です'))
+                callback(new Error(this.$t('common.required')))
               }
             },
           },
@@ -170,7 +170,7 @@ export default {
               if (exists) {
                 callback()
               } else if (this.that.form.isFlat) {
-                callback(new Error('必須項目です'))
+                callback(new Error(this.$t('common.required')))
               }
             },
           },

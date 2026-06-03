@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>テナントリソース管理</h2>
+    <h2>{{ $t('tenantSetting.resourceTitle') }}</h2>
     <el-row>
       <el-col :span="12">
         <el-radio-group
@@ -31,7 +31,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('cluster')
 
 export default {
-  title: 'テナントリソース管理',
+  title: 'tenantSetting.resourceTitle',
   components: {
     KqiQuotaInfo,
   },

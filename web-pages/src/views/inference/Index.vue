@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>推論管理</h2>
+    <h2>{{ $t('inference.title') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -8,17 +8,13 @@
         @change="retrieveData"
       />
       <el-col class="right-top-button" :span="8">
-        <el-button v-if="selections.length !== 0" @click="showDeleteConfirm">
-          一括削除
-        </el-button>
+        <el-button v-if="selections.length !== 0" @click="showDeleteConfirm">{{ $t('common.batchDelete') }}</el-button>
         <el-button
           icon="el-icon-edit-outline"
           type="primary"
           plain
           @click="openCreateDialog()"
-        >
-          新規実行
-        </el-button>
+        >{{ $t('common.newExecute') }}</el-button>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -46,9 +42,9 @@
           </div>
         </el-table-column>
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="推論名" width="150px" />
-        <el-table-column prop="createdAt" label="開始日時" width="100px" />
-        <el-table-column label="マウントした学習" width="200px">
+        <el-table-column prop="name" :label="$t('inference.inferenceName')" width="150px" />
+        <el-table-column prop="createdAt" :label="$t('common.startDate')" width="100px" />
+        <el-table-column :label="$t('common.mountedTraining')" width="200px">
           <template slot-scope="scope">
             <span
               v-for="(ParentName, index) in scope.row.parentFullNameList"
@@ -60,7 +56,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="マウントした推論" width="200px">
+        <el-table-column :label="$t('common.mountedInference')" width="200px">
           <template slot-scope="scope">
             <span
               v-for="(ParentInferenceName, index) in scope.row
@@ -75,18 +71,18 @@
         </el-table-column>
         <el-table-column
           prop="dataSet.name"
-          label="データセット"
+          :label="$t('common.dataset')"
           width="120px"
         />
         <el-table-column
           prop="entryPoint"
-          label="実行コマンド"
+          :label="$t('common.command')"
           width="auto"
           class-name="entry-point-column"
         />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('common.memo')"
           width="auto"
           class-name="memo-column"
         />
@@ -111,7 +107,7 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column prop="status" :label="$t('common.status')" width="120px" />
       </el-table>
     </el-row>
 
@@ -143,7 +139,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('inference')
 
 export default {
-  title: '推論管理',
+  title: 'inference.title',
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -158,27 +154,27 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: '推論名', type: 'text' },
-        { prop: 'startedAt', name: '開始日時', type: 'date' },
-        { prop: 'startedBy', name: '実行者', type: 'text' },
-        { prop: 'parentId', name: 'マウントした学習ID', type: 'number' },
+        { prop: 'name', name: this.$t('inference.inferenceName'), type: 'text' },
+        { prop: 'startedAt', name: this.$t('common.startDate'), type: 'date' },
+        { prop: 'startedBy', name: this.$t('common.executor'), type: 'text' },
+        { prop: 'parentId', name: this.$t('training.mountedTrainingId'), type: 'number' },
         {
           prop: 'parentInferenceId',
-          name: 'マウントした推論ID',
+          name: this.$t('inference.mountedInferenceId'),
           type: 'number',
         },
-        { prop: 'parentName', name: 'マウントした学習名', type: 'text' },
+        { prop: 'parentName', name: this.$t('training.mountedTrainingName'), type: 'text' },
         {
           prop: 'parentInferenceName',
-          name: 'マウントした推論名',
+          name: this.$t('inference.mountedInferenceName'),
           type: 'text',
         },
-        { prop: 'dataSet', name: 'データセット', type: 'text' },
-        { prop: 'entryPoint', name: '実行コマンド', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
+        { prop: 'dataSet', name: this.$t('common.dataset'), type: 'text' },
+        { prop: 'entryPoint', name: this.$t('common.command'), type: 'text' },
+        { prop: 'memo', name: this.$t('common.memo'), type: 'text' },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('common.status'),
           type: 'select',
           option: {
             items: [
@@ -232,8 +228,8 @@ export default {
       let confirmMessage = `推論履歴を${this.selections.length}件削除しますか（出力データ数が多い場合、処理に時間がかかります）`
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {

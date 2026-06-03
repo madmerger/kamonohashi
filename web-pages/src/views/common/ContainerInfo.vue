@@ -13,7 +13,7 @@
           :value="detail && detail.cpu ? String(detail.cpu) : '0'"
         />
         <kqi-display-text-form
-          label="メモリ(GB)"
+          :label="$t('common.memoryGB')"
           :value="detail && detail.memory ? String(detail.memory) : '0'"
         />
         <kqi-display-text-form
@@ -46,7 +46,7 @@
     <h3>コンテナ実行結果</h3>
     <el-card>
       <kqi-display-text-form
-        label="ステータス"
+        :label="$t('common.status')"
         :value="detail ? detail.status : ''"
       />
       <div v-if="detail && detail.conditionNote !== ``" class="k8s-event">
@@ -54,7 +54,7 @@
       </div>
       <div v-if="events.length" class="k8s-event">
         <el-collapse accordion>
-          <el-collapse-item title="ステータス詳細ログ">
+          <el-collapse-item :title="$t('common.statusDetailLog')">
             <div v-for="(event, index) in events" :key="index">
               <div v-if="event.isError">message:{{ event.message }}</div>
             </div>
@@ -89,7 +89,7 @@
           icon="el-icon-close"
           @click="$emit('cancel')"
         >
-          キャンセル
+          {{ $t('common.cancel') }}
         </el-button>
         <kqi-delete-button
           class="pull-left btn-update"

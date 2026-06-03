@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ロール管理</h2>
+    <h2>{{ $t('systemSetting.roleTitle') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -22,12 +22,12 @@
       >
         <el-table-column prop="id" label="ID" width="120px" />
         <el-table-column prop="name" label="ロール名" width="auto" />
-        <el-table-column prop="displayName" label="表示名" width="auto" />
+        <el-table-column prop="displayName" :label="$t('common.displayName')" width="auto" />
         <el-table-column prop="isSystemRole" label="種別" width="auto">
           <template slot-scope="scope">
-            <span v-if="scope.row.isSystemRole">システム</span>
+            <span v-if="scope.row.isSystemRole">{{ $t('systemSetting.roleSystem') }}</span>
             <span v-else-if="scope.row.tenantId">テナント(カスタム)</span>
-            <span v-else>テナント(共通)</span>
+            <span v-else>{{ $t('systemSetting.roleTenantCommon') }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="sortOrder" label="表示順" width="auto" />
@@ -43,7 +43,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('role')
 
 export default {
-  title: 'ロール管理',
+  title: 'systemSetting.roleTitle',
   computed: {
     ...mapGetters(['roles']),
   },

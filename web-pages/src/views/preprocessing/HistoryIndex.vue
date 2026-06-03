@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h2>前処理履歴</h2>
+    <h2>{{ $t('preprocessing.preprocessHistory') }}</h2>
     <el-row>
       <el-col :span="8" class="back">
         <span @click="openPreprocessing">
-          前処理管理
+          {{ $t('preprocessing.title') }}
         </span>
         <i class="el-icon-arrow-right" />
         <span>{{ id }}</span>
@@ -49,7 +49,7 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column prop="status" :label="$t('common.status')" width="120px" />
       </el-table>
     </div>
 
@@ -71,7 +71,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('preprocessing')
 
 export default {
-  title: '前処理履歴',
+  title: 'preprocessing.preprocessHistory',
   components: {
     KqiDisplayError,
     KqiPagination,

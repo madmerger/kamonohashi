@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ストレージ管理</h2>
+    <h2>{{ $t('systemSetting.storageTitle') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -8,9 +8,7 @@
           type="primary"
           plain
           @click="openCreateDialog"
-        >
-          新規登録
-        </el-button>
+        >{{ $t('common.newRegister') }}</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -44,7 +42,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('storage')
 
 export default {
-  title: 'ストレージ管理',
+  title: 'systemSetting.storageTitle',
   computed: {
     ...mapGetters(['storages']),
   },

@@ -10,21 +10,15 @@
 <!--}-->
 <template>
   <div class="el-input">
-    <span v-if="!statusName">
-      状態確認中...
-    </span>
+    <span v-if="!statusName">{{ $t('common.checkingStatus') }}</span>
     <span v-else-if="statusName === 'Running'">
       <div v-if="tensorboardUrl" class="tensorBoardlink">
-        <el-button type="primary" size="small" plain @click="openTensorBoard">
-          開く
-        </el-button>
-        <el-button type="danger" size="small" plain @click="deleteTensorBoard">
-          停止
-        </el-button>
-        <kqi-display-text-form label="残り時間" :value="remainingTime" />
+        <el-button type="primary" size="small" plain @click="openTensorBoard">{{ $t('common.open') }}</el-button>
+        <el-button type="danger" size="small" plain @click="deleteTensorBoard">{{ $t('common.stop') }}</el-button>
+        <kqi-display-text-form :label="$t('common.remainingTime')" :value="remainingTime" />
         <el-form-item
           v-if="selectedMountHistories.length !== 0"
-          label="追加表示した学習結果"
+          :label="$t('training.additionalResultsShown')"
         >
           <span class="selected-mount-histories">
             <div
@@ -33,7 +27,7 @@
             >
               <el-popover
                 ref="mountDetail"
-                title="追加表示した学習詳細"
+                :title="$t('training.additionalResultsDetail')"
                 trigger="hover"
                 width="350"
                 placement="left"
@@ -53,15 +47,13 @@
           </span>
         </el-form-item>
       </div>
-      <div v-else>
-        利用可能リソース待機中...
-      </div>
+      <div v-else>{{ $t('common.waitingForResources') }}</div>
     </span>
     <span v-else-if="statusName === 'None'">
       <el-row>
         <el-col :offset="1" :span="23">
-          <el-button type="primary" @click="runTensorBoard">起動</el-button>
-          <el-form-item label="起動期間(h)">
+          <el-button type="primary" @click="runTensorBoard">{{ $t('common.start') }}</el-button>
+          <el-form-item :label="$t('common.launchPeriodH')">
             <el-slider
               v-model="expiresIn"
               class="el-input"
@@ -79,15 +71,11 @@
         </el-col>
       </el-row>
     </span>
-    <span v-else-if="statusName === 'Starting'">
-      起動中...
-    </span>
-    <span v-else-if="statusName === 'Deleting'">
-      停止中...
-    </span>
+    <span v-else-if="statusName === 'Starting'">{{ $t('common.startingDots') }}</span>
+    <span v-else-if="statusName === 'Deleting'">{{ $t('common.stoppingDots') }}</span>
     <span v-else>
-      <span>起動失敗</span>
-      <el-button type="primary" @click="runTensorBoard">再起動</el-button>
+      <span>{{ $t('common.startFailed') }}</span>
+      <el-button type="primary" @click="runTensorBoard">{{ $t('common.restart') }}</el-button>
     </span>
   </div>
 </template>

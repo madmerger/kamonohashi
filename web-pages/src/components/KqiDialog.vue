@@ -9,7 +9,7 @@
     <slot></slot>
     <el-row class="footer">
       <div v-if="type === 'CREATE'" class="right-button-group">
-        <el-button @click="emitClose">キャンセル</el-button>
+        <el-button @click="emitClose">{{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="emitSubmit">
           {{ submitText }}
         </el-button>
@@ -31,14 +31,12 @@
           </div>
         </el-col>
         <el-col :span="12" class="right-button-group">
-          <el-button @click="emitClose">キャンセル</el-button>
+          <el-button @click="emitClose">{{ $t('common.cancel') }}</el-button>
           <el-button
             type="primary"
             :disabled="disabledParams.submitButton"
             @click="emitSubmit"
-          >
-            保存
-          </el-button>
+          >{{ $t('common.save') }}</el-button>
         </el-col>
       </div>
     </el-row>

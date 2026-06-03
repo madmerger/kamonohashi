@@ -14,7 +14,7 @@
       <el-tab-pane label="実行情報" name="info">
         <info :id="id" v-model="infoForm" />
       </el-tab-pane>
-      <el-tab-pane label="推論" name="inference"
+      <el-tab-pane :label="$t('common.inference')" name="inference"
         ><inference :id="id" v-model="infoForm" />
       </el-tab-pane>
 
@@ -32,7 +32,7 @@ import Inference from './Inference'
 import Debug from './Debug'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  title: '実験詳細',
+  title: 'aquarium.experimentDetail',
   // components: { Info, Inference, Debug },
   components: { Info, Inference, Debug },
   props: {

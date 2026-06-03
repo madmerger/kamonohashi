@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>実験情報</h2>
+    <h2>{{ $t('aquarium.experimentInfo') }}</h2>
     <el-row style="padding-top:20px;padding-bottom:40px">
       <el-col :span="8">学習の情報を確認できます。</el-col>
       <el-col :span="6">
@@ -51,7 +51,7 @@
         <el-row>
           <el-col :span="8">
             <div style="margin:10px 0px 10px 0px">
-              ステータス
+              {{ $t('common.status') }}
             </div>
           </el-col>
           <el-col
@@ -74,11 +74,11 @@
           <el-col :span="16">{{ value.createdAt }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">完了日時</el-col>
+          <el-col :span="8">{{ $t('common.endDate') }}</el-col>
           <el-col :span="16">{{ value.completedAt }}</el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">実行者</el-col>
+          <el-col :span="8">{{ $t('common.executor') }}</el-col>
           <el-col :span="16">{{ value.createdBy }}</el-col>
         </el-row>
       </div>
@@ -92,7 +92,7 @@
             style="border: solid 1px #ebeef5;  width: 550px; height: 280px;"
           >
             <div class="info-name">
-              データセット
+              {{ $t('common.dataset') }}
             </div>
 
             <div
@@ -124,7 +124,7 @@
             style="border: solid 1px #ebeef5;  width: 550px; height: 280px;"
           >
             <div class="info-name">
-              テンプレート
+              {{ $t('aquarium.templateName') }}
             </div>
 
             <div
@@ -155,7 +155,7 @@
 import AqualiumTensorboardHandler from './AqualiumTensorboardHandler.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  title: '実験情報',
+  title: 'aquarium.experimentInfo',
   components: { AqualiumTensorboardHandler },
   props: {
     // 選択した実験情報
@@ -213,9 +213,9 @@ export default {
           //エラーがある場合は元の画面に遷移してエラーメッセージを出す
           this.$router.push('/aquarium/experiment/detail/' + this.value.id)
           this.$notify.error({
-            title: '権限がありません',
+            title: 'common.noPermission',
             message:
-              'この実験に使用されたテンプレートの詳細にアクセスする権限がありません',
+              this.$t('aquarium.noTemplatePermission'),
             duration: 0,
           })
         }

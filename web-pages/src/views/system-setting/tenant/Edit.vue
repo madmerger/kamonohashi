@@ -14,19 +14,19 @@
       <h3>テナント情報</h3>
       <div class="left-margin">
         <kqi-display-text-form v-if="id !== null" label="ID" :value="id" />
-        <el-form-item v-if="id === null" label="テナント名" prop="tenantName">
+        <el-form-item v-if="id === null" :label="$t('systemSetting.tenantName')" prop="tenantName">
           <el-input v-model="form.tenantName" />
         </el-form-item>
         <kqi-display-text-form
           v-else
-          label="テナント名"
+          :label="$t('systemSetting.tenantName')"
           :value="form.tenantName"
         />
-        <el-form-item label="表示名" prop="displayName">
+        <el-form-item :label="$t('common.displayName')" prop="displayName">
           <el-input v-model="form.displayName" />
         </el-form-item>
       </div>
-      <el-form-item label="ノートブック無期限実行" required>
+      <el-form-item :label="$t('notebook.notebookUnlimitedExec')" required>
         <el-switch
           v-model="form.availableInfiniteTimeNotebook"
           style="width: 100%;"
@@ -73,7 +73,7 @@ import validator from '@/util/validator'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {
@@ -236,8 +236,8 @@ export default {
         '紐づけが解除されたユーザグループに属するユーザはこのテナントに参加できなくなります。変更を保存しますか？'
       try {
         await this.$confirm(confirmMessage, 'Warning', {
-          confirmButtonText: 'はい',
-          cancelButtonText: 'キャンセル',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         })
         return true

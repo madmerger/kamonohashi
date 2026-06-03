@@ -12,16 +12,16 @@
       <kqi-display-error :error="error" />
 
       <span v-if="form.serviceType === 1">
-        <el-form-item v-if="isCreateDialog" label="ユーザ名" prop="name">
+        <el-form-item v-if="isCreateDialog" :label="$t('login.username')" prop="name">
           <el-input v-model="form.name" />
         </el-form-item>
-        <kqi-display-text-form v-else label="ユーザ名" :value="form.name" />
+        <kqi-display-text-form v-else :label="$t('login.username')" :value="form.name" />
         <el-form-item label="ユーザ表示名" prop="displayName">
           <el-input v-model="form.displayName" />
         </el-form-item>
         <kqi-display-text-form
           v-if="id !== null"
-          label="認証タイプ"
+          :label="$t('tenantSetting.authType')"
           :value="form.displayServiceType"
         />
         <el-form-item :label="passwordLabel" prop="password">
@@ -32,10 +32,10 @@
         </el-form-item>
       </span>
       <span v-else-if="form.serviceType === 2">
-        <kqi-display-text-form label="ユーザ名" :value="form.name" />
+        <kqi-display-text-form :label="$t('login.username')" :value="form.name" />
         <kqi-display-text-form label="ユーザ表示名" :value="form.displayName" />
         <kqi-display-text-form
-          label="認証タイプ"
+          :label="$t('tenantSetting.authType')"
           :value="form.displayServiceType"
         />
       </span>
@@ -74,7 +74,7 @@ import { mapGetters, mapActions } from 'vuex'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {
@@ -95,20 +95,20 @@ export default {
     let passwordValidator = (rule, value, callback) => {
       // 作成時はパスワード入力必須
       if (this.isCreateDialog && !value[0] && !value[1]) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required')))
       }
       // 編集時に両方空の場合は、パスワードは未編集とみなして続行
       if (this.isEditDialog && !value[0] && !value[1]) {
         callback()
       }
       if (!(value[0] === value[1])) {
-        callback(new Error('同一のパスワードを入力してください'))
+        callback(new Error(this.$t('account.samePwdRequired')))
       }
       callback()
     }
     let tenantsValidator = (rule, value, callback) => {
       if (this.form.tenants.selectedTenantIds.length === 0) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required')))
       } else {
         this.form.tenants.selectedTenants.forEach(tenant => {
           if (tenant.selectedRoleIds.length === 0) {

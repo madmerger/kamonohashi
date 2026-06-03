@@ -5,10 +5,10 @@
       :value="dataSet ? String(dataSet.id) : '0'"
     />
     <kqi-display-text-form
-      label="データセット名"
+      :label="$t('dataset.datasetName')"
       :value="dataSet ? dataSet.name : ''"
     />
-    <kqi-display-text-form label="メモ" :value="dataSet ? dataSet.memo : ''" />
+    <kqi-display-text-form :label="$t('common.memo')" :value="dataSet ? dataSet.memo : ''" />
   </div>
 </template>
 

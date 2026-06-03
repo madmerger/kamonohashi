@@ -8,13 +8,13 @@
   >
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="名前" prop="name">
+      <el-form-item :label="$t('common.name')" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="メモ">
+      <el-form-item :label="$t('common.memo')">
         <el-input v-model="form.memo" type="textarea" />
       </el-form-item>
-      <el-form-item label="パーティション">
+      <el-form-item :label="$t('common.partition')">
         <el-input v-model="form.partition" />
       </el-form-item>
       <el-form-item label="アクセスレベル">
@@ -60,7 +60,7 @@ import { mapGetters, mapActions } from 'vuex'
 const formRules = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {

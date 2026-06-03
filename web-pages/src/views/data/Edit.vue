@@ -12,7 +12,7 @@
       justify="end"
     >
       <el-col :span="24" class="right-button-group">
-        <el-button @click="openPreprocessingDialog">前処理実行</el-button>
+        <el-button @click="openPreprocessingDialog">{{ $t('preprocessing.preprocessRun') }}</el-button>
       </el-col>
     </el-row>
 
@@ -31,18 +31,18 @@
         label="ID"
         :value="detail ? String(detail.id) : '0'"
       />
-      <el-form-item label="データ名" prop="name">
+      <el-form-item :label="$t('data.dataName')" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="タグ">
+      <el-form-item :label="$t('common.tag')">
         <kqi-tag-editor v-model="form.tags" :registered-tags="tenantTags" />
       </el-form-item>
-      <el-form-item label="メモ">
+      <el-form-item :label="$t('common.memo')">
         <el-input v-model="form.memo" type="textarea" />
       </el-form-item>
       <kqi-display-text-form
         v-if="isEditDialog"
-        label="登録者"
+        :label="$t('common.createdBy')"
         :value="
           detail
             ? detail.displayNameCreatedBy
@@ -53,10 +53,10 @@
       />
       <kqi-display-text-form
         v-if="isEditDialog"
-        label="登録日時"
+        :label="$t('common.createdDate')"
         :value="detail.createdAt"
       />
-      <el-form-item label="データファイル" prop="files">
+      <el-form-item :label="$t('data.dataFile')" prop="files">
         <div v-if="uploadedFiles.length >= 2">
           <el-button type="primary" @click="viewAllFiles = !viewAllFiles">
             {{ viewAllFiles ? 'Hide Files' : 'View All Files' }}
@@ -107,7 +107,7 @@ export default {
       let selected = this.$refs.dataFile.selectedFilesLength()
       let max = 10000
       if (uploaded <= 0 && selected <= 0) {
-        callback(new Error('ファイルを1つ以上選択してください'))
+        callback(new Error(this.$t('common.fileSelectRequired')))
       } else if (0 < selected && max < uploaded + selected) {
         callback(new Error(`1データの最大ファイル数は${max}です`))
       } else {
@@ -133,7 +133,7 @@ export default {
           {
             required: true,
             trigger: 'blur',
-            message: '必須項目です',
+            message: this.$t('common.required'),
           },
         ],
         files: [
@@ -207,7 +207,7 @@ export default {
             } finally {
               this.$notify.error({
                 title: error.message,
-                message: 'データ登録に失敗しました',
+                message: this.$t('common.dataRegistrationFailed'),
                 duration: 0,
               })
               this.error = error

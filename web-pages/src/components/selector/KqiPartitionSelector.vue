@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form-item label="パーティション" prop="partition">
+    <el-form-item :label="$t('common.partition')" prop="partition">
       <el-select
         :value="value"
         class="el-input"

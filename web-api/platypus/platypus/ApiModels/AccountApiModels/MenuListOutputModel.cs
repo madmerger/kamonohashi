@@ -6,8 +6,19 @@ namespace Nssol.Platypus.ApiModels.AccountApiModels
     {
         public MenuListOutputModel(MenuItemInfo menu, string lang)
         {
-            this.Name = (lang != "en" || string.IsNullOrEmpty(menu.NameEn)) ? menu.Name : menu.NameEn;
-            this.Description = (lang != "en" || string.IsNullOrEmpty(menu.DescriptionEn)) ? menu.Description : menu.DescriptionEn;
+            if (lang == "es" && !string.IsNullOrEmpty(menu.NameEs))
+                this.Name = menu.NameEs;
+            else if (lang == "en" && !string.IsNullOrEmpty(menu.NameEn))
+                this.Name = menu.NameEn;
+            else
+                this.Name = menu.Name;
+
+            if (lang == "es" && !string.IsNullOrEmpty(menu.DescriptionEs))
+                this.Description = menu.DescriptionEs;
+            else if (lang == "en" && !string.IsNullOrEmpty(menu.DescriptionEn))
+                this.Description = menu.DescriptionEn;
+            else
+                this.Description = menu.Description;
             this.Url = menu.Url;
             this.Category = menu.Category;
         }

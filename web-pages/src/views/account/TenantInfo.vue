@@ -15,7 +15,7 @@
       </el-col>
     </el-row>
     <el-row class="row-element">
-      <el-col :span="12" class="content-color">ロール</el-col>
+      <el-col :span="12" class="content-color">{{ $t('tenantSetting.role') }}</el-col>
       <el-col v-if="tenant" :span="12">
         <div v-for="(r, index) in tenant.roles" :key="index">
           {{ r.displayName }}

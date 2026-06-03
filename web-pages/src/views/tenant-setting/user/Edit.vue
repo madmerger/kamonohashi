@@ -11,7 +11,7 @@
     <el-form ref="form" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
       <kqi-display-text-form
-        label="ユーザ名"
+        :label="$t('login.username')"
         :value="
           detail
             ? detail.displayName
@@ -20,7 +20,7 @@
             : ''
         "
       />
-      <kqi-display-text-form label="認証タイプ" :value="displayServiceType" />
+      <kqi-display-text-form :label="$t('tenantSetting.authType')" :value="displayServiceType" />
       <el-form-item label="テナントロール" prop="tenantRoleIds">
         <kqi-role-selector
           v-model="form.tenantRoleIds"
@@ -51,7 +51,7 @@ import { mapGetters, mapActions } from 'vuex'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {

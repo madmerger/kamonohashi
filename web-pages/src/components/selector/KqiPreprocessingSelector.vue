@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="前処理" prop="preprocessing">
+  <el-form-item :label="$t('common.preprocessing')" prop="preprocessing">
     <el-popover
       ref="detail-popover"
       :disabled="!value"

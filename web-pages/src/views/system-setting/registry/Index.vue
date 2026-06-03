@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>レジストリ管理</h2>
+    <h2>{{ $t('systemSetting.registryTitle') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -8,9 +8,7 @@
           type="primary"
           plain
           @click="openCreateDialog"
-        >
-          新規登録
-        </el-button>
+        >{{ $t('common.newRegister') }}</el-button>
       </el-col>
     </el-row>
 
@@ -49,7 +47,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('registry')
 
 export default {
-  title: 'レジストリ管理', //<title>設定
+  title: 'systemSetting.registryTitle', //<title>設定
   computed: {
     ...mapGetters(['registries', 'serviceTypes']),
   },

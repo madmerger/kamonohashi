@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="環境変数">
+  <el-form-item :label="$t('common.envVars')">
     <el-row></el-row>
     <el-row
       v-for="(d, index) in value"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>クォータ管理</h2>
+    <h2>{{ $t('systemSetting.quotaTitle') }}</h2>
     <el-row>
       <kqi-display-error :error="error" />
       <el-col class="create-new">
@@ -63,7 +63,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('quota')
 
 export default {
-  title: 'クォータ管理',
+  title: 'systemSetting.quotaTitle',
   components: {
     KqiDisplayError,
   },

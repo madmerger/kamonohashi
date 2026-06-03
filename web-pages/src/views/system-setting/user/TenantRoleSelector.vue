@@ -17,7 +17,7 @@
       </el-select>
       <div>
         <el-table v-if="rolesOfTenant.length !== 0" :data="rolesOfTenant">
-          <el-table-column prop="displayName" label="テナント名" width="200px">
+          <el-table-column prop="displayName" :label="$t('systemSetting.tenantName')" width="200px">
             <template slot-scope="prop">
               <el-radio
                 v-model="prop.row.default"
@@ -32,7 +32,7 @@
               </el-radio>
             </template>
           </el-table-column>
-          <el-table-column label="ロール" width="auto">
+          <el-table-column :label="$t('tenantSetting.role')" width="auto">
             <template slot-scope="prop">
               <el-checkbox-group
                 v-model="prop.row.selectedRoleIds"
@@ -55,7 +55,7 @@
       <br />
       <label>ユーザグループ経由での所属しているテナント</label>
       <el-table :data="noOriginRolesOfTenant">
-        <el-table-column prop="displayName" label="テナント名" width="200px">
+        <el-table-column prop="displayName" :label="$t('systemSetting.tenantName')" width="200px">
           <template slot-scope="prop">
             <el-radio
               v-model="prop.row.default"
@@ -70,7 +70,7 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="ロール" width="auto">
+        <el-table-column :label="$t('tenantSetting.role')" width="auto">
           <template slot-scope="prop">
             <el-checkbox-group
               v-model="prop.row.selectedRoleIds"

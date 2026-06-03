@@ -41,8 +41,8 @@ export default {
       value: '',
       show: true,
       tableData: [
-        { name: 'を含む', detail: 'contains', symbol: '' },
-        { name: 'を含まない', detail: 'not contains', symbol: '!' },
+        { name: this.$t('common.contains'), detail: 'contains', symbol: '' },
+        { name: this.$t('common.notContains'), detail: 'not contains', symbol: '!' },
       ],
     }
   },

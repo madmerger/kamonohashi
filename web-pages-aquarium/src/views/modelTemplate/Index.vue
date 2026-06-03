@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>モデルテンプレート</h2>
+    <h2>{{ $t('aquarium.modelTemplate') }}</h2>
     <h3>AI作成のためのテンプレートを登録できます</h3>
     <div class="">
       <!-- TODO 検索ボタンデザイン -->
@@ -91,7 +91,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('template')
 
 export default {
-  title: 'モデルテンプレート',
+  title: 'aquarium.modelTemplate',
   components: {
     // KqiSmartSearchInput,
   },
@@ -106,8 +106,8 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'テンプレート名', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('aquarium.templateName'), type: 'text' },
+        { prop: 'tag', name: this.$t('common.tag'), type: 'text', multiple: true },
       ],
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Git管理</h2>
+    <h2>{{ $t('systemSetting.gitTitle') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -8,9 +8,7 @@
           type="primary"
           plain
           @click="openCreateDialog"
-        >
-          新規登録
-        </el-button>
+        >{{ $t('common.newRegister') }}</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -41,7 +39,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('git')
 
 export default {
-  title: 'Git管理', //<title>設定
+  title: 'systemSetting.gitTitle', //<title>設定
   computed: {
     ...mapGetters(['endpoints']),
   },

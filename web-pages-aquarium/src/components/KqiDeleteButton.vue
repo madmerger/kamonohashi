@@ -35,8 +35,8 @@ export default {
       let confirmMessage = this.message ? this.message : '削除しますか'
       try {
         await this.$confirm(confirmMessage, 'Warning', {
-          confirmButtonText: 'はい',
-          cancelButtonText: 'キャンセル',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         })
         this.$emit('delete')

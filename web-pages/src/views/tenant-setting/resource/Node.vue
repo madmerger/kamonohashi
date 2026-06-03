@@ -36,7 +36,7 @@
             <el-table-column
               align="center"
               prop="status"
-              label="ステータス"
+              :label="$t('common.status')"
               :width="columnWidth"
             />
           </el-table>
@@ -58,7 +58,7 @@
       <el-table-column
         align="right"
         prop="memoryInfo"
-        label="メモリ"
+        :label="$t('common.memory')"
         :width="columnWidth"
       />
       <el-table-column
@@ -67,7 +67,7 @@
         label="GPU"
         :width="columnWidth"
       />
-      <el-table-column align="center" label="ステータス" :width="columnWidth" />
+      <el-table-column align="center" :label="$t('common.status')" :width="columnWidth" />
     </el-table>
     <router-view @cancel="closeDialog" @done="done" />
   </div>

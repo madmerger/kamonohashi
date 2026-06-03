@@ -45,11 +45,11 @@ export default {
       show: false,
       tableData: [
         // e.g) 2018/10/1を選択した場合
-        { name: 'のみ', detail: '', symbol: '=' }, // =2018/10/1
-        { name: '以降', detail: '', symbol: '>=', days: 0 }, // >=2018/10/1
-        { name: '以前', detail: '', symbol: '<', days: 1 }, // <2018/10/2
-        { name: 'より後', detail: '', symbol: '>=', days: 1 }, // >=2018/10/2
-        { name: 'より前', detail: '', symbol: '<', days: 0 }, // <2018/10/1
+        { name: this.$t('common.only'), detail: '', symbol: '=' }, // =2018/10/1
+        { name: this.$t('common.after'), detail: '', symbol: '>=', days: 0 }, // >=2018/10/1
+        { name: this.$t('common.before'), detail: '', symbol: '<', days: 1 }, // <2018/10/2
+        { name: this.$t('common.laterThan'), detail: '', symbol: '>=', days: 1 }, // >=2018/10/2
+        { name: this.$t('common.earlierThan'), detail: '', symbol: '<', days: 0 }, // <2018/10/1
       ],
     }
   },

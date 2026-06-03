@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>実験結果</h2>
+    <h2>{{ $t('aquarium.experimentResult') }}</h2>
     <div class="confusion-matrix">
       <!-- TODO outputValueがnullでなかった場合にconfusionmatrix.csvをファイルから取得して描画 -->
       <!-- <div v-if="outputValue"> -->
@@ -51,7 +51,7 @@ import AqualiumTensorboardHandler from './AqualiumTensorboardHandler.vue'
 const { mapGetters, mapActions } = createNamespacedHelpers('experiment')
 
 export default {
-  title: '実験結果',
+  title: 'aquarium.experimentResult',
   components: { AqualiumTensorboardHandler },
   props: {
     id: {

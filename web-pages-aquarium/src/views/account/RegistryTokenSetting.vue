@@ -24,7 +24,7 @@
           <br />
 
           <template v-if="value.serviceType === 1">
-            <div class="content-color">ユーザ名</div>
+            <div class="content-color">{{ $t('login.username') }}</div>
             <el-input :value="value.userName" type="text" @input="userChange" />
           </template>
           <template v-else-if="value.serviceType === 2">

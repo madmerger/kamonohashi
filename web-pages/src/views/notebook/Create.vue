@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="dialog"
-    title="ノートブック起動"
+    :title="$t('notebook.notebookStart')"
     :visible.sync="dialogVisible"
     :before-close="closeDialog"
     :close-on-click-modal="false"
@@ -13,10 +13,10 @@
         <el-row :gutter="20">
           <div class="element">
             <el-col :span="12">
-              <el-form-item label="ノートブック名" prop="name">
+              <el-form-item :label="$t('notebook.notebookName')" prop="name">
                 <el-input v-model="form.name" />
               </el-form-item>
-              <el-form-item label="インストールするJupyterLabのバージョン">
+              <el-form-item :label="$t('notebook.jupyterVersion')">
                 <el-popover
                   placement="top-start"
                   width="500"
@@ -50,7 +50,7 @@
               />
               <el-form-item
                 v-show="form.dataSetId"
-                label="データセット作成方式"
+                :label="$t('common.datasetCreateMethod')"
               >
                 <el-switch
                   v-model="form.localDataSet"
@@ -59,7 +59,7 @@
                   active-text="ローカルコピー"
                 />
               </el-form-item>
-              <el-form-item label="起動時実行コマンド" prop="entryPoint">
+              <el-form-item :label="$t('common.startupCommand')" prop="entryPoint">
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -92,7 +92,7 @@
             <el-col :span="12">
               <kqi-resource-selector v-model="form.resource" :quota="quota" />
               <div v-if="availableInfiniteTime">
-                <el-form-item label="起動期間設定">
+                <el-form-item :label="$t('common.launchPeriodSetting')">
                   <el-switch
                     v-model="form.withExpiresInSetting"
                     style="width: 100%;"
@@ -102,7 +102,7 @@
                 </el-form-item>
               </div>
               <div v-show="form.withExpiresInSetting">
-                <el-form-item label="起動期間(h)" required>
+                <el-form-item :label="$t('common.launchPeriodH')" required>
                   <el-slider
                     v-model="form.expiresIn"
                     class="el-input"
@@ -117,7 +117,7 @@
                 v-model="form.partition"
                 :partitions="partitions"
               />
-              <el-form-item label="メモ">
+              <el-form-item :label="$t('common.memo')">
                 <el-input
                   v-model="form.memo"
                   type="textarea"
@@ -135,7 +135,7 @@
         <div class="element">
           <el-form v-if="active === 0">
             <el-col :span="12">
-              <el-form-item label="インストールするJupyterLabのバージョン">
+              <el-form-item :label="$t('notebook.jupyterVersion')">
                 <el-popover
                   placement="top-start"
                   width="500"
@@ -168,7 +168,7 @@
               />
               <el-form-item
                 v-show="form.dataSetId"
-                label="データセット作成方式"
+                :label="$t('common.datasetCreateMethod')"
               >
                 <el-switch
                   v-model="form.localDataSet"
@@ -177,7 +177,7 @@
                   active-text="ローカルコピー"
                 />
               </el-form-item>
-              <el-form-item label="起動時実行コマンド" prop="entryPoint">
+              <el-form-item :label="$t('common.startupCommand')" prop="entryPoint">
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -212,7 +212,7 @@
             </el-col>
             <el-col :span="12">
               <div v-if="availableInfiniteTime">
-                <el-form-item label="起動期間設定">
+                <el-form-item :label="$t('common.launchPeriodSetting')">
                   <el-switch
                     v-model="form.withExpiresInSetting"
                     style="width: 100%;"
@@ -222,7 +222,7 @@
                 </el-form-item>
               </div>
               <div v-show="form.withExpiresInSetting">
-                <el-form-item label="起動期間(h)" required>
+                <el-form-item :label="$t('common.launchPeriodH')" required>
                   <el-slider
                     v-model="form.expiresIn"
                     class="el-input"
@@ -251,7 +251,7 @@
           <el-form v-if="active === 0" ref="form0" :model="form" :rules="rules">
             <el-col :span="18" :offset="3">
               <el-form-item
-                label="ノートブック名"
+                :label="$t('notebook.notebookName')"
                 prop="name"
                 class="is-required"
               >
@@ -267,7 +267,7 @@
             </el-col>
             <el-col :span="18" :offset="3">
               <div v-if="availableInfiniteTime">
-                <el-form-item label="起動期間設定">
+                <el-form-item :label="$t('common.launchPeriodSetting')">
                   <el-switch
                     v-model="form.withExpiresInSetting"
                     style="width: 100%;"
@@ -277,7 +277,7 @@
                 </el-form-item>
               </div>
               <div v-show="form.withExpiresInSetting">
-                <el-form-item label="起動期間(h)" required>
+                <el-form-item :label="$t('common.launchPeriodH')" required>
                   <el-slider
                     v-model="form.expiresIn"
                     class="el-input"
@@ -318,7 +318,7 @@
               />
             </el-col>
             <el-col :span="18" :offset="3">
-              <el-form-item label="インストールするJupyterLabのバージョン">
+              <el-form-item :label="$t('notebook.jupyterVersion')">
                 <el-popover
                   placement="top-start"
                   width="500"
@@ -352,7 +352,7 @@
               />
               <el-form-item
                 v-show="form.dataSetId"
-                label="データセット作成方式"
+                :label="$t('common.datasetCreateMethod')"
               >
                 <el-switch
                   v-model="form.localDataSet"
@@ -367,7 +367,7 @@
           <!-- step 4 -->
           <el-form v-if="active === 3" ref="form3" :model="form" :rules="rules">
             <el-col>
-              <el-form-item label="起動時実行コマンド" prop="entryPoint">
+              <el-form-item :label="$t('common.startupCommand')" prop="entryPoint">
                 <el-input
                   v-model="form.entryPoint"
                   type="textarea"
@@ -380,7 +380,7 @@
                 v-model="form.partition"
                 :partitions="partitions"
               />
-              <el-form-item label="メモ">
+              <el-form-item :label="$t('common.memo')">
                 <el-input
                   v-model="form.memo"
                   type="textarea"
@@ -395,8 +395,8 @@
     <el-row class="step">
       <div v-if="isCopyCreation || isReRunCreation">
         <span class="right-step-group">
-          <el-button @click="emitCancel">キャンセル</el-button>
-          <el-button type="primary" @click="runNotebook">起動 </el-button>
+          <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="runNotebook">{{ $t('common.start') }}</el-button>
         </span>
       </div>
       <div v-else>
@@ -419,9 +419,7 @@
           <i class="el-icon-arrow-right" />
         </span>
         <span class="right-step-group">
-          <el-button v-if="active === 3" type="primary" @click="runNotebook">
-            起動
-          </el-button>
+          <el-button v-if="active === 3" type="primary" @click="runNotebook">{{ $t('common.start') }}</el-button>
         </span>
       </div>
     </el-row>
@@ -501,7 +499,7 @@ export default {
           {
             required: true,
             trigger: 'blur',
-            message: '必須項目です',
+            message: this.$t('common.required'),
           },
         ],
       },
@@ -512,7 +510,7 @@ export default {
       isReRunCreation: false,
       jupyterLabInfo: {
         description:
-          'デフォルト: 3.4.2 (JupyterLabがインストール済みのコンテナイメージでは選択してもスキップされます)',
+          this.$t('notebook.jupyterDefault'),
         defaultVersion: 'デフォルト: 3.4.2',
       },
     }

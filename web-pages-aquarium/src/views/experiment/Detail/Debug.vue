@@ -57,8 +57,8 @@
     <h2>推論DEBUG</h2>
     <div>
       <el-table :data="evaluationLogFileDatas" style="width: 60%">
-        <el-table-column prop="name" label="名前"> </el-table-column>
-        <el-table-column prop="status" label="ステータス"> </el-table-column>
+        <el-table-column prop="name" :label="$t('common.name')"> </el-table-column>
+        <el-table-column prop="status" :label="$t('common.status')"> </el-table-column>
         <el-table-column label="ログ">
           <template slot-scope="scope">
             <div v-for="(item, idx) in scope.row.log" :key="idx">
@@ -79,7 +79,7 @@ import KqiDownloadButton from '../../../components/KqiDownloadButton.vue'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  title: '実験結果',
+  title: 'aquarium.experimentResult',
   components: { KqiDownloadButton },
   props: {
     id: {

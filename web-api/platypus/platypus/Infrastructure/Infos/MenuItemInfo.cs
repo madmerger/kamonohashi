@@ -33,6 +33,16 @@ namespace Nssol.Platypus.Infrastructure.Infos
         public string DescriptionEn { get; set; }
 
         /// <summary>
+        /// スペイン語メニュー名。
+        /// </summary>
+        public string NameEs { get; set; }
+
+        /// <summary>
+        /// スペイン語説明。
+        /// </summary>
+        public string DescriptionEs { get; set; }
+
+        /// <summary>
         /// メニューコード
         /// </summary>
         public MenuCode Code { get; set; }

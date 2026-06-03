@@ -90,7 +90,7 @@
                     v-if="$store.getters['account/isAvailableData']"
                     class="right-button-group"
                   >
-                    <el-button @click="showData(data)">データ編集</el-button>
+                    <el-button @click="showData(data)">{{ $t('data.dataEdit') }}</el-button>
                   </div>
                   <el-row>
                     <el-col :span="15">
@@ -99,23 +99,23 @@
                         :value="data.id ? String(data.id) : null"
                       />
                       <kqi-display-text-form
-                        label="データ名"
+                        :label="$t('data.dataName')"
                         :value="data.name"
                       />
                     </el-col>
                     <el-col :offset="1" :span="8">
                       <kqi-display-text-form
-                        label="登録日時"
+                        :label="$t('common.createdDate')"
                         :value="data.createdAt"
                       />
                       <kqi-display-text-form
-                        label="登録者"
+                        :label="$t('common.createdBy')"
                         :value="data.createdBy"
                       />
                     </el-col>
                   </el-row>
-                  <kqi-display-text-form label="メモ" :value="data.memo" />
-                  <el-form-item label="タグ">
+                  <kqi-display-text-form :label="$t('common.memo')" :value="data.memo" />
+                  <el-form-item :label="$t('common.tag')">
                     <br clear="all" />
                     <span style="display: block; line-height: normal;">
                       <el-tag
@@ -209,11 +209,11 @@ export default {
       searchCondition: {}, // 検索条件
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データ名', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'createdAt', name: '登録日時', type: 'date' },
-        { prop: 'createdBy', name: '登録者', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('data.dataName'), type: 'text' },
+        { prop: 'memo', name: this.$t('common.memo'), type: 'text' },
+        { prop: 'createdAt', name: this.$t('common.createdDate'), type: 'date' },
+        { prop: 'createdBy', name: this.$t('common.createdBy'), type: 'text' },
+        { prop: 'tag', name: this.$t('common.tag'), type: 'text', multiple: true },
       ],
       checkSpanSize: 2,
       idSpanSize: 0,

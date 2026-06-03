@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>メニューアクセス管理</h2>
+    <h2>{{ $t('systemSetting.menuAccessTitle') }}</h2>
     <kqi-display-error :error="error" />
     <el-row>
       <el-table
@@ -28,9 +28,7 @@
           :width="getRoleDisplayWidth()"
         >
           <template slot-scope="prop">
-            <div v-if="prop.row.menuType === 4">
-              公開
-            </div>
+            <div v-if="prop.row.menuType === 4">{{ $t('aquarium.public') }}</div>
             <div v-else-if="prop.row.menuType === 1">
               ログインユーザに許可
             </div>
@@ -92,7 +90,7 @@ import KqiDisplayError from '@/components/KqiDisplayError'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  title: 'メニューアクセス管理',
+  title: 'systemSetting.menuAccessTitle',
   components: {
     KqiDisplayError,
   },

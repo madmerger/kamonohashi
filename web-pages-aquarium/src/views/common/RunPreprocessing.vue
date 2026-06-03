@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="dialog"
-    title="前処理実行"
+    :title="$t('preprocessing.preprocessRun')"
     :visible.sync="dialogVisible"
     :before-close="closeDialog"
     :close-on-click-modal="false"
@@ -58,7 +58,7 @@
 
         <el-col :span="12">
           <kqi-resource-selector v-model="form.resource" :quota="quota" />
-          <el-form-item label="オプション">
+          <el-form-item :label="$t('training.option')">
             <br />
             <el-checkbox v-model="form.movePreprocessingPage" size="medium">
               実行後に履歴を確認する
@@ -68,8 +68,8 @@
       </el-row>
 
       <el-row class="right-button-group footer">
-        <el-button @click="emitCancel">キャンセル</el-button>
-        <el-button type="primary" @click="runPreprocessing">実行</el-button>
+        <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="runPreprocessing">{{ $t('common.execute') }}</el-button>
       </el-row>
     </el-form>
   </el-dialog>
@@ -102,7 +102,7 @@ export default {
   data() {
     let dataSelectedIdsValidator = (rule, value, callback) => {
       if (this.enableDataSelection && this.form.selectedDataId.length === 0) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required')))
       } else {
         callback()
       }
@@ -110,7 +110,7 @@ export default {
 
     let preprocessingIdValidator = (rule, value, callback) => {
       if (this.form.preprocessingId === null)
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required')))
       else {
         callback()
       }
@@ -233,7 +233,7 @@ export default {
           } else {
             this.$notify.error({
               title: 'Error',
-              message: '前処理に失敗しました',
+              message: this.$t('common.preprocessFailed'),
             })
           }
         }

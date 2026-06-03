@@ -1,9 +1,9 @@
 <template>
-  <el-form-item label="データセット" prop="dataSetId">
+  <el-form-item :label="$t('common.dataset')" prop="dataSetId">
     <el-popover
       ref="detail-popover"
       :disabled="!value"
-      title="データセット詳細"
+      :title="$t('common.datasetDetail')"
       trigger="hover"
       width="350"
       placement="right"

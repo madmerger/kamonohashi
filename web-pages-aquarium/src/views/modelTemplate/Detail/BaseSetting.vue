@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-form>
           <el-form :model="form" :rules="rules">
-            <el-form-item label="テンプレート名" prop="name">
+            <el-form-item :label="$t('aquarium.templateName')" prop="name">
               <el-input v-model="form.name" />
             </el-form-item>
             <el-form-item label="説明文" prop="memo">
@@ -38,7 +38,7 @@
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('template')
 export default {
-  title: 'モデルテンプレート',
+  title: 'aquarium.modelTemplate',
   components: {},
   props: {
     value: {
@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
       },
       error: null,
       isPatch: false,

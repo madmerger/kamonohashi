@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>テナントユーザ管理</h2>
+    <h2>{{ $t('tenantSetting.userTitle') }}</h2>
     <el-row>
       <el-table
         class="data-table pl-index-table"
@@ -8,7 +8,7 @@
         border
         @row-click="openEditDialog"
       >
-        <el-table-column prop="name" label="ユーザ名" width="300px">
+        <el-table-column prop="name" :label="$t('login.username')" width="300px">
           <template slot-scope="scope">
             <p>
               {{ scope.row.name
@@ -18,14 +18,14 @@
             </p>
           </template>
         </el-table-column>
-        <el-table-column prop="serviceType" label="認証タイプ" width="150px">
+        <el-table-column prop="serviceType" :label="$t('tenantSetting.authType')" width="150px">
           <template slot-scope="scope">
-            <span v-if="scope.row.serviceType === 1">ローカル</span>
+            <span v-if="scope.row.serviceType === 1">{{ $t('common.local') }}</span>
             <span v-else-if="scope.row.serviceType === 2">LDAP</span>
             <span v-else>{{ serviceType }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="roles" label="ロール" width="auto">
+        <el-table-column prop="roles" :label="$t('tenantSetting.role')" width="auto">
           <template slot-scope="scope">
             <span v-for="role in scope.row.roles" :key="role.id">
               <el-tag class="role-tag" :type="role.isOrigin ? '' : 'success'">
@@ -46,7 +46,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('user')
 
 export default {
-  title: 'テナントユーザ管理',
+  title: 'tenantSetting.userTitle',
   data() {
     return {
       tenantEditDialogVisible: false,

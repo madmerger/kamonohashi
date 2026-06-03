@@ -76,7 +76,7 @@ import { createNamespacedHelpers } from 'vuex'
 // TODO template API に変更
 const { mapGetters, mapActions } = createNamespacedHelpers('template')
 export default {
-  title: '新規学習実行',
+  title: 'aquarium.newTrainingExec',
   components: {
     // KqiSmartSearchInput,
   },
@@ -91,8 +91,8 @@ export default {
       templateList: null,
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'テンプレート名', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('aquarium.templateName'), type: 'text' },
+        { prop: 'tag', name: this.$t('common.tag'), type: 'text', multiple: true },
       ],
     }
   },

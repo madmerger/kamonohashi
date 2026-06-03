@@ -32,7 +32,7 @@
       <el-table-column
         align="right"
         prop="memory"
-        label="メモリ"
+        :label="$t('common.memory')"
         :width="columnWidth"
       />
       <el-table-column
@@ -44,7 +44,7 @@
       <el-table-column
         align="center"
         prop="status"
-        label="ステータス"
+        :label="$t('common.status')"
         :width="columnWidth"
       />
     </el-table>

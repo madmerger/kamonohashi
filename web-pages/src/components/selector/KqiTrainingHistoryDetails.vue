@@ -5,18 +5,18 @@
       :value="training ? String(training.id) : '0'"
     />
     <kqi-display-text-form
-      label="学習名"
+      :label="$t('training.trainingName')"
       :value="training ? training.name : ''"
     />
     <kqi-display-text-form
-      label="ステータス"
+      :label="$t('common.status')"
       :value="training ? training.status : ''"
     />
     <kqi-display-text-form
-      label="メモ"
+      :label="$t('common.memo')"
       :value="training ? training.memo : ''"
     />
-    <el-form-item label="タグ">
+    <el-form-item :label="$t('common.tag')">
       <br clear="all" />
       <span style="display: block; line-height: normal;">
         <el-tag

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>学習管理</h2>
+    <h2>{{ $t('training.title') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -8,17 +8,13 @@
         @change="retrieveData"
       />
       <el-col class="right-top-button" :span="8">
-        <el-button v-if="selections.length !== 0" @click="showDeleteConfirm">
-          一括削除
-        </el-button>
+        <el-button v-if="selections.length !== 0" @click="showDeleteConfirm">{{ $t('common.batchDelete') }}</el-button>
         <el-button
           icon="el-icon-edit-outline"
           type="primary"
           plain
           @click="openCreateDialog()"
-        >
-          新規実行
-        </el-button>
+        >{{ $t('common.newExecute') }}</el-button>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -45,9 +41,9 @@
           </div>
         </el-table-column>
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="学習名" width="120px" />
-        <el-table-column prop="createdAt" label="開始日時" width="200px" />
-        <el-table-column label="マウントした学習" width="200px">
+        <el-table-column prop="name" :label="$t('training.trainingName')" width="120px" />
+        <el-table-column prop="createdAt" :label="$t('common.startDate')" width="200px" />
+        <el-table-column :label="$t('common.mountedTraining')" width="200px">
           <template slot-scope="scope">
             <span
               v-for="(ParentName, index) in scope.row.parentFullNameList"
@@ -61,22 +57,22 @@
         </el-table-column>
         <el-table-column
           prop="dataSet.name"
-          label="データセット"
+          :label="$t('common.dataset')"
           width="120px"
         />
         <el-table-column
           prop="entryPoint"
-          label="実行コマンド"
+          :label="$t('common.command')"
           width="auto"
           class-name="entry-point-column"
         />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('common.memo')"
           width="auto"
           class-name="memo-column"
         />
-        <el-table-column prop="tag" label="タグ" width="120px">
+        <el-table-column prop="tag" :label="$t('common.tag')" width="120px">
           <template slot-scope="scope">
             <span
               v-for="(tag, index) in scope.row.tags"
@@ -104,7 +100,7 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column prop="status" :label="$t('common.status')" width="120px" />
       </el-table>
     </el-row>
     <el-row>
@@ -134,7 +130,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('training')
 
 export default {
-  title: '学習管理',
+  title: 'training.title',
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -149,18 +145,18 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: '学習名', type: 'text' },
-        { prop: 'parentId', name: 'マウントした学習ID', type: 'number' },
-        { prop: 'parentName', name: 'マウントした学習名', type: 'text' },
-        { prop: 'startedAt', name: '開始日時', type: 'date' },
-        { prop: 'startedBy', name: '実行者', type: 'text' },
-        { prop: 'dataSet', name: 'データセット', type: 'text' },
-        { prop: 'entryPoint', name: '実行コマンド', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('training.trainingName'), type: 'text' },
+        { prop: 'parentId', name: this.$t('training.mountedTrainingId'), type: 'number' },
+        { prop: 'parentName', name: this.$t('training.mountedTrainingName'), type: 'text' },
+        { prop: 'startedAt', name: this.$t('common.startDate'), type: 'date' },
+        { prop: 'startedBy', name: this.$t('common.executor'), type: 'text' },
+        { prop: 'dataSet', name: this.$t('common.dataset'), type: 'text' },
+        { prop: 'entryPoint', name: this.$t('common.command'), type: 'text' },
+        { prop: 'memo', name: this.$t('common.memo'), type: 'text' },
+        { prop: 'tag', name: this.$t('common.tag'), type: 'text', multiple: true },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('common.status'),
           type: 'select',
           option: {
             items: [
@@ -211,8 +207,8 @@ export default {
       let confirmMessage = `学習履歴を${this.selections.length}件削除しますか（出力データ数が多い場合、処理に時間がかかります）`
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {

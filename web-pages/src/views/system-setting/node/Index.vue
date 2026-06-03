@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ノード管理</h2>
+    <h2>{{ $t('systemSetting.nodeTitle') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -13,9 +13,7 @@
           type="primary"
           plain
           @click="openCreateDialog"
-        >
-          新規登録
-        </el-button>
+        >{{ $t('common.newRegister') }}</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -26,10 +24,10 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="100px" />
-        <el-table-column prop="name" label="ノード名" width="200px" />
+        <el-table-column prop="name" :label="$t('common.nodeName')" width="200px" />
         <el-table-column
           prop="partition"
-          label="パーティション"
+          :label="$t('common.partition')"
           width="320px"
         />
         <el-table-column
@@ -51,7 +49,7 @@
             {{ getNotebookFlag(prop.row.notebookEnabled) }}
           </template>
         </el-table-column>
-        <el-table-column prop="memo" label="メモ" width="auto" />
+        <el-table-column prop="memo" :label="$t('common.memo')" width="auto" />
       </el-table>
     </el-row>
     <el-row>
@@ -71,7 +69,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('node')
 
 export default {
-  title: 'ノード管理', //<title>設定
+  title: 'systemSetting.nodeTitle', //<title>設定
   components: {
     KqiPagination,
   },

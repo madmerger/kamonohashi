@@ -24,7 +24,7 @@
       <el-tab-pane label="基本設定" name="baseSetting">
         <base-setting v-if="baseForm" v-model="baseForm" />
       </el-tab-pane>
-      <el-tab-pane label="前処理" name="preprocessing">
+      <el-tab-pane :label="$t('common.preprocessing')" name="preprocessing">
         <preprocessing
           v-if="preprocForm"
           ref="preprocessing"
@@ -35,7 +35,7 @@
           @copy="copyAqContainer"
         />
       </el-tab-pane>
-      <el-tab-pane label="学習" name="train">
+      <el-tab-pane :label="$t('common.training')" name="train">
         <training
           v-if="trainingForm"
           ref="training"
@@ -46,7 +46,7 @@
           @copy="copyAqContainer"
         />
       </el-tab-pane>
-      <el-tab-pane label="推論" name="evaluation">
+      <el-tab-pane :label="$t('common.inference')" name="evaluation">
         <evaluation
           v-if="evaluationForm"
           ref="evaluation"
@@ -87,7 +87,7 @@
       <span v-else slot="footer" class="dialog-footer">
         <el-button @click="deleteVersionDialog = false">Cancel</el-button>
         <el-button type="primary" @click="deleteTemplateVersion()">
-          削除
+          {{ $t('common.delete') }}
         </el-button>
       </span>
     </el-dialog>
@@ -100,7 +100,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="deleteDialog = false">Cancel</el-button>
         <el-button type="primary" @click="deleteTemplate()">
-          削除
+          {{ $t('common.delete') }}
         </el-button>
       </span>
     </el-dialog>
@@ -115,7 +115,7 @@ import AqContainerSettings from '@/components/AqContainerSettings'
 const { mapGetters, mapActions } = createNamespacedHelpers('template')
 
 export default {
-  title: 'モデルテンプレート',
+  title: 'aquarium.modelTemplate',
   components: {
     BaseSetting,
     Preprocessing: AqContainerSettings,
@@ -140,7 +140,7 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データセット名', type: 'text' },
+        { prop: 'name', name: this.$t('dataset.datasetName'), type: 'text' },
         { prop: 'type', name: '種類', type: 'text' },
         { prop: 'totalImageNumber', name: 'イメージの総数', type: 'text' },
         {
@@ -149,7 +149,7 @@ export default {
           type: 'text',
         },
         { prop: 'lastModified', name: '最終更新日時', type: 'date' },
-        { prop: 'status', name: 'ステータス', type: 'text' },
+        { prop: 'status', name: this.$t('common.status'), type: 'text' },
       ],
       tableData: [],
       activeName: 'baseSetting',

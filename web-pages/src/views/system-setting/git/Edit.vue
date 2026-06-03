@@ -9,7 +9,7 @@
   >
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="名前" prop="name">
+      <el-form-item :label="$t('common.name')" prop="name">
         <el-input v-model="form.name" :disabled="isNotEditable" />
       </el-form-item>
       <el-form-item label="種別" prop="serviceType">
@@ -53,7 +53,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('git')
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {

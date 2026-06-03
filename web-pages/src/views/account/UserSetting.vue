@@ -63,7 +63,7 @@ export default {
         currentPassword: {
           required: true,
           trigger: 'blur',
-          message: '必須項目です',
+          message: this.$t('common.required'),
         },
         password: [
           {
@@ -84,9 +84,9 @@ export default {
   methods: {
     passwordValidator(rule, value, callback) {
       if (!(value[0] && value[1])) {
-        callback(new Error('必須項目です'))
+        callback(new Error(this.$t('common.required')))
       } else if (!(value[0] === value[1])) {
-        callback(new Error('同一のパスワードを入力してください'))
+        callback(new Error(this.$t('account.samePwdRequired')))
       } else {
         callback()
       }

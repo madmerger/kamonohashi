@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>データセット</h2>
+    <h2>{{ $t('common.dataset') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -27,7 +27,7 @@
         @row-click="openEditDataset"
       >
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="データセット名" width="auto" />
+        <el-table-column prop="name" :label="$t('dataset.datasetName')" width="auto" />
         <el-table-column
           prop="latestVersion"
           label="最新バージョン"
@@ -53,7 +53,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('aquariumDataSet')
 
 export default {
-  title: 'データセット',
+  title: 'common.dataset',
   components: {
     KqiPagination,
   },
@@ -67,7 +67,7 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データセット名', type: 'text' },
+        { prop: 'name', name: this.$t('dataset.datasetName'), type: 'text' },
         { prop: 'latestVersion', name: '最新バージョン', type: 'text' },
 
         { prop: 'modifiedAt', name: '最終更新日時', type: 'date' },

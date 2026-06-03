@@ -17,7 +17,12 @@ import './icon'
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
-const i18n = new VueI18n({ locale: 'ja', messages: message })
+
+const savedLocale = localStorage.getItem('kqi-locale') || navigator.language.split('-')[0] || 'ja'
+const supportedLocales = ['ja', 'en', 'es']
+const initialLocale = supportedLocales.includes(savedLocale) ? savedLocale : 'ja'
+
+const i18n = new VueI18n({ locale: initialLocale, messages: message })
 
 Vue.use(ElementUI, { i18n: (key, value) => i18n.t(key, value) })
 Vue.use(lineClamp, {})

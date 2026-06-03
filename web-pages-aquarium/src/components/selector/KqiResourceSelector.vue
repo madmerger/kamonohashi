@@ -2,12 +2,12 @@
   <div>
     <el-row type="flex">
       <el-col>
-        <label>実行要求リソース</label>
+        <label>{{ $t('common.requestedResource') }}</label>
       </el-col>
       <el-col align="right">
         <el-popover
           ref="allocatableNodeInfo"
-          title="ノード情報"
+          :title="$t('common.nodeInfo')"
           trigger="hover"
         >
           <kqi-allocatable-node-info :allocatable-nodes="nodes" />
@@ -18,9 +18,7 @@
           type="primary"
           plain
           size="mini"
-        >
-          ノード情報
-        </el-button>
+        >{{ $t('common.nodeInfo') }}</el-button>
       </el-col>
     </el-row>
 
@@ -43,7 +41,7 @@
           @input="resourceValidator()"
         />
       </el-form-item>
-      <el-form-item label="メモリ(GB)" required>
+      <el-form-item :label="$t('common.memoryGB')" required>
         <el-slider
           v-model="value.memory"
           class="el-input"

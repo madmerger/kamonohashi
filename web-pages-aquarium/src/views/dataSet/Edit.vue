@@ -17,7 +17,7 @@
     >
       <kqi-display-error :error="error" />
       <el-row>
-        <el-form-item label="データセット名" prop="name">
+        <el-form-item :label="$t('dataset.datasetName')" prop="name">
           <el-input v-model="form.name" />
         </el-form-item>
       </el-row>
@@ -124,7 +124,7 @@ export default {
       dialogVisible: true,
       error: null,
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
       },
       searchCondition: {},
       dataPageStatus: {

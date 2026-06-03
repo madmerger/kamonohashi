@@ -5,15 +5,15 @@
       :value="inference ? String(inference.id) : '0'"
     />
     <kqi-display-text-form
-      label="推論名"
+      :label="$t('inference.inferenceName')"
       :value="inference ? inference.name : ''"
     />
     <kqi-display-text-form
-      label="ステータス"
+      :label="$t('common.status')"
       :value="inference ? inference.status : ''"
     />
     <kqi-display-text-form
-      label="メモ"
+      :label="$t('common.memo')"
       :value="inference ? inference.memo : ''"
     />
   </div>

@@ -6,10 +6,10 @@
       <el-col :span="24">
         <el-table :data="evaluations" style="width: 100%">
           <el-table-column prop="id" label="ID" width="180"> </el-table-column>
-          <el-table-column prop="name" label="推論名"></el-table-column>
+          <el-table-column prop="name" :label="$t('inference.inferenceName')"></el-table-column>
           <el-table-column
             prop="dataSet.name"
-            label="データセット名"
+            :label="$t('dataset.datasetName')"
             width="180"
           >
           </el-table-column>
@@ -19,7 +19,7 @@
             width="180"
           >
           </el-table-column>
-          <el-table-column label="ステータス">
+          <el-table-column :label="$t('common.status')">
             <div slot-scope="scope">
               <div
                 v-if="
@@ -36,7 +36,7 @@
               </div>
               <div v-else-if="scope.row.status === 'Completed'">
                 <i class="el-icon-success" style="color: #67C23A;" />
-                完了
+                {{ $t('common.completed') }}
               </div>
               <div v-else>
                 <i class="el-icon-warning" style="color: #E6A23C;" />
@@ -54,7 +54,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="delete" label="削除">
+          <el-table-column prop="delete" :label="$t('common.delete')">
             <template slot-scope="scope">
               <el-button @click="openDeleteDialog(scope.row)"
                 >削除する</el-button
@@ -67,7 +67,7 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="deleteDialog = false">Cancel</el-button>
             <el-button type="primary" @click="deleteInference()">
-              削除
+              {{ $t('common.delete') }}
             </el-button>
           </span>
         </el-dialog>
@@ -91,10 +91,10 @@
           element-loading-spinner=" "
           element-loading-background="rgba(255, 255, 255, 0.7)"
         >
-          <el-form-item label="名前" prop="name">
+          <el-form-item :label="$t('common.name')" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
-          <el-form-item label="データセット" prop="selectedDataSetVersionName">
+          <el-form-item :label="$t('common.dataset')" prop="selectedDataSetVersionName">
             <el-input
               v-model="form.selectedDataSetVersionName"
               :disabled="true"
@@ -105,9 +105,7 @@
 
         <span slot="footer" class="dialog-footer">
           <el-button @click="createDialog = false">Cancel</el-button>
-          <el-button type="primary" @click="createInference()">
-            実行
-          </el-button>
+          <el-button type="primary" @click="createInference()">{{ $t('common.execute') }}</el-button>
         </span>
       </el-dialog>
       <el-drawer
@@ -174,7 +172,7 @@
               style="margin-top:10px"
               @click="closeDrawer"
             >
-              キャンセル
+              {{ $t('common.cancel') }}
             </el-button></el-row
           >
         </div>
@@ -187,7 +185,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AqualiumTensorboardHandler from './AqualiumTensorboardHandler.vue'
 export default {
-  title: '推論',
+  title: 'common.inference',
   components: { AqualiumTensorboardHandler },
   props: {
     // 選択した実験情報
@@ -226,9 +224,9 @@ export default {
       error: null,
       isCreateDialog: false,
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
         selectedDataSetVersionName: [
-          { required: true, trigger: 'blur', message: '必須項目です' },
+          { required: true, trigger: 'blur', message: this.$t('common.required') },
         ],
       },
       deleteDialog: false,
@@ -237,8 +235,8 @@ export default {
       inferenceList: [
         {
           id: '1',
-          name: '名前',
-          dataSet: { name: '体験版用ダミー01' },
+          name: this.$t('common.name'),
+          dataSet: { name: this.$t('aquarium.dummyName') },
           dataSetVersion: { version: 1 },
           status: '完了',
           training: { id: 1 },

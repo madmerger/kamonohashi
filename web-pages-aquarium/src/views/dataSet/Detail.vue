@@ -69,13 +69,13 @@
     </el-row>
     <el-row style="margin:15px">
       <el-col :span="8">
-        <h3>メモ</h3>
+        <h3>{{ $t('common.memo') }}</h3>
         <el-input v-model="viewVersion.memo" type="textarea" />
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="8">
-        <h3 style="padding:15px">ファイル一覧</h3>
+        <h3 style="padding:15px">{{ $t('common.fileList') }}</h3>
         <el-collapse>
           <div
             v-for="(item, index) in viewVersion.flatEntries"
@@ -242,7 +242,7 @@
                   style="margin-top:10px"
                   @click="closeDialog"
                 >
-                  キャンセル
+                  {{ $t('common.cancel') }}
                 </el-button></el-row
               >
             </div>
@@ -305,7 +305,7 @@ import KqiUploadForm from '@/components/KqiUploadForm'
 
 import KqiPagination from '@/components/KqiPagination'
 export default {
-  title: 'データセット',
+  title: 'common.dataset',
 
   components: { KqiUploadForm, KqiDisplayError, KqiPagination },
   props: {

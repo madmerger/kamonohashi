@@ -2,24 +2,24 @@
   <div>
     <el-dialog
       class="dialog"
-      title="ファイル一覧"
+      :title="$t('common.fileList')"
       :visible.sync="dialogVisible"
       :before-close="emitCancel"
       :close-on-click-modal="false"
     >
       <el-row>
         <el-col :span="6">
-          <kqi-display-text-form label="ノートブック名" :value="detail.name" />
+          <kqi-display-text-form :label="$t('notebook.notebookName')" :value="detail.name" />
         </el-col>
         <el-col :span="6">
-          <kqi-display-text-form label="開始日時" :value="detail.createdAt" />
+          <kqi-display-text-form :label="$t('common.startDate')" :value="detail.createdAt" />
         </el-col>
         <el-col :span="6">
-          <kqi-display-text-form label="完了日時" :value="detail.completedAt" />
+          <kqi-display-text-form :label="$t('common.endDate')" :value="detail.completedAt" />
         </el-col>
         <el-col :span="6">
           <kqi-display-text-form
-            label="ステータス"
+            :label="$t('common.status')"
             :value="detail.statusType"
           />
         </el-col>
@@ -28,8 +28,8 @@
       <kqi-file-viewer :file-list="fileList" @updatePath="updatePath" />
       <el-row :gutter="20" class="footer">
         <el-col class="right-button-group" :span="24">
-          <el-button @click="emitCancel">キャンセル</el-button>
-          <el-button @click="emitReturn">戻る</el-button>
+          <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
+          <el-button @click="emitReturn">{{ $t('common.back') }}</el-button>
         </el-col>
       </el-row>
     </el-dialog>

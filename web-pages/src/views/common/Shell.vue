@@ -15,7 +15,7 @@
       </div>
       <el-row :gutter="20" class="footer">
         <el-col class="right-button-group" :span="24">
-          <el-button @click="emitReturn()">戻る</el-button>
+          <el-button @click="emitReturn()">{{ $t('common.back') }}</el-button>
         </el-col>
       </el-row>
     </el-dialog>

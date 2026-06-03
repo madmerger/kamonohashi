@@ -23,9 +23,9 @@
       </el-table-column>
       <el-table-column prop="nodeName" label="ノード" width="auto" />
       <el-table-column prop="cpu" label="CPU" width="auto" />
-      <el-table-column prop="memory" label="メモリ" width="auto" />
+      <el-table-column prop="memory" :label="$t('common.memory')" width="auto" />
       <el-table-column prop="gpu" label="GPU" width="auto" />
-      <el-table-column prop="status" label="ステータス" width="auto" />
+      <el-table-column prop="status" :label="$t('common.status')" width="auto" />
     </el-table>
     <router-view @cancel="closeDialog()" @done="done()" />
   </div>

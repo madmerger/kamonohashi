@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>前処理管理</h2>
+    <h2>{{ $t('preprocessing.title') }}</h2>
 
     <el-row>
       <kqi-pagination
@@ -10,7 +10,7 @@
       />
 
       <el-col class="right-top-button" :span="8">
-        <el-button @click="openPreprocessingDialog">前処理実行</el-button>
+        <el-button @click="openPreprocessingDialog">{{ $t('preprocessing.preprocessRun') }}</el-button>
         <el-button
           icon="el-icon-edit-outline"
           type="primary"
@@ -40,14 +40,14 @@
           @row-click="openEditDialog"
         >
           <el-table-column prop="id" label="ID" width="120px" />
-          <el-table-column prop="name" label="前処理名" width="auto" />
+          <el-table-column prop="name" :label="$t('preprocessing.preprocessName')" width="auto" />
           <el-table-column
             prop="memo"
-            label="メモ"
+            :label="$t('common.memo')"
             width="auto"
             class-name="memo-column"
           />
-          <el-table-column prop="createdAt" label="登録日時" width="170px" />
+          <el-table-column prop="createdAt" :label="$t('common.createdDate')" width="170px" />
           <el-table-column width="auto">
             <template slot-scope="props">
               <el-button
@@ -86,7 +86,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('preprocessing')
 
 export default {
-  title: '前処理管理',
+  title: 'preprocessing.title',
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -100,9 +100,9 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: '前処理名', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'createdAt', name: '登録日時', type: 'date' },
+        { prop: 'name', name: this.$t('preprocessing.preprocessName'), type: 'text' },
+        { prop: 'memo', name: this.$t('common.memo'), type: 'text' },
+        { prop: 'createdAt', name: this.$t('common.createdDate'), type: 'date' },
       ],
       selectedRowId: 0,
     }

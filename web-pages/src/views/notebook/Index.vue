@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ノートブック管理</h2>
+    <h2>{{ $t('notebook.title') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -41,11 +41,11 @@
           </div>
         </el-table-column>
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="ノートブック名" width="240px" />
+        <el-table-column prop="name" :label="$t('notebook.notebookName')" width="240px" />
         <el-table-column prop="createdAt" label="作成日時" width="200px" />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('common.memo')"
           width="auto"
           class-name="memo-column"
         />
@@ -64,7 +64,7 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column prop="status" :label="$t('common.status')" width="120px" />
         <el-table-column prop="status" label="Action" width="300px">
           <div slot-scope="scope">
             <div v-if="scope.row.status === 'Running'">
@@ -117,7 +117,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('notebook')
 const kqiHost = process.env.VUE_APP_KAMONOHASHI_HOST || window.location.hostname
 
 export default {
-  title: 'ノートブック管理',
+  title: 'notebook.title',
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -131,13 +131,13 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'ノートブック名', type: 'text' },
+        { prop: 'name', name: this.$t('notebook.notebookName'), type: 'text' },
         { prop: 'createdAt', name: '作成日時', type: 'date' },
         { prop: 'createdBy', name: '作成者', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
+        { prop: 'memo', name: this.$t('common.memo'), type: 'text' },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('common.status'),
           type: 'select',
           option: {
             items: [

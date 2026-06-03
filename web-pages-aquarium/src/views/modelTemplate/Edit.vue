@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="dialog"
-    title="新しいテンプレートの登録"
+    :title="$t('aquarium.newTemplateRegister')"
     :visible.sync="dialogVisible"
     :close-on-click-modal="false"
     @delete="deleteTemplate"
@@ -35,7 +35,7 @@
             <kqi-display-error :error="error" />
             <kqi-display-text-form v-if="isEditDialog" label="ID" :value="id" />
 
-            <el-form-item label="テンプレート名" prop="name">
+            <el-form-item :label="$t('aquarium.templateName')" prop="name">
               <el-input v-model="form.name" />
             </el-form-item>
             <el-form-item label="説明文" prop="memo">
@@ -112,9 +112,7 @@
           <i class="el-icon-arrow-right" />
         </span>
         <span class="right-step-group">
-          <el-button v-if="active === 3" type="primary" @click="submit">
-            新規登録
-          </el-button>
+          <el-button v-if="active === 3" type="primary" @click="submit">{{ $t('common.newRegister') }}</el-button>
         </span>
       </div>
     </el-row>
@@ -218,7 +216,7 @@ export default {
       error: null,
       isEditDialog: false,
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
       },
     }
   },

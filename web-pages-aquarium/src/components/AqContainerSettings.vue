@@ -122,7 +122,7 @@
               />
             </el-col>
           </el-row>
-          <el-form-item label="実行コマンド" prop="entryPoint">
+          <el-form-item :label="$t('common.command')" prop="entryPoint">
             <el-input
               v-model="form.entryPoint"
               type="textarea"
@@ -147,7 +147,7 @@ import KqiResourceSelector from '@/components/selector/KqiResourceSelector'
 import api from '@/api/api'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  title: 'モデルテンプレート',
+  title: 'aquarium.modelTemplate',
   components: {
     KqiContainerSelector,
     KqiGitSelector,
@@ -202,7 +202,7 @@ export default {
       commitsPage: 1,
       rules: {
         containerImage: [
-          { required: true, trigger: 'blur', message: '必須項目です' },
+          { required: true, trigger: 'blur', message: this.$t('common.required') },
         ],
       },
       error: null,

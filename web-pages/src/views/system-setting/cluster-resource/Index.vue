@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>リソース利用状況</h2>
+    <h2>{{ $t('systemSetting.resourceTitle') }}</h2>
 
     <el-row>
       <el-col :span="12">
@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  title: 'リソース利用状況',
+  title: 'systemSetting.resourceTitle',
   data: function() {
     return {
       mode: '',

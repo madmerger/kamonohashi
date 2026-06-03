@@ -10,9 +10,7 @@
 <!--}-->
 <template>
   <div class="el-input">
-    <span v-if="!statusName">
-      状態確認中...
-    </span>
+    <span v-if="!statusName">{{ $t('common.checkingStatus') }}</span>
     <span v-else-if="statusName === 'Running'">
       <div v-if="tensorboardUrl" class="tensorBoardlink">
         <el-button type="primary" size="small" plain @click="openTensorBoard">
@@ -21,7 +19,7 @@
         <el-button type="danger" size="small" plain @click="deleteTensorBoard">
           終了
         </el-button>
-        <kqi-display-text-form label="残り時間" :value="remainingTime" />
+        <kqi-display-text-form :label="$t('common.remainingTime')" :value="remainingTime" />
       </div>
       <div v-else>
         グラフの準備中...
@@ -39,11 +37,9 @@
     <span v-else-if="statusName === 'Starting'">
       グラフの準備中...
     </span>
-    <span v-else-if="statusName === 'Deleting'">
-      停止中...
-    </span>
+    <span v-else-if="statusName === 'Deleting'">{{ $t('common.stoppingDots') }}</span>
     <span v-else>
-      <span>起動失敗</span>
+      <span>{{ $t('common.startFailed') }}</span>
       <el-button type="primary" @click="runTensorBoard"
         >再度グラフの表示を試す</el-button
       >

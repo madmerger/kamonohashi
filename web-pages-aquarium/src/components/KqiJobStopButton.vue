@@ -13,11 +13,9 @@
       >
         <br />
         <div style="text-align: center;">
-          <el-button @click="dialogVisible = false">キャンセル</el-button>
-          <el-button type="danger" @click="$emit('halt')">異常停止</el-button>
-          <el-button type="success" @click="$emit('userCancel')">
-            正常停止
-          </el-button>
+          <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
+          <el-button type="danger" @click="$emit('halt')">{{ $t('common.forceStop') }}</el-button>
+          <el-button type="success" @click="$emit('userCancel')">{{ $t('common.normalStop') }}</el-button>
         </div>
       </el-dialog>
     </el-button>

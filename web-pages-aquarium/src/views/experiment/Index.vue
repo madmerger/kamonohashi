@@ -28,22 +28,22 @@
         @row-click="openEditExperiment"
       >
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="名前" width="auto" />
+        <el-table-column prop="name" :label="$t('common.name')" width="auto" />
 
         <el-table-column
           prop="dataSet.name"
-          label="データセット"
+          :label="$t('common.dataset')"
           width="auto"
         />
 
         <el-table-column
           prop="template.name"
-          label="テンプレート"
+          :label="$t('aquarium.templateName')"
           width="auto"
         />
 
-        <el-table-column prop="createdAt" label="開始日時" width="auto" />
-        <el-table-column label="ステータス" width="auto">
+        <el-table-column prop="createdAt" :label="$t('common.startDate')" width="auto" />
+        <el-table-column :label="$t('common.status')" width="auto">
           <div slot-scope="scope">
             <div
               v-if="
@@ -68,7 +68,7 @@
             </div>
             <div v-else-if="scope.row.status === 'Completed'">
               <i class="el-icon-success" style="color: #67C23A;" />
-              完了
+              {{ $t('common.completed') }}
             </div>
             <div v-else>
               <i class="el-icon-warning" style="color: #E6A23C;" />
@@ -100,7 +100,7 @@ import KqiPagination from '@/components/KqiPagination'
 //const { mapGetters, mapActions } = createNamespacedHelpers('experiment')
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  title: '実験',
+  title: 'aquarium.experiment',
   components: {
     KqiPagination,
   },
@@ -114,19 +114,19 @@ export default {
       },
       searchCondition: {},
       searchConfigs: [
-        { prop: 'name', name: '名前', type: 'text' },
+        { prop: 'name', name: this.$t('common.name'), type: 'text' },
         {
           prop: 'dataSet.aquariumDataSetId',
-          name: 'データセット',
+          name: this.$t('common.dataset'),
           type: 'text',
         },
-        { prop: 'template.name', name: 'テンプレート', type: 'text' },
-        { prop: 'outputValue', name: '平均適合率', type: 'text' },
+        { prop: 'template.name', name: this.$t('aquarium.templateName'), type: 'text' },
+        { prop: 'outputValue', name: this.$t('aquarium.averagePrecision'), type: 'text' },
 
-        { prop: 'createdAt', name: '開始日時', type: 'date' },
+        { prop: 'createdAt', name: this.$t('common.startDate'), type: 'date' },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('common.status'),
           type: 'select',
           option: {
             items: [

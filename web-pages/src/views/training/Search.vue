@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       :visible.sync="searchDialogVisible"
-      title="詳細検索"
+      :title="$t('common.detailSearch')"
       :before-close="close"
     >
       <el-form ref="form" :model="searchForm" label-width="120px">
@@ -15,7 +15,7 @@
             <el-input v-model="searchForm.idUpper" placeholder="To" />
           </el-col>
         </el-form-item>
-        <el-form-item label="学習名">
+        <el-form-item :label="$t('training.trainingName')">
           <el-col :span="20">
             <multi-input v-model="searchForm.name" />
           </el-col>
@@ -27,7 +27,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="親学習名">
+        <el-form-item :label="$t('training.parentTrainingName')">
           <el-col :span="20">
             <multi-input v-model="searchForm.parentName" />
           </el-col>
@@ -39,7 +39,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="開始日時">
+        <el-form-item :label="$t('common.startDate')">
           <el-col :span="11">
             <el-date-picker
               v-model="searchForm.startedAtLower"
@@ -62,7 +62,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="実行者">
+        <el-form-item :label="$t('common.executor')">
           <el-col :span="20">
             <multi-input
               v-model="searchForm.startedBy"
@@ -77,7 +77,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="データセット名">
+        <el-form-item :label="$t('dataset.datasetName')">
           <el-col :span="20">
             <multi-input
               v-model="searchForm.dataSet"
@@ -92,7 +92,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="メモ">
+        <el-form-item :label="$t('common.memo')">
           <el-col :span="20">
             <multi-input v-model="searchForm.memo" />
           </el-col>
@@ -104,7 +104,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="ステータス">
+        <el-form-item :label="$t('common.status')">
           <el-col :span="20">
             <multi-input
               v-model="searchForm.status"
@@ -119,7 +119,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="実行コマンド">
+        <el-form-item :label="$t('common.command')">
           <el-col :span="20">
             <multi-input v-model="searchForm.entryPoint" />
           </el-col>
@@ -131,7 +131,7 @@
             />
           </el-col>
         </el-form-item>
-        <el-form-item label="タグ">
+        <el-form-item :label="$t('common.tag')">
           <el-col :span="20">
             <multi-input
               v-model="searchForm.tags"
@@ -148,19 +148,17 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="saveSearchFormDialogVisible = true">
-          検索条件を保存
-        </el-button>
-        <el-button type="primary" @click="search">検索</el-button>
+        <el-button @click="saveSearchFormDialogVisible = true">{{ $t('common.saveSearchCondition') }}</el-button>
+        <el-button type="primary" @click="search">{{ $t('common.search') }}</el-button>
       </span>
     </el-dialog>
     <el-dialog
       :visible.sync="saveSearchFormDialogVisible"
-      title="検索条件の保存"
+      :title="$t('common.saveSearchCondition')"
       :before-close="closeDialog"
     >
       <el-form>
-        <el-form-item label="登録名">
+        <el-form-item :label="$t('common.registeredName')">
           <el-col :span="18">
             <el-row>
               <el-input v-model="searchConditionName" />
@@ -172,7 +170,7 @@
 
           <el-col :span="4">
             <el-button type="primary" @click="saveSearchCondition">
-              登録
+              {{ $t('common.register') }}
             </el-button>
           </el-col>
         </el-form-item>
@@ -188,7 +186,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('training')
 
 export default {
-  title: '詳細検索',
+  title: 'common.detailSearch',
   components: {
     MultiInput,
     KqiDisplayError,
@@ -312,7 +310,7 @@ export default {
         this.searchConditionName == null ||
         this.searchConditionName.length < 4
       ) {
-        this.error = new Error('4文字以上で入力してください')
+        this.error = new Error(this.$t('common.minChars4'))
         return
       }
       let params = {}

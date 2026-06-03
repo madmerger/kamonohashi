@@ -12,6 +12,27 @@ title
       </el-col>
       <el-col :span="12" class="user">
         <el-dropdown
+          class="locale-switcher"
+          trigger="click"
+          @command="handleSwitchLocale"
+        >
+          <span class="el-dropdown-link user-label">
+            <i class="el-icon-s-operation" style="margin-right: 4px;" />
+            {{ currentLocaleName }}
+            <i class="el-icon-caret-bottom" />
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="loc in localeOptions"
+              :key="loc.value"
+              :command="loc.value"
+              :class="{ activeTenant: currentLocale === loc.value }"
+            >
+              {{ loc.label }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown
           v-if="isLogined"
           trigger="click"
           @command="handleSwitchTenant"
@@ -47,7 +68,7 @@ title
             </el-dropdown-item>
             <hr />
             <el-dropdown-item key="@setting" command="@setting">
-              ユーザ情報設定
+              {{ $t('header.userSettings') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -57,7 +78,7 @@ title
           class="user-label"
           @click="handleLogout"
         >
-          ログアウト
+          {{ $t('header.logout') }}
         </el-button>
       </el-col>
     </el-row>
@@ -70,13 +91,32 @@ const { mapGetters, mapActions } = createNamespacedHelpers('account')
 
 export default {
   name: 'Header',
+  data() {
+    return {
+      currentLocale: this.$i18n.locale,
+      localeOptions: [
+        { value: 'ja', label: '日本語' },
+        { value: 'en', label: 'English' },
+        { value: 'es', label: 'Español' },
+      ],
+    }
+  },
   computed: {
     ...mapGetters(['account', 'isLogined']),
+    currentLocaleName() {
+      const found = this.localeOptions.find(o => o.value === this.currentLocale)
+      return found ? found.label : this.currentLocale
+    },
   },
   methods: {
     ...mapActions(['switchTenant', 'logout']),
     omitIfLong(str) {
       return str.length <= 25 ? str : str.substr(0, 25) + '...'
+    },
+    handleSwitchLocale(locale) {
+      this.$i18n.locale = locale
+      this.currentLocale = locale
+      localStorage.setItem('kqi-locale', locale)
     },
     async handleSwitchTenant(tenant) {
       if (tenant === '@setting') {
@@ -174,5 +214,9 @@ export default {
   &:focus {
     color: white;
   }
+}
+
+.locale-switcher {
+  margin-right: 15px;
 }
 </style>

@@ -13,7 +13,7 @@
       <el-form-item label="ロール名" prop="name">
         <el-input v-model="form.name" :disabled="isNotEditable" />
       </el-form-item>
-      <el-form-item label="表示名" prop="displayName">
+      <el-form-item :label="$t('common.displayName')" prop="displayName">
         <el-input v-model="form.displayName" :disabled="isNotEditable" />
       </el-form-item>
       <el-form-item label="種別" prop="isSystemRole">
@@ -60,7 +60,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('role')
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {
@@ -83,8 +83,8 @@ export default {
         sortOrder: 0,
         tenantName: null,
         roleTypes: [
-          { label: 'テナント(共通)', value: false },
-          { label: 'システム', value: true },
+          { label: this.$t('systemSetting.roleTenantCommon'), value: false },
+          { label: this.$t('systemSetting.roleSystem'), value: true },
         ],
       },
       title: '',

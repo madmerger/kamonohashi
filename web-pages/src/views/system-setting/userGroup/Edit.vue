@@ -40,7 +40,7 @@
           :show-system-role="false"
         />
       </el-form-item>
-      <el-form-item label="メモ" prop="memo">
+      <el-form-item :label="$t('common.memo')" prop="memo">
         <el-input v-model="form.memo" type="textarea" />
       </el-form-item>
     </el-form>
@@ -57,7 +57,7 @@ import { mapGetters, mapActions } from 'vuex'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 
 export default {

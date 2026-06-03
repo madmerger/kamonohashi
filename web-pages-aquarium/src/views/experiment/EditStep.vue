@@ -107,7 +107,7 @@
                   style="margin-top:10px"
                   @click="closeDrawer"
                 >
-                  キャンセル
+                  {{ $t('common.cancel') }}
                 </el-button></el-row
               >
             </div>
@@ -168,12 +168,12 @@ export default {
       error: null,
       isCreateDialog: false,
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
         selectedDataSetVersionName: [
-          { required: true, trigger: 'blur', message: '必須項目です' },
+          { required: true, trigger: 'blur', message: this.$t('common.required') },
         ],
         templateVersionValue: [
-          { required: true, trigger: 'blur', message: '必須項目です' },
+          { required: true, trigger: 'blur', message: this.$t('common.required') },
         ],
       },
     }

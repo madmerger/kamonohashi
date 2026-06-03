@@ -22,7 +22,7 @@
         </el-form-item>
       </el-form>
       <el-col :span="24" class="right-button-group">
-        <el-button @click="emitCancel">キャンセル</el-button>
+        <el-button @click="emitCancel">{{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="syncLdap">同期開始</el-button>
       </el-col>
     </el-row>
@@ -37,7 +37,7 @@ const { mapActions } = createNamespacedHelpers('user')
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required'),
 }
 export default {
   components: {
@@ -86,8 +86,8 @@ export default {
         '同期処理を開始しますか？ユーザ数が多い場合、処理完了までに時間がかかる場合があります。'
       try {
         await this.$confirm(confirmMessage, 'Warning', {
-          confirmButtonText: 'はい',
-          cancelButtonText: 'キャンセル',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         })
         return true

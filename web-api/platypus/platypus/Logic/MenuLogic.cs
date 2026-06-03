@@ -342,7 +342,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo LoginMenu = new MenuItemInfo()
         {
             Name = "ログイン",
+            NameEn = "Login",
+            NameEs = "Iniciar sesión",
             Description = "ログイン",
+            DescriptionEn = "Login",
+            DescriptionEs = "Iniciar sesión",
             Code = MenuCode.Login,
             Url = "/login",
             ShowTopMenu = false,
@@ -352,7 +356,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo AccountMenu = new MenuItemInfo()
         {
             Name = "アカウント管理",
+            NameEn = "Account",
+            NameEs = "Cuenta",
             Description = "ログインユーザアカウントの管理",
+            DescriptionEn = "Manage user account",
+            DescriptionEs = "Gestión de cuenta de usuario",
             Code = MenuCode.Account,
             Url = "/setting",
             ShowTopMenu = false,
@@ -362,7 +370,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo DashBoardMenu = new MenuItemInfo()
         {
             Name = "ダッシュボード",
+            NameEn = "Dashboard",
+            NameEs = "Panel de control",
             Description = "ダッシュボード",
+            DescriptionEn = "Dashboard",
+            DescriptionEs = "Panel de control",
             Code = MenuCode.DashBoard,
             Url = "/",
             ShowTopMenu = false,
@@ -373,8 +385,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "データ管理",
             NameEn = "Data",
+            NameEs = "Datos",
             Description = "各種データや教師データ(アノテーションファイル)の管理",
             DescriptionEn = "Upload and Download file",
+            DescriptionEs = "Carga y descarga de archivos",
             Category = "pl-data",
             Code = MenuCode.Data,
             Url = "/data",
@@ -386,8 +400,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "データセット管理",
             NameEn = "DataSet",
+            NameEs = "Conjunto de datos",
             Description = "登録したデータを train / test / validation にわけデータセットとして利用できるようにする",
             DescriptionEn = "Grouping Uploaded Data for Training and Test",
+            DescriptionEs = "Agrupar datos cargados para entrenamiento y prueba",
             Category = "pl-dataset",
             Code = MenuCode.DataSet,
             Url = "/dataset",
@@ -399,8 +415,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "前処理管理",
             NameEn = "Preprocess",
+            NameEs = "Preprocesamiento",
             Description = "ファイルの解凍や画像ファイルのクロッピングなど、各種データ加工処理を管理",
             DescriptionEn = "Managing Preprocess Status and Histories",
+            DescriptionEs = "Gestión del estado e historial de preprocesamiento",
             Category = "pl-preprocessing",
             Code = MenuCode.Preprocess,
             Url = "/preprocessing",
@@ -412,8 +430,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "ノートブック管理",
             NameEn = "Notebook",
+            NameEs = "Notebook",
             Description = "ノートブックジョブに関する各種管理",
             DescriptionEn = "Managing Notebook Status and Histories",
+            DescriptionEs = "Gestión del estado e historial de notebooks",
             Category = "pl-notebook",
             Code = MenuCode.Notebook,
             Url = "/notebook",
@@ -425,8 +445,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "学習管理",
             NameEn = "Training",
+            NameEs = "Entrenamiento",
             Description = "機械学習などのジョブを投入するなどの各種管理",
             DescriptionEn = "Managing Training Status and Histories",
+            DescriptionEs = "Gestión del estado e historial de entrenamiento",
             Category = "pl-training",
             Code = MenuCode.Training,
             Url = "/training",
@@ -438,8 +460,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "推論管理",
             NameEn = "Inference",
+            NameEs = "Inferencia",
             Description = "推論ジョブを投入するための各種管理",
             DescriptionEn = "Managing Inference Status and Histories",
+            DescriptionEs = "Gestión del estado e historial de inferencia",
             Category = "pl-inference",
             Code = MenuCode.Inference,
             Url = "/inference",
@@ -451,8 +475,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "データセット",
             NameEn = "AquariumDataSet",
+            NameEs = "Conjunto de datos",
             Description = "アクアリウムデータセットを作成、更新、削除する",
             DescriptionEn = "Managing Aquarium DataSet",
+            DescriptionEs = "Gestión de conjuntos de datos de Aquarium",
             Category = "aq-dataset",
             Code = MenuCode.AquariumDataSet,
             Url = "/aquarium/dataset",
@@ -464,8 +490,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "新規実験",
             NameEn = "Experiment",
+            NameEs = "Experimento",
             Description = "新規に実験を実行する",
             DescriptionEn = "Start New Experiment",
+            DescriptionEs = "Iniciar nuevo experimento",
             Category = "aq-experiment",
             Code = MenuCode.Experiment,
             Url = "/aquarium/experiment/create",
@@ -477,8 +505,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "実験履歴",
             NameEn = "ExperimentHistory",
+            NameEs = "Historial de experimentos",
             Description = "実行中の実験のステータスを確認、過去の実験のデータを閲覧する",
             DescriptionEn = "Managing Experiment Status and Histories",
+            DescriptionEs = "Gestión del estado e historial de experimentos",
             Category = "aq-experiment-history",
             Code = MenuCode.ExperimentHistory,
             Url = "/aquarium/experiment",
@@ -491,8 +521,10 @@ namespace Nssol.Platypus.Logic
         {
             Name = "テンプレート",
             NameEn = "ModelTemplate",
+            NameEs = "Plantilla de modelo",
             Description = "モデルのテンプレートを作成、更新、削除する",
             DescriptionEn = "model template for sharing",
+            DescriptionEs = "Plantilla de modelo para compartir",
             Category = "aq-template",
             Code = MenuCode.Template,
             Url = "/aquarium/model-template",
@@ -503,7 +535,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo TenantSettingMenu = new MenuItemInfo()
         {
             Name = "接続テナント設定",
+            NameEn = "Tenant Settings",
+            NameEs = "Configuración del inquilino",
             Description = "接続しているテナントの設定変更",
+            DescriptionEn = "Change settings for connected tenant",
+            DescriptionEs = "Cambiar configuración del inquilino conectado",
             Code = MenuCode.TenantSetting,
             Url = "/manage/tenant",
             ShowTopMenu = false,
@@ -513,7 +549,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo TenantRoleMenu = new MenuItemInfo()
         {
             Name = "テナントロール管理",
+            NameEn = "Tenant Roles",
+            NameEs = "Roles del inquilino",
             Description = "テナント用カスタムロール管理",
+            DescriptionEn = "Manage custom tenant roles",
+            DescriptionEs = "Gestión de roles personalizados del inquilino",
             Code = MenuCode.TenantRole,
             Url = "/manage/role",
             ShowTopMenu = false,
@@ -523,7 +563,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo TenantUserMenu = new MenuItemInfo()
         {
             Name = "テナントユーザ管理",
+            NameEn = "Tenant Users",
+            NameEs = "Usuarios del inquilino",
             Description = "所属しているユーザに対する各種設定",
+            DescriptionEn = "Manage settings for tenant users",
+            DescriptionEs = "Gestión de configuración de usuarios del inquilino",
             Code = MenuCode.TenantUser,
             Url = "/manage/user",
             ShowTopMenu = false,
@@ -533,7 +577,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo TenantResourceMenu = new MenuItemInfo()
         {
             Name = "テナントリソース管理",
+            NameEn = "Tenant Resources",
+            NameEs = "Recursos del inquilino",
             Description = "テナント単位でのリソース利用状況管理",
+            DescriptionEn = "Manage resource usage per tenant",
+            DescriptionEs = "Gestión del uso de recursos por inquilino",
             Code = MenuCode.TenantResource,
             Url = "/manage/resource",
             ShowTopMenu = false,
@@ -543,7 +591,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo TenantMenuAccessMenu = new MenuItemInfo()
         {
             Name = "テナントメニュー管理",
+            NameEn = "Tenant Menu",
+            NameEs = "Menú del inquilino",
             Description = "メニューに対するカスタムロール毎のアクセス権管理",
+            DescriptionEn = "Manage menu access per custom role",
+            DescriptionEs = "Gestión de acceso al menú por rol personalizado",
             Code = MenuCode.TenantMenu,
             Url = "/manage/menu",
             ShowTopMenu = false,
@@ -555,7 +607,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo TenantMenu = new MenuItemInfo()
         {
             Name = "テナント管理",
+            NameEn = "Tenants",
+            NameEs = "Inquilinos",
             Description = "新規テナントの追加や既存テナントの設定変更",
+            DescriptionEn = "Add new tenants or change existing tenant settings",
+            DescriptionEs = "Agregar nuevos inquilinos o cambiar configuración existente",
             Code = MenuCode.Tenant,
             Url = "/tenant",
             ShowTopMenu = false,
@@ -565,7 +621,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo GitMenu = new MenuItemInfo()
         {
             Name = "Git管理",
+            NameEn = "Git",
+            NameEs = "Git",
             Description = "テナントに関連付ける Git リポジトリの管理",
+            DescriptionEn = "Manage Git repositories associated with tenants",
+            DescriptionEs = "Gestión de repositorios Git asociados a inquilinos",
             Code = MenuCode.Git,
             Url = "/git",
             ShowTopMenu = false,
@@ -575,7 +635,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo RegistryMenu = new MenuItemInfo()
         {
             Name = "レジストリ管理",
+            NameEn = "Registry",
+            NameEs = "Registro",
             Description = "テナントに関連付ける Docker レジストリの管理",
+            DescriptionEn = "Manage Docker registries associated with tenants",
+            DescriptionEs = "Gestión de registros Docker asociados a inquilinos",
             Code = MenuCode.Registry,
             Url = "/registry",
             ShowTopMenu = false,
@@ -585,7 +649,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo StorageMenu = new MenuItemInfo()
         {
             Name = "ストレージ管理",
+            NameEn = "Storage",
+            NameEs = "Almacenamiento",
             Description = "テナントに関連付ける NFS ストレージの管理",
+            DescriptionEn = "Manage NFS storage associated with tenants",
+            DescriptionEs = "Gestión de almacenamiento NFS asociado a inquilinos",
             Code = MenuCode.Storage,
             Url = "/storage",
             ShowTopMenu = false,
@@ -595,7 +663,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo RoleMenu = new MenuItemInfo()
         {
             Name = "ロール管理",
+            NameEn = "Roles",
+            NameEs = "Roles",
             Description = "テナント横断で使用するシステムロールおよびテナントロールの改廃",
+            DescriptionEn = "Manage system and tenant roles",
+            DescriptionEs = "Gestión de roles del sistema e inquilinos",
             Code = MenuCode.Role,
             Url = "/role",
             ShowTopMenu = false,
@@ -605,7 +677,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo QuotaMenu = new MenuItemInfo()
         {
             Name = "クォータ管理",
+            NameEn = "Quotas",
+            NameEs = "Cuotas",
             Description = "テナントが利用できる最大リソース量を制限",
+            DescriptionEn = "Limit maximum resources available to tenants",
+            DescriptionEs = "Limitar los recursos máximos disponibles para inquilinos",
             Code = MenuCode.Quota,
             Url = "/quota",
             ShowTopMenu = false,
@@ -615,7 +691,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo UserMenu = new MenuItemInfo()
         {
             Name = "ユーザ管理",
+            NameEn = "Users",
+            NameEs = "Usuarios",
             Description = "テナントへのユーザ追加・削除や各種ユーザのロール変更",
+            DescriptionEn = "Add/remove users and change user roles",
+            DescriptionEs = "Agregar/eliminar usuarios y cambiar roles de usuario",
             Code = MenuCode.User,
             Url = "/user",
             ShowTopMenu = false,
@@ -625,7 +705,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo UserGroupMenu = new MenuItemInfo()
         {
             Name = "ユーザグループ管理",
+            NameEn = "User Groups",
+            NameEs = "Grupos de usuarios",
             Description = "ユーザグループの設定管理",
+            DescriptionEn = "Manage user group settings",
+            DescriptionEs = "Gestión de configuración de grupos de usuarios",
             Code = MenuCode.UserGroup,
             Url = "/usergroup",
             ShowTopMenu = false,
@@ -635,7 +719,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo NodeMenu = new MenuItemInfo()
         {
             Name = "ノード管理",
+            NameEn = "Nodes",
+            NameEs = "Nodos",
             Description = "クラスタノードの設定管理",
+            DescriptionEn = "Manage cluster node settings",
+            DescriptionEs = "Gestión de configuración de nodos del clúster",
             Code = MenuCode.Node,
             Url = "/node",
             ShowTopMenu = false,
@@ -645,7 +733,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo MenuAccessMenu = new MenuItemInfo()
         {
             Name = "メニューアクセス管理",
+            NameEn = "Menu Access",
+            NameEs = "Acceso al menú",
             Description = "メニューに対するロール毎のアクセス権管理",
+            DescriptionEn = "Manage menu access per role",
+            DescriptionEs = "Gestión de acceso al menú por rol",
             Code = MenuCode.Menu,
             Url = "/menu",
             ShowTopMenu = false,
@@ -655,7 +747,11 @@ namespace Nssol.Platypus.Logic
         internal static MenuItemInfo ResourceMenu = new MenuItemInfo()
         {
             Name = "リソース管理",
+            NameEn = "Resources",
+            NameEs = "Recursos",
             Description = "クラスタノードの利用状況を参照",
+            DescriptionEn = "View cluster node resource usage",
+            DescriptionEs = "Ver uso de recursos de nodos del clúster",
             Code = MenuCode.Resource,
             Url = "/cluster-resource",
             ShowTopMenu = false,
@@ -681,6 +777,8 @@ namespace Nssol.Platypus.Logic
             new MenuItemInfo()
             {
                 Name = "テナント設定",
+                NameEn = "Tenant Settings",
+                NameEs = "Configuración del inquilino",
                 Category = "pl-tenant-setting",
                 Children = new List<MenuItemInfo>()
                 {
@@ -694,6 +792,8 @@ namespace Nssol.Platypus.Logic
             new MenuItemInfo()
             {
                 Name = "システム設定",
+                NameEn = "System Settings",
+                NameEs = "Configuración del sistema",
                 Category = "pl-system-setting",
                 Children = new List<MenuItemInfo>()
                 {

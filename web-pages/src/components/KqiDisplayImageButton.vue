@@ -7,13 +7,8 @@
       <div v-else-if="size === null">
         <i class="icon-size el-icon-loading" />
       </div>
-      <div v-else>
-        データが大きすぎるため表示できません。<br />
-        ダウンロードして確認してください。
-      </div>
-      <el-button slot="reference" size="mini" @click="openImage()">
-        画像を表示
-      </el-button>
+      <div v-else>{{ $t('common.dataTooLarge') }}<br />{{ $t('common.pleaseDownload') }}</div>
+      <el-button slot="reference" size="mini" @click="openImage()">{{ $t('common.showImage') }}</el-button>
     </el-popover>
   </span>
 </template>

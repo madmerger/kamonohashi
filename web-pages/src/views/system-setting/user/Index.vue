@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ユーザ管理</h2>
+    <h2>{{ $t('systemSetting.userTitle') }}</h2>
     <el-row :gutter="20">
       <el-col class="right-top-button">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openSyncLdapDialog"
         >
-          LDAP同期
+          {{ $t('systemSetting.ldapSync') }}
         </el-button>
         <el-button
           icon="el-icon-edit-outline"
@@ -50,7 +50,7 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column prop="roles" label="ロール" width="auto">
+              <el-table-column prop="roles" :label="$t('tenantSetting.role')" width="auto">
                 <template slot-scope="scope">
                   <span v-for="(role, index) in scope.row.roles" :key="index">
                     <el-tag v-if="role.isCustomed" type="info" class="role-tag">
@@ -75,16 +75,16 @@
 
         <el-table-column
           prop="name"
-          label="ユーザ名"
+          :label="$t('login.username')"
           width="200px"
         /><el-table-column
           prop="displayName"
           label="ユーザ表示名"
           width="200px"
         />
-        <el-table-column prop="serviceType" label="認証タイプ" width="150px">
+        <el-table-column prop="serviceType" :label="$t('tenantSetting.authType')" width="150px">
           <template slot-scope="scope">
-            <span v-if="scope.row.serviceType === 1">ローカル</span>
+            <span v-if="scope.row.serviceType === 1">{{ $t('common.local') }}</span>
             <span v-else-if="scope.row.serviceType === 2">LDAP</span>
             <span v-else>{{ serviceType }}</span>
           </template>
@@ -106,7 +106,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="systemRoles" label="ロール" width="auto">
+        <el-table-column prop="systemRoles" :label="$t('tenantSetting.role')" width="auto">
           <template slot-scope="scope">
             <span v-for="role in scope.row.systemRoles" :key="role.id">
               <el-tag type="warning" class="role-tag">
@@ -126,7 +126,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('user')
 
 export default {
-  title: 'ユーザ管理',
+  title: 'systemSetting.userTitle',
   data() {
     return { showTenants: {} }
   },

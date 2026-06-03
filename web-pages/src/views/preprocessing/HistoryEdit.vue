@@ -13,9 +13,9 @@
         label="データID"
         :value="String(historyDetail.dataId)"
       />
-      <kqi-display-text-form label="データ名" :value="historyDetail.dataName" />
+      <kqi-display-text-form :label="$t('data.dataName')" :value="historyDetail.dataName" />
       <kqi-display-text-form
-        label="前処理名"
+        :label="$t('preprocessing.preprocessName')"
         :value="historyDetail.preprocessName"
       />
       <kqi-display-text-form
@@ -30,17 +30,17 @@
         />
         <el-button size="mini" @click="emitLog">閲覧</el-button>
       </el-form-item>
-      <kqi-display-text-form label="ステータス" :value="historyDetail.status" />
+      <kqi-display-text-form :label="$t('common.status')" :value="historyDetail.status" />
       <div v-if="historyDetail.status === 'Running'">
-        <el-form-item label="操作">
+        <el-form-item :label="$t('common.operation')">
           <div class="el-input">
-            <el-button @click="emitShell">Shell起動</el-button>
+            <el-button @click="emitShell">{{ $t('common.startShell') }}</el-button>
           </div>
         </el-form-item>
       </div>
       <div v-if="historyEvents.length">
         <el-collapse accordion>
-          <el-collapse-item title="ステータス詳細ログ">
+          <el-collapse-item :title="$t('common.statusDetailLog')">
             <div v-for="(event, index) in historyEvents" :key="index">
               <div v-if="event.isError">message:{{ event.message }}</div>
             </div>
@@ -80,9 +80,7 @@
             class="pull-right btn-cancel"
             icon="el-icon-close"
             @click="handleCancel"
-          >
-            閉じる
-          </el-button>
+          >{{ $t('common.close') }}</el-button>
           <kqi-delete-button
             class="pull-left btn-update"
             message="削除しますか（出力データ数が多い場合、処理に時間がかかります）"

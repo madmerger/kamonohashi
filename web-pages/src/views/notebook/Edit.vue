@@ -8,7 +8,7 @@
   >
     <el-row type="flex" justify="end">
       <el-col :span="24" class="right-button-group">
-        <el-button @click="emitCopyCreate">コピー実行</el-button>
+        <el-button @click="emitCopyCreate">{{ $t('common.copyExecute') }}</el-button>
       </el-col>
     </el-row>
 
@@ -33,17 +33,17 @@
               />
             </span>
           </kqi-display-text-form>
-          <el-form-item label="ノートブック名" prop="name">
+          <el-form-item :label="$t('notebook.notebookName')" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
           <div v-if="detail.parents && detail.parents.length > 0">
-            <el-form-item label="マウントした学習">
+            <el-form-item :label="$t('common.mountedTraining')">
               <br />
               <div :class="{ scroll: detail.parents.length > 3 }">
                 <div v-for="parent in detail.parents" :key="parent.id">
                   <el-popover
                     ref="parentDetail"
-                    title="マウントした学習詳細"
+                    :title="$t('common.mountedTrainingDetail')"
                     trigger="hover"
                     width="350"
                     placement="right"
@@ -66,13 +66,13 @@
             </el-form-item>
           </div>
           <div v-if="detail.inferences && detail.inferences.length > 0">
-            <el-form-item label="マウントした推論">
+            <el-form-item :label="$t('common.mountedInference')">
               <br />
               <div :class="{ scroll: detail.inferences.length > 3 }">
                 <div v-for="inference in detail.inferences" :key="inference.id">
                   <el-popover
                     ref="parentDetail"
-                    title="マウントした推論詳細"
+                    :title="$t('common.mountedInferenceDetail')"
                     trigger="hover"
                     width="350"
                     placement="right"
@@ -95,10 +95,10 @@
             </el-form-item>
           </div>
           <div v-if="detail.dataSet">
-            <el-form-item label="データセット">
+            <el-form-item :label="$t('common.dataset')">
               <el-popover
                 ref="dataSetDetail"
-                title="データセット詳細"
+                :title="$t('common.datasetDetail')"
                 trigger="hover"
                 width="350"
                 placement="right"
@@ -117,14 +117,14 @@
                 {{ detail.dataSet.name }}
               </el-button>
             </el-form-item>
-            <el-form-item label="データセット作成方式">
+            <el-form-item :label="$t('common.datasetCreateMethod')">
               <div class="el-input">
-                <span v-if="detail.localDataSet">ローカルコピー</span>
-                <span v-else>シンボリックリンク</span>
+                <span v-if="detail.localDataSet">{{ $t('common.localCopy') }}</span>
+                <span v-else>{{ $t('common.symlink') }}</span>
               </div>
             </el-form-item>
           </div>
-          <el-form-item label="モデル">
+          <el-form-item :label="$t('common.model')">
             <div class="el-input">
               <span
                 v-if="detail.gitModel && detail.gitModel.url !== null"
@@ -143,11 +143,11 @@
           </el-form-item>
 
           <kqi-display-text-form
-            label="コンテナイメージ"
+            :label="$t('common.containerImage')"
             :value="detail.containerImage ? detail.containerImage.url : ''"
           />
 
-          <el-form-item label="起動時実行コマンド">
+          <el-form-item :label="$t('common.startupCommand')">
             <el-input
               v-model="detail.entryPoint"
               type="textarea"
@@ -156,7 +156,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="環境変数">
+          <el-form-item :label="$t('common.envVars')">
             <br />
             <div
               v-if="detail.options && detail.options.length > 0"
@@ -182,11 +182,11 @@
                 : ''
             "
           />
-          <kqi-display-text-form label="開始日時" :value="detail.startedAt" />
-          <kqi-display-text-form label="完了日時" :value="detail.completedAt" />
-          <kqi-display-text-form label="待機時間" :value="detail.waitingTime" />
+          <kqi-display-text-form :label="$t('common.startDate')" :value="detail.startedAt" />
+          <kqi-display-text-form :label="$t('common.endDate')" :value="detail.completedAt" />
+          <kqi-display-text-form :label="$t('common.waitTime')" :value="detail.waitingTime" />
           <kqi-display-text-form
-            label="実行時間"
+            :label="$t('common.execTime')"
             :value="detail.executionTime"
           />
         </el-col>
@@ -196,7 +196,7 @@
             :value="detail ? String(detail.cpu) : '0'"
           />
           <kqi-display-text-form
-            label="メモリ(GB)"
+            :label="$t('common.memoryGB')"
             :value="detail ? String(detail.memory) : '0'"
           />
           <kqi-display-text-form
@@ -206,19 +206,19 @@
           <div v-if="detail">
             <kqi-display-text-form
               v-if="detail.expiresIn !== 0"
-              label="起動期間(h)"
+              :label="$t('common.launchPeriodH')"
               :value="String(detail.expiresIn / 60 / 60)"
             />
-            <kqi-display-text-form v-else label="起動期間" value="無期限" />
+            <kqi-display-text-form v-else :label="$t('common.launchPeriod')" value="無期限" />
           </div>
           <kqi-display-text-form
-            label="パーティション"
+            :label="$t('common.partition')"
             :value="detail.partition"
           />
           <!-- status: スクリプトがこけたときなどに"failed"になる -->
           <!-- statusType: コンテナの生死等 -->
           <kqi-display-text-form
-            label="ステータス"
+            :label="$t('common.status')"
             :value="
               detail.status === detail.statusType
                 ? detail.status
@@ -230,7 +230,7 @@
           </div>
           <div v-if="events.length" class="k8s-event">
             <el-collapse accordion>
-              <el-collapse-item title="ステータス詳細ログ">
+              <el-collapse-item :title="$t('common.statusDetailLog')">
                 <div v-for="(event, index) in events" :key="index">
                   <div v-if="event.isError">message:{{ event.message }}</div>
                 </div>
@@ -242,17 +242,17 @@
               detail.statusType === 'Running' || detail.statusType === 'Error'
             "
           >
-            <el-form-item label="操作">
+            <el-form-item :label="$t('common.operation')">
               <div class="el-input">
                 <kqi-delete-button
                   button-label="ジョブ停止"
-                  message="停止しますか"
+                  :message="$t('common.confirmStop')"
                   @delete="haltNotebook"
                 />
               </div>
               <div v-if="detail.status === 'Running'">
                 <div class="el-input" style="padding: 10px 0;">
-                  <el-button @click="emitShell">Shell起動</el-button>
+                  <el-button @click="emitShell">{{ $t('common.startShell') }}</el-button>
                 </div>
                 <div>
                   <el-button
@@ -266,15 +266,15 @@
               </div>
             </el-form-item>
           </div>
-          <el-form-item label="コンテナ出力ファイル">
+          <el-form-item :label="$t('common.outputFiles')">
             <br />
-            <el-button @click="emitFiles">ファイル一覧</el-button>
+            <el-button @click="emitFiles">{{ $t('common.fileList') }}</el-button>
           </el-form-item>
-          <el-form-item label="ログファイル">
+          <el-form-item :label="$t('common.logFiles')">
             <br />
-            <el-button size="mini" @click="emitLog">ログファイル閲覧</el-button>
+            <el-button size="mini" @click="emitLog">{{ $t('common.viewLogFiles') }}</el-button>
           </el-form-item>
-          <el-form-item label="メモ">
+          <el-form-item :label="$t('common.memo')">
             <el-input
               v-model="form.memo"
               type="textarea"
@@ -318,7 +318,7 @@ export default {
   data() {
     return {
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [{ required: true, trigger: 'blur', message: this.$t('common.required') }],
       },
       form: {
         name: null,

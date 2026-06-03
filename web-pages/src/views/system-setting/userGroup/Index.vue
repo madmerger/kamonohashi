@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ユーザグループ管理</h2>
+    <h2>{{ $t('systemSetting.userGroupTitle') }}</h2>
     <el-row :gutter="20">
       <el-col class="right-top-button">
         <el-button
@@ -8,9 +8,7 @@
           type="primary"
           plain
           @click="openCreateDialog"
-        >
-          新規登録
-        </el-button>
+        >{{ $t('common.newRegister') }}</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -28,7 +26,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="dn" label="DN" width="auto" />
-        <el-table-column prop="memo" label="メモ" width="auto" />
+        <el-table-column prop="memo" :label="$t('common.memo')" width="auto" />
       </el-table>
     </el-row>
     <router-view @cancel="closeDialog()" @done="done()" />
@@ -39,7 +37,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('userGroup')
 
 export default {
-  title: 'ユーザグループ管理',
+  title: 'systemSetting.userGroupTitle',
   computed: {
     ...mapGetters(['userGroups']),
   },
