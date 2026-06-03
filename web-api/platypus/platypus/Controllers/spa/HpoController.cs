@@ -400,19 +400,25 @@ namespace Nssol.Platypus.Controllers.spa
                 trialsToGenerate = hpoJob.MaxTrials - startTrialNo;
             }
 
+            // パラメータ生成を先に全て行い、例外発生時にトラッカーに不完全なエンティティが残らないようにする
+            var trials = new List<HpoTrial>();
             for (int i = 0; i < trialsToGenerate; i++)
             {
                 int trialNo = startTrialNo + i;
                 var parameters = hpoLogic.GenerateNextParameters(hpoJob, existingTrials, trialNo);
 
-                var trial = new HpoTrial
+                trials.Add(new HpoTrial
                 {
                     TrialNo = trialNo,
                     HpoJobId = hpoJob.Id,
                     Parameters = JsonConvert.SerializeObject(parameters),
                     Status = "Pending",
-                };
+                });
+            }
 
+            // 全トライアル生成成功後にまとめてトラッカーに追加・コミット
+            foreach (var trial in trials)
+            {
                 hpoTrialRepository.Add(trial);
             }
 

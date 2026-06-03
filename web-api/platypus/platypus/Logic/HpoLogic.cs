@@ -67,7 +67,8 @@ namespace Nssol.Platypus.Logic
 
             // 未完了のトライアルをキャンセルする
             var pendingTrials = hpoTrialRepository.GetByHpoJobId(hpoJob.Id)
-                .Where(t => t.Status == "Pending" || t.Status == "Running");
+                .Where(t => t.Status == "Pending" || t.Status == "Running")
+                .ToList();
 
             foreach (var trial in pendingTrials)
             {
