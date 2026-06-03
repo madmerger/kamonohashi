@@ -75,6 +75,7 @@ namespace Nssol.Platypus.Services
         /// </summary>
         public async Task<Result<RunContainerOutputModel, string>> RunContainerAsync(RunContainerInputModel inModel)
         {
+            string createdContainerId = null;
             try
             {
                 // 環境変数の構築
@@ -219,11 +220,13 @@ namespace Nssol.Platypus.Services
 
                 // コンテナ作成
                 var createResponse = await dockerClient.Containers.CreateContainerAsync(createParams);
+                createdContainerId = createResponse.ID;
 
                 // コンテナ起動
                 bool started = await dockerClient.Containers.StartContainerAsync(createResponse.ID, new ContainerStartParameters());
                 if (!started)
                 {
+                    await TryRemoveContainerAsync(createdContainerId);
                     return Result<RunContainerOutputModel, string>.CreateErrorResult("コンテナの起動に失敗しました。");
                 }
 
@@ -265,6 +268,10 @@ namespace Nssol.Platypus.Services
             catch (Exception e)
             {
                 LogError($"RunContainerAsync失敗: {e.Message}");
+                if (createdContainerId != null)
+                {
+                    await TryRemoveContainerAsync(createdContainerId);
+                }
                 return Result<RunContainerOutputModel, string>.CreateErrorResult(e.Message);
             }
         }
@@ -770,6 +777,20 @@ namespace Nssol.Platypus.Services
         #endregion
 
         #region プライベートメソッド
+
+        /// <summary>
+        /// コンテナIDを指定して強制削除を試みる（エラーは無視）
+        /// </summary>
+        private async Task TryRemoveContainerAsync(string containerId)
+        {
+            try
+            {
+                await dockerClient.Containers.RemoveContainerAsync(containerId, new ContainerRemoveParameters { Force = true });
+            }
+            catch
+            {
+            }
+        }
 
         /// <summary>
         /// NfsVolumeMountModelをローカルパスに変換する
