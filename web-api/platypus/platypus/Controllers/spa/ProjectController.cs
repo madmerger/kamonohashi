@@ -314,6 +314,12 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonNotFound($"Project Id {id} is not found.");
             }
 
+            var existingResources = await projectRepository.GetResourcesAsync(id);
+            if (existingResources.Any(r => r.ResourceType == model.ResourceType && r.ResourceId == model.ResourceId))
+            {
+                return JsonBadRequest("This resource is already mapped to the project.");
+            }
+
             var resourceMap = new ProjectResourceMap
             {
                 ProjectId = id,

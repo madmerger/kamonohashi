@@ -73,11 +73,18 @@ namespace Nssol.Platypus.Controllers.spa
         [HttpPost]
         [PermissionFilter(MenuCode.CustomRole)]
         [ProducesResponseType(typeof(IndexOutputModel), (int)HttpStatusCode.Created)]
-        public IActionResult Create([FromBody] CreateInputModel model)
+        public async Task<IActionResult> Create([FromBody] CreateInputModel model)
         {
             if (!ModelState.IsValid)
             {
                 return JsonBadRequest("Invalid inputs.");
+            }
+
+            var tenantId = CurrentUserInfo.SelectedTenant.Id;
+            var existingRoles = await customRoleRepository.GetAllAsync(tenantId);
+            if (existingRoles.Any(r => r.Name == model.Name))
+            {
+                return JsonBadRequest($"Custom role with name '{model.Name}' already exists.");
             }
 
             var role = new CustomRole

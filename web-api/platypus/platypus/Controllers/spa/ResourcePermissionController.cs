@@ -68,6 +68,13 @@ namespace Nssol.Platypus.Controllers.spa
                 return JsonBadRequest("Invalid AccessLevel value.");
             }
 
+            var existing = (await projectRepository.GetResourcePermissionsAsync(model.ResourceType, model.ResourceId))
+                .FirstOrDefault(p => p.UserId == model.UserId);
+            if (existing != null)
+            {
+                return JsonBadRequest("Permission for this user and resource already exists.");
+            }
+
             var permission = new ResourcePermission
             {
                 ResourceType = model.ResourceType,
