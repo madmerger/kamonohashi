@@ -7,6 +7,7 @@ using Nssol.Platypus.DataAccess.Repositories.Interfaces.TenantRepositories;
 using Nssol.Platypus.Filters;
 using Nssol.Platypus.Infrastructure;
 using Nssol.Platypus.Models.TenantModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -52,7 +53,7 @@ namespace Nssol.Platypus.Controllers.spa
         [HttpPost]
         [PermissionFilter(MenuCode.ResourcePermission)]
         [ProducesResponseType(typeof(IndexOutputModel), (int)HttpStatusCode.Created)]
-        public IActionResult Create([FromBody] CreateInputModel model)
+        public async Task<IActionResult> Create([FromBody] CreateInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +71,10 @@ namespace Nssol.Platypus.Controllers.spa
             projectRepository.AddResourcePermission(permission);
             unitOfWork.Commit();
 
-            return JsonCreated(new IndexOutputModel(permission));
+            // User navigation propertyを読み込んでレスポンスに含める
+            var saved = (await projectRepository.GetResourcePermissionsAsync(model.ResourceType, model.ResourceId))
+                .FirstOrDefault(p => p.Id == permission.Id);
+            return JsonCreated(new IndexOutputModel(saved ?? permission));
         }
 
         /// <summary>
@@ -103,6 +107,10 @@ namespace Nssol.Platypus.Controllers.spa
             [FromQuery] long resourceId,
             [FromQuery] ProjectRoleType requiredLevel)
         {
+            if (!Enum.IsDefined(typeof(ProjectRoleType), requiredLevel))
+            {
+                return JsonBadRequest("Invalid requiredLevel value.");
+            }
             var hasAccess = await projectRepository.HasResourceAccessAsync(
                 CurrentUserInfo.Id, resourceType, resourceId, requiredLevel);
             return JsonOK(new { hasAccess });

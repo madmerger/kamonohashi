@@ -56,6 +56,7 @@ namespace Nssol.Platypus.DataAccess.Repositories.TenantRepositories
         public async Task<ProjectMember> GetMemberAsync(long projectId, long userId)
         {
             return await GetDbSet<ProjectMember>()
+                .Include(m => m.User)
                 .Where(m => m.TenantId == CurrentTenantId && m.ProjectId == projectId && m.UserId == userId)
                 .FirstOrDefaultAsync();
         }
