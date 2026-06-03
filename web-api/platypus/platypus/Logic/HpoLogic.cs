@@ -68,6 +68,20 @@ namespace Nssol.Platypus.Logic
             }
 
             unitOfWork.Commit();
+
+            // 並行リクエストで生成された可能性のある残存Pendingトライアルを再チェック
+            var remainingPending = hpoTrialRepository.GetByHpoJobId(hpoJob.Id)
+                .Where(t => t.Status == "Pending" || t.Status == "Running")
+                .ToList();
+
+            if (remainingPending.Any())
+            {
+                foreach (var trial in remainingPending)
+                {
+                    await hpoTrialRepository.UpdateTrialResultAsync(trial.Id, "Cancelled", null);
+                }
+                unitOfWork.Commit();
+            }
         }
 
         /// <summary>
