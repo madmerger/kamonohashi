@@ -292,7 +292,7 @@ namespace Nssol.Platypus.Logic
                 case "int":
                     int intMin = (int)(param.Min ?? 0);
                     int intStep = (int)(param.Step ?? 1);
-                    return (intMin + index * intStep).ToString();
+                    return ((long)intMin + (long)index * (long)intStep).ToString();
                 case "float":
                     double floatMin = param.Min ?? 0.0;
                     double floatStep = param.Step ?? 0.1;

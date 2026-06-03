@@ -32,6 +32,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly IHpoTrialRepository hpoTrialRepository;
         private readonly IHpoLogic hpoLogic;
         private readonly IGitLogic gitLogic;
+        private readonly IDataSetRepository dataSetRepository;
         private readonly IUnitOfWork unitOfWork;
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace Nssol.Platypus.Controllers.spa
             IHpoTrialRepository hpoTrialRepository,
             IHpoLogic hpoLogic,
             IGitLogic gitLogic,
+            IDataSetRepository dataSetRepository,
             IUnitOfWork unitOfWork,
             IHttpContextAccessor accessor) : base(accessor)
         {
@@ -49,6 +51,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.hpoTrialRepository = hpoTrialRepository;
             this.hpoLogic = hpoLogic;
             this.gitLogic = gitLogic;
+            this.dataSetRepository = dataSetRepository;
             this.unitOfWork = unitOfWork;
         }
 
@@ -196,6 +199,13 @@ namespace Nssol.Platypus.Controllers.spa
                 }
             }
 
+            // データセットの存在チェック
+            var dataSet = await dataSetRepository.GetByIdAsync(model.DataSetId.Value);
+            if (dataSet == null)
+            {
+                return JsonNotFound($"DataSet ID {model.DataSetId.Value} is not found.");
+            }
+
             // HPOジョブを作成
             var hpoJob = new HpoJob
             {
@@ -283,7 +293,8 @@ namespace Nssol.Platypus.Controllers.spa
                 jobLock.Release();
             }
 
-            return JsonOK(new IndexOutputModel(hpoJob));
+            var updated = await hpoJobRepository.GetIncludeTrialsAsync(id);
+            return JsonOK(new IndexOutputModel(updated));
         }
 
         /// <summary>
