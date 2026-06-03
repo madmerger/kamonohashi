@@ -129,6 +129,7 @@ namespace Nssol.Platypus
             services.AddTransient<IDataLogic, DataLogic>();
             services.AddTransient<IDataSetLogic, DataSetLogic>();
             services.AddTransient<ITrainingLogic, TrainingLogic>();
+            services.AddTransient<IHpoLogic, HpoLogic>();
             services.AddTransient<IInferenceLogic, InferenceLogic>();
             services.AddTransient<IPreprocessLogic, PreprocessLogic>();
             services.AddTransient<INotebookLogic, NotebookLogic>();
@@ -171,6 +172,8 @@ namespace Nssol.Platypus
             services.AddTransient<ITensorBoardContainerRepository, TensorBoardContainerRepository>();
             services.AddTransient<ITrainingHistoryRepository, TrainingHistoryRepository>();
             services.AddTransient<ITrainingSearchHistoryRepository, TrainingSearchHistoryRepository>();
+            services.AddTransient<IHpoJobRepository, HpoJobRepository>();
+            services.AddTransient<IHpoTrialRepository, HpoTrialRepository>();
             services.AddTransient<IInferenceHistoryRepository, InferenceHistoryRepository>();
             services.AddTransient<INotebookHistoryRepository, NotebookHistoryRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();

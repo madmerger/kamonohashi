@@ -132,5 +132,9 @@
         /// アクアリウムデータセット
         /// </summary>
         AquariumDataSet,
+        /// <summary>
+        /// ハイパーパラメータ最適化
+        /// </summary>
+        Hpo,
     }
 }
