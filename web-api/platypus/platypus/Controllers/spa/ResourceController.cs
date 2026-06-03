@@ -1224,7 +1224,7 @@ namespace Nssol.Platypus.Controllers.spa
             foreach (var sample in resourceSamples)
             {
                 string label;
-                if (period == "week")
+                if (string.Equals(period, "week", StringComparison.OrdinalIgnoreCase))
                 {
                     label = sample.SampledAt.ToString("MM/dd HH:mm");
                 }
