@@ -247,6 +247,11 @@ let api = {
     postSearchHistory: gen.postApiV2TrainingSearchHistory,
     deleteSearchHistoryById: gen.deleteApiV2TrainingSearchHistoryById,
     getSearchFill: gen.getApiV2TrainingSearchFill,
+    getCompare: function(params) {
+      return axios.get('/api/v2/training/compare', {
+        params: { ids: params.ids },
+      })
+    },
   },
 
   notebook: {

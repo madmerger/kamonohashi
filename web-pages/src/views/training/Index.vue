@@ -22,6 +22,21 @@
           一括削除
         </el-button>
         <el-button
+          v-if="selections.length >= 2"
+          icon="el-icon-data-analysis"
+          type="success"
+          plain
+          @click="openCompare"
+        >
+          比較
+        </el-button>
+        <el-button
+          icon="el-icon-data-analysis"
+          @click="$router.push('/training/compare')"
+        >
+          比較ダッシュボード
+        </el-button>
+        <el-button
           icon="el-icon-edit-outline"
           type="primary"
           plain
@@ -582,6 +597,10 @@ export default {
     },
     log(id) {
       this.$router.push('/training/' + id + '/log')
+    },
+    openCompare() {
+      let ids = this.selections.map(s => s.id).join(',')
+      this.$router.push('/training/compare?ids=' + ids)
     },
   },
 }

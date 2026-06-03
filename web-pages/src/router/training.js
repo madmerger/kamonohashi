@@ -2,10 +2,15 @@ import Index from '@/views/training/Index'
 import Edit from '@/views/training/Edit'
 import Create from '@/views/training/Create'
 import FileList from '@/views/training/FileList'
+import Compare from '@/views/training/Compare'
 import Shell from '@/views/common/Shell'
 import LogViewer from '@/views/common/LogViewer'
 
 export default [
+  {
+    path: '/training/compare',
+    component: Compare,
+  },
   {
     path: '/training',
     component: Index,
