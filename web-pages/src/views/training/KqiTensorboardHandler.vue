@@ -11,20 +11,23 @@
 <template>
   <div class="el-input">
     <span v-if="!statusName">
-      状態確認中...
+      {{ $t('messages.checking_status') }}
     </span>
     <span v-else-if="statusName === 'Running'">
       <div v-if="tensorboardUrl" class="tensorBoardlink">
         <el-button type="primary" size="small" plain @click="openTensorBoard">
-          開く
+          {{ $t('common.open') }}
         </el-button>
         <el-button type="danger" size="small" plain @click="deleteTensorBoard">
-          停止
+          {{ $t('common.stop') }}
         </el-button>
-        <kqi-display-text-form label="残り時間" :value="remainingTime" />
+        <kqi-display-text-form
+          :label="$t('labels.remaining_time')"
+          :value="remainingTime"
+        />
         <el-form-item
           v-if="selectedMountHistories.length !== 0"
-          label="追加表示した学習結果"
+          :label="$t('labels.additional_training_results')"
         >
           <span class="selected-mount-histories">
             <div
@@ -33,7 +36,7 @@
             >
               <el-popover
                 ref="mountDetail"
-                title="追加表示した学習詳細"
+                :title="$t('titles.mounted_training_detail')"
                 trigger="hover"
                 width="350"
                 placement="left"
@@ -54,14 +57,16 @@
         </el-form-item>
       </div>
       <div v-else>
-        利用可能リソース待機中...
+        {{ $t('messages.waiting_resource') }}
       </div>
     </span>
     <span v-else-if="statusName === 'None'">
       <el-row>
         <el-col :offset="1" :span="23">
-          <el-button type="primary" @click="runTensorBoard">起動</el-button>
-          <el-form-item label="起動期間(h)">
+          <el-button type="primary" @click="runTensorBoard">{{
+            $t('common.start')
+          }}</el-button>
+          <el-form-item :label="$t('labels.startup_period_h')">
             <el-slider
               v-model="expiresIn"
               class="el-input"
@@ -73,21 +78,23 @@
           <kqi-training-history-selector
             v-model="selectedMountHistories"
             :histories="mountedHistories"
-            :title="'追加表示する学習結果'"
+            :title="$t('titles.add_training_results')"
             multiple
           />
         </el-col>
       </el-row>
     </span>
     <span v-else-if="statusName === 'Starting'">
-      起動中...
+      {{ $t('messages.starting') }}
     </span>
     <span v-else-if="statusName === 'Deleting'">
-      停止中...
+      {{ $t('messages.stopping') }}
     </span>
     <span v-else>
-      <span>起動失敗</span>
-      <el-button type="primary" @click="runTensorBoard">再起動</el-button>
+      <span>{{ $t('messages.start_failed') }}</span>
+      <el-button type="primary" @click="runTensorBoard">{{
+        $t('common.restart')
+      }}</el-button>
     </span>
   </div>
 </template>

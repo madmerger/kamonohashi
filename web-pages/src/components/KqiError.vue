@@ -29,23 +29,27 @@
           </el-col>
           <el-col :span="13" class="frame-text">
             <div class="error-message">
-              <h2>不正な操作が行われました。</h2>
+              <h2>{{ $t('messages.error_page_title') }}</h2>
               <h5>
                 <span v-if="url">
-                  "{{ url }}" のページが見つかりませんでした。<br />
+                  {{ $t('messages.error_page_not_found', { url: url }) }}<br />
                 </span>
-                <span v-if="status"> コード：{{ status }}<br /> </span>
-                <span v-if="message"> メッセージ：{{ message }}<br /> </span>
+                <span v-if="status">
+                  {{ $t('messages.error_code', { status: status }) }}<br />
+                </span>
+                <span v-if="message">
+                  {{ $t('messages.error_message', { message: message }) }}<br />
+                </span>
               </h5>
               <h4>
-                解決方法<br />
+                {{ $t('messages.error_resolution') }}<br />
                 <br />
-                ・再度操作を行ってください<br />
+                {{ $t('messages.error_retry') }}<br />
                 <br />
-                ・マニュアルを確認<br />
+                {{ $t('messages.error_manual') }}<br />
                 <br />
-                サーバにエラーが記録されました。<br />
-                現在、鋭意努力しておりますので今しばらくお待ちください。
+                {{ $t('messages.error_server') }}<br />
+                {{ $t('messages.error_patience') }}
               </h4>
             </div>
           </el-col>
@@ -57,7 +61,7 @@
 
 <script>
 export default {
-  title: 'エラー',
+  title: this.$t('titles.error'),
 
   data() {
     return {

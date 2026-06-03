@@ -1,6 +1,6 @@
 <template>
   <span>
-    <el-form-item label="テナント" prop="tenants">
+    <el-form-item :label="$t('labels.tenant')" prop="tenants">
       <el-select
         :value="value.selectedTenantIds"
         class="selectTenant"
@@ -17,7 +17,11 @@
       </el-select>
       <div>
         <el-table v-if="rolesOfTenant.length !== 0" :data="rolesOfTenant">
-          <el-table-column prop="displayName" label="テナント名" width="200px">
+          <el-table-column
+            prop="displayName"
+            :label="$t('labels.tenant_name')"
+            width="200px"
+          >
             <template slot-scope="prop">
               <el-radio
                 v-model="prop.row.default"
@@ -27,12 +31,12 @@
               >
                 {{ prop.row.tenantName }}
                 <span v-if="prop.row.default" style="font-size: 0.7rem;">
-                  (デフォルト)
+                  {{ $t('common.default_label') }}
                 </span>
               </el-radio>
             </template>
           </el-table-column>
-          <el-table-column label="ロール" width="auto">
+          <el-table-column :label="$t('labels.role')" width="auto">
             <template slot-scope="prop">
               <el-checkbox-group
                 v-model="prop.row.selectedRoleIds"
@@ -53,9 +57,13 @@
 
     <div v-if="noOriginRolesOfTenant.length > 0">
       <br />
-      <label>ユーザグループ経由での所属しているテナント</label>
+      <label>{{ $t('messages.user_group_tenants') }}</label>
       <el-table :data="noOriginRolesOfTenant">
-        <el-table-column prop="displayName" label="テナント名" width="200px">
+        <el-table-column
+          prop="displayName"
+          :label="$t('labels.tenant_name')"
+          width="200px"
+        >
           <template slot-scope="prop">
             <el-radio
               v-model="prop.row.default"
@@ -65,12 +73,12 @@
             >
               {{ prop.row.tenantName }}
               <span v-if="prop.row.default" style="font-size: 0.7rem;">
-                (デフォルト)
+                {{ $t('common.default_label') }}
               </span>
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="ロール" width="auto">
+        <el-table-column :label="$t('labels.role')" width="auto">
           <template slot-scope="prop">
             <el-checkbox-group
               v-model="prop.row.selectedRoleIds"

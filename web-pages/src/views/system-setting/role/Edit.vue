@@ -3,20 +3,20 @@
     :title="title"
     :type="id === null ? 'CREATE' : 'EDIT'"
     :disabled-params="disabledParams"
-    submit-text="作成"
+    :submit-text="$t('common.create')"
     @submit="submit"
     @delete="deleteRole"
     @close="emitCancel"
   >
     <el-form ref="updateForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="ロール名" prop="name">
+      <el-form-item :label="$t('labels.role_name')" prop="name">
         <el-input v-model="form.name" :disabled="isNotEditable" />
       </el-form-item>
-      <el-form-item label="表示名" prop="displayName">
+      <el-form-item :label="$t('labels.display_name')" prop="displayName">
         <el-input v-model="form.displayName" :disabled="isNotEditable" />
       </el-form-item>
-      <el-form-item label="種別" prop="isSystemRole">
+      <el-form-item :label="$t('labels.type')" prop="isSystemRole">
         <el-input
           v-if="form.tenantName"
           v-model="form.tenantName"
@@ -37,7 +37,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="ソート順" prop="sortOrder">
+      <el-form-item :label="$t('labels.sort_order')" prop="sortOrder">
         <br />
         <el-input-number
           v-model="form.sortOrder"
@@ -45,7 +45,7 @@
           style="vertical-align: middle;"
           :min="0"
         />
-        並び順。小さいほど前に表示される。一意性は不要。
+        {{ $t('messages.sort_order_description') }}
       </el-form-item>
     </el-form>
   </kqi-dialog>
@@ -60,7 +60,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('role')
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required_field'),
 }
 
 export default {
@@ -83,8 +83,8 @@ export default {
         sortOrder: 0,
         tenantName: null,
         roleTypes: [
-          { label: 'テナント(共通)', value: false },
-          { label: 'システム', value: true },
+          { label: this.$t('messages.tenant_common'), value: false },
+          { label: this.$t('common.system'), value: true },
         ],
       },
       title: '',
@@ -109,9 +109,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'ロール作成'
+      this.title = this.$t('titles.role_creation')
     } else {
-      this.title = 'ロール編集'
+      this.title = this.$t('titles.role_edit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name
@@ -121,7 +121,9 @@ export default {
         this.error = null
         this.isNotEditable = this.detail.isNotEditable
         if (this.detail.tenantName) {
-          this.tenantName = `テナント(カスタム) / ${this.detail.tenantName}`
+          this.tenantName = `${this.$t('messages.tenant_custom')} / ${
+            this.detail.tenantName
+          }`
         }
       } catch (e) {
         this.error = e

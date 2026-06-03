@@ -10,8 +10,12 @@
       border
       @row-click="handleEditOpen"
     >
-      <el-table-column prop="name" label="コンテナ" width="auto" />
-      <el-table-column prop="createdBy" label="ユーザ" width="auto">
+      <el-table-column
+        prop="name"
+        :label="$t('labels.container')"
+        width="auto"
+      />
+      <el-table-column prop="createdBy" :label="$t('labels.user')" width="auto">
         <template slot-scope="scope">
           <span>
             {{ scope.row.createdBy
@@ -21,11 +25,23 @@
           >
         </template>
       </el-table-column>
-      <el-table-column prop="nodeName" label="ノード" width="auto" />
+      <el-table-column
+        prop="nodeName"
+        :label="$t('labels.node')"
+        width="auto"
+      />
       <el-table-column prop="cpu" label="CPU" width="auto" />
-      <el-table-column prop="memory" label="メモリ" width="auto" />
+      <el-table-column
+        prop="memory"
+        :label="$t('labels.memory')"
+        width="auto"
+      />
       <el-table-column prop="gpu" label="GPU" width="auto" />
-      <el-table-column prop="status" label="ステータス" width="auto" />
+      <el-table-column
+        prop="status"
+        :label="$t('labels.status')"
+        width="auto"
+      />
     </el-table>
     <router-view @cancel="closeDialog()" @done="done()" />
   </div>

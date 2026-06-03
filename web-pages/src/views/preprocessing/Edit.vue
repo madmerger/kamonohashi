@@ -8,7 +8,9 @@
   >
     <el-row v-if="isEditDialog" type="flex" justify="end">
       <el-col :span="24" class="right-button-group">
-        <el-button @click="$emit('copy', id)">コピー</el-button>
+        <el-button @click="$emit('copy', id)">{{
+          $t('common.copy')
+        }}</el-button>
       </el-col>
     </el-row>
 
@@ -20,10 +22,10 @@
     >
       <kqi-display-error :error="error" />
       <kqi-display-text-form v-if="isEditDialog" label="ID" :value="id" />
-      <el-form-item label="前処理名" prop="name">
+      <el-form-item :label="$t('labels.preprocessing_name')" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="実行コマンド" prop="entryPoint">
+      <el-form-item :label="$t('labels.entry_point')" prop="entryPoint">
         <el-input
           v-model="form.entryPoint"
           type="textarea"
@@ -31,7 +33,7 @@
           :disabled="isPatch"
         />
       </el-form-item>
-      <el-form-item label="メモ" prop="memo">
+      <el-form-item :label="$t('labels.memo')" prop="memo">
         <el-input v-model="form.memo" type="textarea" />
       </el-form-item>
       <el-row :gutter="20">
@@ -53,7 +55,7 @@
             :branches="branches"
             :commits="commitsList"
             :loading-repositories="loadingRepositories"
-            heading="スクリプト"
+            :heading="$t('common.script')"
             @selectGit="selectGit"
             @selectRepository="selectRepository"
             @selectBranch="selectBranch"
@@ -129,7 +131,13 @@ export default {
       isPatch: false, // 利用済み前処理の場合name, memo, resourceのみ更新可能
 
       rules: {
-        name: [{ required: true, trigger: 'blur', message: '必須項目です' }],
+        name: [
+          {
+            required: true,
+            trigger: 'blur',
+            message: this.$t('common.required_field'),
+          },
+        ],
       },
     }
   },
@@ -183,14 +191,14 @@ export default {
       let type = url.split('/')[2] // ["", "preprocessing", "{type}", "{id}"]
       switch (type) {
         case 'create':
-          this.title = '前処理作成'
+          this.title = this.$t('titles.preprocessing_creation')
           this.isCreateDialog = true
           this.isCopyCreation = this.id !== null
           this.isEditDialog = false
           this.isPatch = false
           break
         case 'edit':
-          this.title = '前処理編集'
+          this.title = this.$t('titles.preprocessing_edit')
           this.isCreateDialog = false
           this.isCopyCreation = false
           this.isEditDialog = true

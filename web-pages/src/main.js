@@ -18,7 +18,8 @@ import './icon'
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
-const i18n = new VueI18n({ locale: 'ja', messages: message })
+const savedLocale = localStorage.getItem('kamonohashi-locale') || 'ja'
+const i18n = new VueI18n({ locale: savedLocale, messages: message })
 
 Vue.use(ElementUI, { i18n: (key, value) => i18n.t(key, value) })
 Vue.use(lineClamp, {})

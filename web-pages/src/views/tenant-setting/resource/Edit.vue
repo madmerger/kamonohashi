@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     class="dialog"
-    title="コンテナ情報"
+    :title="$t('titles.container_info')"
     :visible="dialogVisible"
     :before-close="handleCancel"
     :close-on-click-modal="false"
@@ -109,7 +109,7 @@ export default {
             encodeURIComponent(this.tenantContainerLog)
         } else {
           this.exists = false
-          this.filename = '取得可能なログファイルはありません。'
+          this.filename = this.$t('messages.no_log_file')
         }
 
         this.error = null

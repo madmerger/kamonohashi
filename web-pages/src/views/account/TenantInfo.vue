@@ -9,13 +9,15 @@
       }}<span v-if="userDisplayName">【{{ userDisplayName }}】</span>
     </el-row>
     <el-row class="row-element">
-      <el-col :span="12" class="content-color">選択中のテナント</el-col>
+      <el-col :span="12" class="content-color">{{
+        $t('labels.selected_tenant')
+      }}</el-col>
       <el-col v-if="tenant" :span="12">
         {{ tenant.displayName }} (ID: {{ tenant.id }})
       </el-col>
     </el-row>
     <el-row class="row-element">
-      <el-col :span="12" class="content-color">ロール</el-col>
+      <el-col :span="12" class="content-color">{{ $t('labels.role') }}</el-col>
       <el-col v-if="tenant" :span="12">
         <div v-for="(r, index) in tenant.roles" :key="index">
           {{ r.displayName }}

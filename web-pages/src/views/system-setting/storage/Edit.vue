@@ -8,25 +8,25 @@
   >
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
-      <el-form-item label="ストレージ名" prop="name">
+      <el-form-item :label="$t('labels.storage_name')" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
 
-      <h3>ストレージ情報</h3>
+      <h3>{{ $t('titles.storage_info') }}</h3>
       <div style="padding-left: 30px; padding-right: 10px;">
-        <el-form-item label="ホスト名:ポート" prop="serverUrl">
+        <el-form-item :label="$t('labels.host_port')" prop="serverUrl">
           <el-input v-model="form.serverUrl" />
         </el-form-item>
-        <el-form-item label="アクセスキー" prop="accessKey">
+        <el-form-item :label="$t('labels.access_key')" prop="accessKey">
           <el-input v-model="form.accessKey" />
         </el-form-item>
-        <el-form-item label="シークレットキー" prop="secretKey">
+        <el-form-item :label="$t('labels.secret_key')" prop="secretKey">
           <el-input v-model="form.secretKey" type="password" />
         </el-form-item>
-        <el-form-item label="NFSサーバ" prop="nfsServer">
+        <el-form-item :label="$t('labels.nfs_server')" prop="nfsServer">
           <el-input v-model="form.nfsServer" />
         </el-form-item>
-        <el-form-item label="NFSエクスポートポイント" prop="nfsRoot">
+        <el-form-item :label="$t('labels.nfs_export_point')" prop="nfsRoot">
           <el-input v-model="form.nfsRoot" />
         </el-form-item>
       </div>
@@ -43,7 +43,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('storage')
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required_field'),
 }
 
 export default {
@@ -84,9 +84,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'ストレージ登録'
+      this.title = this.$t('titles.storage_registration')
     } else {
-      this.title = 'ストレージ編集'
+      this.title = this.$t('titles.storage_edit')
       try {
         await this.fetchDetail(this.id)
         this.form.name = this.detail.name

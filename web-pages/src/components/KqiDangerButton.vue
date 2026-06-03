@@ -24,12 +24,12 @@ export default {
     validateInput(input) {
       if (input === this.confirmText) {
         return true
-      } else return '入力内容が不一致です'
+      } else return this.$t('messages.input_mismatch')
     },
     showConfirm() {
       this.$prompt(this.warningText, 'Warning', {
-        confirmButtonText: '確定',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         inputValidator: this.validateInput,
         inputErrorMessage: 'Invalid Name',
       })
@@ -39,7 +39,7 @@ export default {
         .catch(() => {
           this.$notify.info({
             type: 'info',
-            message: 'キャンセルされました',
+            message: this.$t('common.cancelled'),
           })
         })
     },

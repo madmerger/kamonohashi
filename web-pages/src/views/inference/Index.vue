@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>推論管理</h2>
+    <h2>{{ $t('titles.inference_management') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -9,7 +9,7 @@
       />
       <el-col class="right-top-button" :span="8">
         <el-button v-if="selections.length !== 0" @click="showDeleteConfirm">
-          一括削除
+          {{ $t('common.batch_delete') }}
         </el-button>
         <el-button
           icon="el-icon-edit-outline"
@@ -17,7 +17,7 @@
           plain
           @click="openCreateDialog()"
         >
-          新規実行
+          {{ $t('common.new_execution') }}
         </el-button>
       </el-col>
     </el-row>
@@ -46,9 +46,17 @@
           </div>
         </el-table-column>
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="推論名" width="150px" />
-        <el-table-column prop="createdAt" label="開始日時" width="100px" />
-        <el-table-column label="マウントした学習" width="200px">
+        <el-table-column
+          prop="name"
+          :label="$t('labels.inference_name')"
+          width="150px"
+        />
+        <el-table-column
+          prop="createdAt"
+          :label="$t('labels.started_at')"
+          width="100px"
+        />
+        <el-table-column :label="$t('labels.mounted_training')" width="200px">
           <template slot-scope="scope">
             <span
               v-for="(ParentName, index) in scope.row.parentFullNameList"
@@ -60,7 +68,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="マウントした推論" width="200px">
+        <el-table-column :label="$t('labels.mounted_inference')" width="200px">
           <template slot-scope="scope">
             <span
               v-for="(ParentInferenceName, index) in scope.row
@@ -75,24 +83,24 @@
         </el-table-column>
         <el-table-column
           prop="dataSet.name"
-          label="データセット"
+          :label="$t('labels.dataset')"
           width="120px"
         />
         <el-table-column
           prop="entryPoint"
-          label="実行コマンド"
+          :label="$t('labels.entry_point')"
           width="auto"
           class-name="entry-point-column"
         />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('labels.memo')"
           width="auto"
           class-name="memo-column"
         />
         <el-table-column
           prop="outputValue"
-          label="出力値"
+          :label="$t('labels.output_value')"
           width="200px"
           sortable
         />
@@ -111,7 +119,11 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column
+          prop="status"
+          :label="$t('labels.status')"
+          width="120px"
+        />
       </el-table>
     </el-row>
 
@@ -143,7 +155,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('inference')
 
 export default {
-  title: '推論管理',
+  title: this.$t('titles.inference_management'),
   components: {
     KqiPagination,
     KqiSmartSearchInput,
@@ -158,27 +170,39 @@ export default {
       searchCondition: {},
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: '推論名', type: 'text' },
-        { prop: 'startedAt', name: '開始日時', type: 'date' },
-        { prop: 'startedBy', name: '実行者', type: 'text' },
-        { prop: 'parentId', name: 'マウントした学習ID', type: 'number' },
+        { prop: 'name', name: this.$t('labels.inference_name'), type: 'text' },
+        { prop: 'startedAt', name: this.$t('labels.started_at'), type: 'date' },
+        { prop: 'startedBy', name: this.$t('labels.started_by'), type: 'text' },
         {
-          prop: 'parentInferenceId',
-          name: 'マウントした推論ID',
+          prop: 'parentId',
+          name: this.$t('labels.mounted_training_id'),
           type: 'number',
         },
-        { prop: 'parentName', name: 'マウントした学習名', type: 'text' },
         {
-          prop: 'parentInferenceName',
-          name: 'マウントした推論名',
+          prop: 'parentInferenceId',
+          name: this.$t('labels.mounted_inference_id'),
+          type: 'number',
+        },
+        {
+          prop: 'parentName',
+          name: this.$t('labels.mounted_training_name'),
           type: 'text',
         },
-        { prop: 'dataSet', name: 'データセット', type: 'text' },
-        { prop: 'entryPoint', name: '実行コマンド', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
+        {
+          prop: 'parentInferenceName',
+          name: this.$t('labels.mounted_inference_name'),
+          type: 'text',
+        },
+        { prop: 'dataSet', name: this.$t('labels.dataset'), type: 'text' },
+        {
+          prop: 'entryPoint',
+          name: this.$t('labels.entry_point'),
+          type: 'text',
+        },
+        { prop: 'memo', name: this.$t('labels.memo'), type: 'text' },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('labels.status'),
           type: 'select',
           option: {
             items: [
@@ -229,11 +253,13 @@ export default {
     },
 
     async showDeleteConfirm() {
-      let confirmMessage = `推論履歴を${this.selections.length}件削除しますか（出力データ数が多い場合、処理に時間がかかります）`
+      let confirmMessage = this.$t('messages.inference_delete_confirm', {
+        count: this.selections.length,
+      })
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {
@@ -249,8 +275,10 @@ export default {
           }
           await this.$notify.info({
             type: 'info',
-            message: `推論履歴を削除しました。(成功：${successCount}件、 失敗：${this
-              .selections.length - successCount}件）`,
+            message: this.$t('messages.inference_deleted', {
+              success: successCount,
+              fail: this.selections.length - successCount,
+            }),
           })
           this.pageStatus.currentPage = 1
           await this.retrieveData()

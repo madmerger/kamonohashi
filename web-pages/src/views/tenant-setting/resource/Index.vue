@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>テナントリソース管理</h2>
+    <h2>{{ $t('titles.tenant_resource_management') }}</h2>
     <el-row>
       <el-col :span="12">
         <el-radio-group
@@ -8,16 +8,24 @@
           class="switch-group"
           @change="handleModeChange"
         >
-          <el-radio-button label="">ノード別</el-radio-button>
-          <el-radio-button label="container-list">コンテナ一覧</el-radio-button>
+          <el-radio-button label="">{{
+            $t('cluster.by_node')
+          }}</el-radio-button>
+          <el-radio-button label="container-list">{{
+            $t('cluster.container_list')
+          }}</el-radio-button>
         </el-radio-group>
       </el-col>
       <el-col :span="12" align="right">
-        <el-popover ref="QuotaInfo" title="クォータ情報" trigger="hover">
+        <el-popover
+          ref="QuotaInfo"
+          :title="$t('labels.quota_info')"
+          trigger="hover"
+        >
           <kqi-quota-info :quota="quota" />
         </el-popover>
         <el-button v-popover:QuotaInfo icon="el-icon-info" type="primary" plain>
-          クォータ情報
+          {{ $t('labels.quota_info') }}
         </el-button>
       </el-col>
     </el-row>
@@ -31,7 +39,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('cluster')
 
 export default {
-  title: 'テナントリソース管理',
+  title: this.$t('titles.tenant_resource_management'),
   components: {
     KqiQuotaInfo,
   },

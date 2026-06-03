@@ -1,6 +1,6 @@
 <template>
   <kqi-dialog
-    title="テナントユーザ編集"
+    :title="$t('titles.tenant_user_edit')"
     :type="'EDIT'"
     :delete-button-params="deleteButtonParams"
     :disabled-params="disabledParams"
@@ -11,7 +11,7 @@
     <el-form ref="form" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
       <kqi-display-text-form
-        label="ユーザ名"
+        :label="$t('labels.user_name')"
         :value="
           detail
             ? detail.displayName
@@ -20,8 +20,11 @@
             : ''
         "
       />
-      <kqi-display-text-form label="認証タイプ" :value="displayServiceType" />
-      <el-form-item label="テナントロール" prop="tenantRoleIds">
+      <kqi-display-text-form
+        :label="$t('labels.auth_type')"
+        :value="displayServiceType"
+      />
+      <el-form-item :label="$t('labels.tenant_role')" prop="tenantRoleIds">
         <kqi-role-selector
           v-model="form.tenantRoleIds"
           :roles="roles"
@@ -51,7 +54,7 @@ import { mapGetters, mapActions } from 'vuex'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required_field'),
 }
 
 export default {
@@ -98,7 +101,7 @@ export default {
       // serviceTypeのIDを変換
       switch (this.detail.serviceType) {
         case 1:
-          this.displayServiceType = 'ローカル'
+          this.displayServiceType = this.$t('common.local')
           break
         case 2:
           this.displayServiceType = 'LDAP'
@@ -128,8 +131,7 @@ export default {
         // dangerButtonのパラメータを設定
         this.deleteButtonParams = {
           isDanger: true,
-          warningText:
-            'ユーザを除外すると、対象ユーザは現在のテナントに入れなくなります。処理を続けるにはユーザ名を入力してください。',
+          warningText: this.$t('messages.tenant_user_remove_confirm'),
           confirmText: this.detail.name,
         }
       }

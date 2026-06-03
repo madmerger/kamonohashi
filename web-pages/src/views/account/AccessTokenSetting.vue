@@ -3,7 +3,7 @@
   <div>
     <el-row class="row-element" style="padding-top: 50px;">
       <el-col :span="6" class="content-color">
-        期限切れまでの日数
+        {{ $t('labels.days_until_expiry') }}
       </el-col>
       <el-col :span="17">
         <el-slider
@@ -16,20 +16,20 @@
         />
       </el-col>
       <el-col :offset="6" :span="12">
-        値は 1 ～ 3650 の数字を入力して下さい。
+        {{ $t('messages.days_input_range') }}
       </el-col>
     </el-row>
     <el-row class="row-element">
       <div v-if="!token">
         <el-col class="button-group">
           <el-button type="primary" @click="$emit('getAccessToken')">
-            トークン発行
+            {{ $t('messages.token_issue') }}
           </el-button>
         </el-col>
       </div>
       <div v-else>
         <el-col :span="6" class="content-color">
-          トークン
+          {{ $t('labels.token') }}
         </el-col>
         <el-col :span="17">
           <el-input v-model="token" type="textarea" autosize readonly />

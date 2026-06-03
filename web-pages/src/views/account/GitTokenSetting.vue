@@ -1,11 +1,13 @@
 <template>
   <!-- Gitトークン設定 -->
   <div v-if="gits.length <= 0">
-    Gitリポジトリが選択されていません。 システム管理者にお問い合わせください。
+    {{ $t('messages.git_not_selected') }}
   </div>
   <div v-else>
     <el-row class="row-element" style="margin-top: 30px;">
-      <el-col :span="6" class="content-color">選択中のGitリポジトリ</el-col>
+      <el-col :span="6" class="content-color">{{
+        $t('labels.selected_git_repo')
+      }}</el-col>
       <el-col :span="16">
         <div>
           <el-select
@@ -22,9 +24,9 @@
           </el-select>
           <br />
           <br />
-          <div class="content-color">Gitサーバ</div>
+          <div class="content-color">{{ $t('labels.git_server') }}</div>
           <div>{{ value.name }}</div>
-          <div class="content-color">トークン</div>
+          <div class="content-color">{{ $t('labels.token') }}</div>
           <el-input
             :value="value.token"
             type="password"
@@ -37,7 +39,7 @@
     <el-row>
       <el-col class="button-group">
         <el-button type="primary" @click="$emit('updateGitToken')">
-          更新
+          {{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>

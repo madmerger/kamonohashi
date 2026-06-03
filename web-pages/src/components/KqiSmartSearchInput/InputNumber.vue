@@ -42,11 +42,11 @@ export default {
       value: null,
       show: true,
       tableData: [
-        { name: 'と一致', detail: '= equals', symbol: '=' },
-        { name: '以上', detail: '', symbol: '>=' },
-        { name: '以下', detail: '', symbol: '<=' },
-        { name: 'より上', detail: '超過', symbol: '>' },
-        { name: 'より下', detail: '未満', symbol: '<' },
+        { name: this.$t('common.equals'), detail: '= equals', symbol: '=' },
+        { name: this.$t('common.gte'), detail: '', symbol: '>=' },
+        { name: this.$t('common.lte'), detail: '', symbol: '<=' },
+        { name: this.$t('common.gt'), detail: '超過', symbol: '>' },
+        { name: this.$t('common.lt'), detail: '未満', symbol: '<' },
       ],
     }
   },

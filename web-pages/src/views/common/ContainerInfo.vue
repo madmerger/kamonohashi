@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="8">
         <kqi-display-text-form
-          label="コンテナ名"
+          :label="$t('labels.container_name')"
           :value="detail ? detail.name : ''"
         />
       </el-col>
@@ -13,7 +13,7 @@
           :value="detail && detail.cpu ? String(detail.cpu) : '0'"
         />
         <kqi-display-text-form
-          label="メモリ(GB)"
+          :label="$t('labels.memory_gb')"
           :value="detail && detail.memory ? String(detail.memory) : '0'"
         />
         <kqi-display-text-form
@@ -23,15 +23,15 @@
       </el-col>
       <el-col :offset="1" :span="7">
         <kqi-display-text-form
-          label="ノード"
+          :label="$t('labels.node')"
           :value="detail ? detail.nodeName : ''"
         />
         <kqi-display-text-form
-          label="テナント"
+          :label="$t('labels.tenant')"
           :value="detail ? detail.displayName : ''"
         />
         <kqi-display-text-form
-          label="ユーザ"
+          :label="$t('labels.user')"
           :value="
             detail
               ? detail.displayNameCreatedBy
@@ -43,10 +43,10 @@
       </el-col>
     </el-row>
 
-    <h3>コンテナ実行結果</h3>
+    <h3>{{ $t('titles.container_execution_result') }}</h3>
     <el-card>
       <kqi-display-text-form
-        label="ステータス"
+        :label="$t('labels.status')"
         :value="detail ? detail.status : ''"
       />
       <div v-if="detail && detail.conditionNote !== ``" class="k8s-event">
@@ -54,7 +54,7 @@
       </div>
       <div v-if="events.length" class="k8s-event">
         <el-collapse accordion>
-          <el-collapse-item title="ステータス詳細ログ">
+          <el-collapse-item :title="$t('titles.status_detail_log')">
             <div v-for="(event, index) in events" :key="index">
               <div v-if="event.isError">message:{{ event.message }}</div>
             </div>
@@ -62,11 +62,11 @@
         </el-collapse>
       </div>
 
-      <el-form-item v-if="detail && detail.nodeName" label="ログ">
+      <el-form-item v-if="detail && detail.nodeName" :label="$t('labels.log')">
         <br clear="all" />
         <span v-if="!filename">
           <el-button icon="el-icon-download" @click="$emit('download')">
-            取得
+            {{ $t('common.get') }}
           </el-button>
         </span>
         <span>
@@ -89,7 +89,7 @@
           icon="el-icon-close"
           @click="$emit('cancel')"
         >
-          キャンセル
+          {{ $t('common.cancel') }}
         </el-button>
         <kqi-delete-button
           class="pull-left btn-update"

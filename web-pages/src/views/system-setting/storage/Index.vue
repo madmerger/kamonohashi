@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ストレージ管理</h2>
+    <h2>{{ $t('titles.storage_management') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規登録
+          {{ $t('common.new_registration') }}
         </el-button>
       </el-col>
     </el-row>
@@ -21,16 +21,24 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="100px" />
-        <el-table-column prop="name" label="ストレージ名" width="auto" />
         <el-table-column
-          prop="serverUrl"
-          label="ホスト名:ポート"
+          prop="name"
+          :label="$t('labels.storage_name')"
           width="auto"
         />
-        <el-table-column prop="nfsServer" label="NFSサーバ" width="auto" />
+        <el-table-column
+          prop="serverUrl"
+          :label="$t('labels.host_port')"
+          width="auto"
+        />
+        <el-table-column
+          prop="nfsServer"
+          :label="$t('labels.nfs_server')"
+          width="auto"
+        />
         <el-table-column
           prop="nfsRoot"
-          label="NFSエクスポートポイント"
+          :label="$t('labels.nfs_export_point')"
           width="auto"
         />
       </el-table>
@@ -44,7 +52,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('storage')
 
 export default {
-  title: 'ストレージ管理',
+  title: this.$t('titles.storage_management'),
   computed: {
     ...mapGetters(['storages']),
   },

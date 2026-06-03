@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>テナント管理</h2>
+    <h2>{{ $t('titles.tenant_management') }}</h2>
     <el-row :gutter="20">
       <el-col class="right-top-button">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規作成
+          {{ $t('common.new_creation') }}
         </el-button>
       </el-col>
     </el-row>
@@ -21,11 +21,19 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="テナント名" width="auto" />
-        <el-table-column prop="displayName" label="表示名" width="auto" />
+        <el-table-column
+          prop="name"
+          :label="$t('labels.tenant_name')"
+          width="auto"
+        />
+        <el-table-column
+          prop="displayName"
+          :label="$t('labels.display_name')"
+          width="auto"
+        />
         <el-table-column
           prop="storagePath"
-          label="ストレージパス"
+          :label="$t('labels.storage_path')"
           width="auto"
         />
       </el-table>
@@ -40,7 +48,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('tenant')
 
 export default {
-  title: 'テナント管理',
+  title: this.$t('titles.tenant_management'),
   computed: {
     ...mapGetters(['tenants']),
   },

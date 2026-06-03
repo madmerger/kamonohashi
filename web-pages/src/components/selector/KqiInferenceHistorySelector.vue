@@ -1,12 +1,12 @@
 <!--name: 学習履歴セレクタ,-->
 <!--description: 学習履歴を選択するドロップダウンメニュー。選択すると詳細がホバーで出る。,-->
 <template>
-  <el-form-item label="マウントする推論" prop="inference">
+  <el-form-item :label="$t('labels.mounted_inference')" prop="inference">
     <el-popover
       v-if="!multiple"
       ref="detail-popover"
       :disabled="value.length !== 1"
-      title="推論詳細"
+      :title="$t('titles.inference_detail')"
       trigger="hover"
       width="350"
       placement="right"

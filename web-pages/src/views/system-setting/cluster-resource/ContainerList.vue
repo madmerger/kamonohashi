@@ -10,9 +10,17 @@
       border
       @row-click="handleEditOpen"
     >
-      <el-table-column prop="nodeName" label="ノード" width="auto" />
-      <el-table-column prop="tenantName" label="テナント" width="auto" />
-      <el-table-column prop="createdBy" label="ユーザ" width="auto">
+      <el-table-column
+        prop="nodeName"
+        :label="$t('labels.node')"
+        width="auto"
+      />
+      <el-table-column
+        prop="tenantName"
+        :label="$t('labels.tenant')"
+        width="auto"
+      />
+      <el-table-column prop="createdBy" :label="$t('labels.user')" width="auto">
         <template slot-scope="scope">
           <span>
             {{ scope.row.createdBy
@@ -22,7 +30,11 @@
           >
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="コンテナ" width="auto" />
+      <el-table-column
+        prop="name"
+        :label="$t('labels.container')"
+        width="auto"
+      />
       <el-table-column
         align="right"
         prop="cpu"
@@ -32,7 +44,7 @@
       <el-table-column
         align="right"
         prop="memory"
-        label="メモリ"
+        :label="$t('labels.memory')"
         :width="columnWidth"
       />
       <el-table-column
@@ -44,7 +56,7 @@
       <el-table-column
         align="center"
         prop="status"
-        label="ステータス"
+        :label="$t('labels.status')"
         :width="columnWidth"
       />
     </el-table>

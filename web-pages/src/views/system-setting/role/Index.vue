@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ロール管理</h2>
+    <h2>{{ $t('titles.role_management') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規作成
+          {{ $t('common.new_creation') }}
         </el-button>
       </el-col>
     </el-row>
@@ -21,16 +21,34 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="ロール名" width="auto" />
-        <el-table-column prop="displayName" label="表示名" width="auto" />
-        <el-table-column prop="isSystemRole" label="種別" width="auto">
+        <el-table-column
+          prop="name"
+          :label="$t('labels.role_name')"
+          width="auto"
+        />
+        <el-table-column
+          prop="displayName"
+          :label="$t('labels.display_name')"
+          width="auto"
+        />
+        <el-table-column
+          prop="isSystemRole"
+          :label="$t('labels.type')"
+          width="auto"
+        >
           <template slot-scope="scope">
-            <span v-if="scope.row.isSystemRole">システム</span>
-            <span v-else-if="scope.row.tenantId">テナント(カスタム)</span>
-            <span v-else>テナント(共通)</span>
+            <span v-if="scope.row.isSystemRole">{{ $t('common.system') }}</span>
+            <span v-else-if="scope.row.tenantId">{{
+              $t('messages.tenant_custom')
+            }}</span>
+            <span v-else>{{ $t('messages.tenant_common') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="sortOrder" label="表示順" width="auto" />
+        <el-table-column
+          prop="sortOrder"
+          :label="$t('labels.display_order')"
+          width="auto"
+        />
       </el-table>
     </el-row>
 
@@ -43,7 +61,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('role')
 
 export default {
-  title: 'ロール管理',
+  title: this.$t('titles.role_management'),
   computed: {
     ...mapGetters(['roles']),
   },

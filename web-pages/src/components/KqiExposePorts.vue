@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="開放ポート番号(TCP)">
+  <el-form-item :label="$t('labels.expose_port_tcp')">
     <el-row></el-row>
     <el-tag
       v-for="port in value"

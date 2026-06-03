@@ -36,7 +36,11 @@
               <i v-if="!scope.row.isDirectory" class="el-icon-document" />
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="ファイル名" width="auto">
+          <el-table-column
+            prop="name"
+            :label="$t('labels.file_name')"
+            width="auto"
+          >
             <template slot-scope="scope">
               <span v-if="scope.row.isDirectory">
                 <el-button type="text" @click="handleNavAdd(scope.row.name)">
@@ -68,12 +72,16 @@
           </el-table-column>
           <el-table-column
             prop="size"
-            label="サイズ"
+            :label="$t('labels.size')"
             width="150px"
             align="right"
           />
           <el-table-column label="" width="20px" />
-          <el-table-column prop="lastModified" label="更新日時" width="210px" />
+          <el-table-column
+            prop="lastModified"
+            :label="$t('labels.updated_at')"
+            width="210px"
+          />
         </el-table>
       </el-col>
     </el-row>

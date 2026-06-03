@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>ダッシュボード</h2>
+    <h2>{{ $t('titles.dashboard') }}</h2>
     <div class="dashboard">
       <div
         v-for="(menu, index) in menuList"
@@ -44,7 +44,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('account')
 
 export default {
-  title: 'ダッシュボード',
+  title: this.$t('titles.dashboard'),
   data() {
     return {}
   },

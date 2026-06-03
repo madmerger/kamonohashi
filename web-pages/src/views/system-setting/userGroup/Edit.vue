@@ -9,22 +9,22 @@
     <el-form ref="createForm" :model="form" :rules="rules">
       <kqi-display-error :error="error" />
       <kqi-display-text-form v-if="id !== null" label="ID" :value="id" />
-      <el-form-item label="ユーザグループ名" prop="name">
+      <el-form-item :label="$t('labels.user_group_name')" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="種別" prop="isGroup">
+      <el-form-item :label="$t('labels.type')" prop="isGroup">
         <el-switch
           v-model="form.isGroup"
           style="width: 100%;"
           inactive-text="OU"
-          active-text="グループ"
+          :active-text="$t('common.group')"
           class="left-margin"
         />
       </el-form-item>
       <el-form-item label="DN" prop="dn">
         <el-input v-model="form.dn" />
       </el-form-item>
-      <el-form-item label="DN直下のユーザのみ許可するか" prop="isDirect">
+      <el-form-item :label="$t('labels.dn_direct_users_only')" prop="isDirect">
         <el-switch
           v-model="form.isDirect"
           style="width: 100%;"
@@ -33,14 +33,14 @@
           class="left-margin"
         />
       </el-form-item>
-      <el-form-item label="テナントロール" prop="roleIds">
+      <el-form-item :label="$t('labels.tenant_role')" prop="roleIds">
         <kqi-role-selector
           v-model="form.roleIds"
           :roles="tenantRoles"
           :show-system-role="false"
         />
       </el-form-item>
-      <el-form-item label="メモ" prop="memo">
+      <el-form-item :label="$t('labels.memo')" prop="memo">
         <el-input v-model="form.memo" type="textarea" />
       </el-form-item>
     </el-form>
@@ -57,7 +57,7 @@ import { mapGetters, mapActions } from 'vuex'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required_field'),
 }
 
 export default {
@@ -103,9 +103,9 @@ export default {
   },
   async created() {
     if (this.id === null) {
-      this.title = 'ユーザグループ登録'
+      this.title = this.$t('titles.user_group_registration')
     } else {
-      this.title = 'ユーザグループ編集'
+      this.title = this.$t('titles.user_group_edit')
       try {
         await this['userGroup/fetchDetail'](this.id)
         this.form.name = this.detail.name

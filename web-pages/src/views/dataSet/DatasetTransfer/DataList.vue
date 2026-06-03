@@ -90,7 +90,9 @@
                     v-if="$store.getters['account/isAvailableData']"
                     class="right-button-group"
                   >
-                    <el-button @click="showData(data)">データ編集</el-button>
+                    <el-button @click="showData(data)">{{
+                      $t('titles.data_edit')
+                    }}</el-button>
                   </div>
                   <el-row>
                     <el-col :span="15">
@@ -99,23 +101,26 @@
                         :value="data.id ? String(data.id) : null"
                       />
                       <kqi-display-text-form
-                        label="データ名"
+                        :label="$t('labels.data_name')"
                         :value="data.name"
                       />
                     </el-col>
                     <el-col :offset="1" :span="8">
                       <kqi-display-text-form
-                        label="登録日時"
+                        :label="$t('labels.created_at')"
                         :value="data.createdAt"
                       />
                       <kqi-display-text-form
-                        label="登録者"
+                        :label="$t('labels.created_by')"
                         :value="data.createdBy"
                       />
                     </el-col>
                   </el-row>
-                  <kqi-display-text-form label="メモ" :value="data.memo" />
-                  <el-form-item label="タグ">
+                  <kqi-display-text-form
+                    :label="$t('labels.memo')"
+                    :value="data.memo"
+                  />
+                  <el-form-item :label="$t('labels.tag')">
                     <br clear="all" />
                     <span style="display: block; line-height: normal;">
                       <el-tag
@@ -209,11 +214,16 @@ export default {
       searchCondition: {}, // 検索条件
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: 'データ名', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'createdAt', name: '登録日時', type: 'date' },
-        { prop: 'createdBy', name: '登録者', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('labels.data_name'), type: 'text' },
+        { prop: 'memo', name: this.$t('labels.memo'), type: 'text' },
+        { prop: 'createdAt', name: this.$t('labels.created_at'), type: 'date' },
+        { prop: 'createdBy', name: this.$t('labels.created_by'), type: 'text' },
+        {
+          prop: 'tag',
+          name: this.$t('labels.tag'),
+          type: 'text',
+          multiple: true,
+        },
       ],
       checkSpanSize: 2,
       idSpanSize: 0,
@@ -245,7 +255,7 @@ export default {
         'el-pagination__jump'
       ) {
         this.$refs.pagination.$children[i].$el.lastChild.textContent =
-          '／' + this.getTotalPages(this.viewInfo) + 'ページ目へ'
+          '／' + this.getTotalPages(this.viewInfo) + this.$t('messages.page_of')
       }
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="ユーザグループ情報" prop="userGroupId">
+  <el-form-item :label="$t('labels.user_group_info')" prop="userGroupId">
     <div class="left-margin">
       <el-select
         class="selectUserGroup"

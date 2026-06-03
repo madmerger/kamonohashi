@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>メニューアクセス管理</h2>
+    <h2>{{ $t('titles.menu_access_management') }}</h2>
     <kqi-display-error :error="error" />
     <el-row>
       <el-table
@@ -10,29 +10,37 @@
         border
       >
         <el-table-column prop="id" label="ID" width="80px" />
-        <el-table-column prop="name" label="メニュー名" width="200px" />
+        <el-table-column
+          prop="name"
+          :label="$t('labels.menu_name')"
+          width="200px"
+        />
         <el-table-column
           prop="description"
-          label="説明"
+          :label="$t('labels.description')"
           min-width="400px"
           width="auto"
         />
-        <el-table-column prop="menuType" label="種別" width="120px">
+        <el-table-column
+          prop="menuType"
+          :label="$t('labels.type')"
+          width="120px"
+        >
           <template slot-scope="prop">
             {{ displayTypeName(prop.row.menuType) }}
           </template>
         </el-table-column>
         <el-table-column
           prop="roles"
-          label="アクセス許可ロール"
+          :label="$t('labels.access_permission_role')"
           :width="getRoleDisplayWidth()"
         >
           <template slot-scope="prop">
             <div v-if="prop.row.menuType === 4">
-              公開
+              {{ $t('common.public_access') }}
             </div>
             <div v-else-if="prop.row.menuType === 1">
-              ログインユーザに許可
+              {{ $t('common.allow_logged_in') }}
             </div>
             <div v-else-if="prop.row.menuType === 2">
               <el-checkbox-group
@@ -79,8 +87,7 @@
           icon="el-icon-edit-outline"
           type="primary"
           @click="handleUpdate"
-        >
-          更新
+          >{{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>
@@ -92,7 +99,7 @@ import KqiDisplayError from '@/components/KqiDisplayError'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  title: 'メニューアクセス管理',
+  title: this.$t('titles.menu_access_management'),
   components: {
     KqiDisplayError,
   },

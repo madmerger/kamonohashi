@@ -2,15 +2,15 @@
   <div>
     <kqi-display-text-form
       label="CPU"
-      :value="quota.cpu ? quota.cpu : '無制限'"
+      :value="quota.cpu ? quota.cpu : $t('common.unlimited')"
     />
     <kqi-display-text-form
-      label="メモリ"
-      :value="quota.memory ? quota.memory + ' GB' : '無制限'"
+      :label="$t('labels.memory')"
+      :value="quota.memory ? quota.memory + ' GB' : $t('common.unlimited')"
     />
     <kqi-display-text-form
       label="GPU"
-      :value="quota.gpu ? quota.gpu : '無制限'"
+      :value="quota.gpu ? quota.gpu : $t('common.unlimited')"
     />
   </div>
 </template>

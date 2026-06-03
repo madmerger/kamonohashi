@@ -6,7 +6,7 @@
     <el-row />
     <el-row>
       <!-- サーバの選択 -->
-      <el-col :span="6" :offset="1">Gitサーバ</el-col>
+      <el-col :span="6" :offset="1">{{ $t('labels.git_server') }}</el-col>
       <el-col :span="12">
         <el-select
           :value="value.git"
@@ -29,7 +29,7 @@
     </el-row>
     <el-row>
       <!-- リポジトリの選択 -->
-      <el-col :span="6" :offset="1">リポジトリ</el-col>
+      <el-col :span="6" :offset="1">{{ $t('labels.repository') }}</el-col>
       <el-col :span="12">
         <el-select
           :value="value.repository"
@@ -57,7 +57,7 @@
     </el-row>
     <el-row>
       <!-- ブランチの選択 -->
-      <el-col :span="6" :offset="1">ブランチ</el-col>
+      <el-col :span="6" :offset="1">{{ $t('labels.branch') }}</el-col>
       <el-col :span="12">
         <el-select
           :value="value.branch"
@@ -82,31 +82,31 @@
     </el-row>
     <el-row>
       <!-- コミットIDの選択。ブランチで選択する場合は表示されない。 -->
-      <el-col :span="6" :offset="1">コミットID</el-col>
+      <el-col :span="6" :offset="1">{{ $t('labels.commit_id') }}</el-col>
       <el-col :span="12">
         <el-popover
           ref="commitDetail"
           :disabled="value.commit === null"
-          title="コミット詳細"
+          :title="$t('titles.commit_detail')"
           trigger="hover"
           width="350"
           placement="right"
         >
           <span>
             <kqi-display-text-form
-              label="コミットID"
+              :label="$t('labels.commit_id')"
               :value="value.commit ? value.commit.commitId : ''"
             />
             <kqi-display-text-form
-              label="コミッター"
+              :label="$t('labels.committer')"
               :value="value.commit ? value.commit.committerName : ''"
             />
             <kqi-display-text-form
-              label="コミット日時"
+              :label="$t('labels.commit_date')"
               :value="value.commit ? value.commit.commitAt : ''"
             />
             <kqi-display-text-form
-              label="コメント"
+              :label="$t('labels.comment')"
               :value="value.commit ? value.commit.comment : ''"
             />
           </span>
@@ -206,7 +206,7 @@ export default {
     },
     heading: {
       type: String,
-      default: 'モデル',
+      default: this.$t('labels.model'),
     },
     // リポジトリ取得中フラグ
     loadingRepositories: {
@@ -240,12 +240,14 @@ export default {
           commit => commit.commitId === this.value.commit.commitId,
         )
         if (index === 0) {
-          msg = `最新のコミットです。`
+          msg = `${this.$t('messages.latest_commit')}`
         } else if (index > 0) {
-          msg = `最新から${index}コミット前のIDです。`
+          msg = this.$t('messages.commits_before', { index: index })
         } else if (this.containsPastCommit && index < 0) {
           // コミット一覧にコミットが含まれていない場合
-          msg = `最新から${this.commits.length - 1}コミットより前のIDです。`
+          msg = this.$t('messages.commits_older', {
+            count: this.commits.length - 1,
+          })
         }
       }
       return msg
@@ -393,28 +395,38 @@ export default {
 
     // コミットidとコミットメッセージを組み合わせたメッセージを生成する
     createCommitIdAndComment(commitId, committerName, comment) {
+      let committerLabel = this.$t('messages.committer_label')
+      let commentNone = this.$t('messages.comment_none')
+      let commentLabel = this.$t('messages.comment_label')
       if (comment === null || comment.length === 0) {
         return (
           commitId.slice(0, 10) +
-          ',,, (コミッター:' +
+          ',,, (' +
+          committerLabel +
           committerName +
-          ', コメント: なし)'
+          ', ' +
+          commentNone +
+          ')'
         )
       } else if (comment.length <= 20) {
         return (
           commitId.slice(0, 10) +
-          ',,, (コミッター:' +
+          ',,, (' +
+          committerLabel +
           committerName +
-          ', コメント: ' +
+          ', ' +
+          commentLabel +
           comment +
           ')'
         )
       } else {
         return (
           commitId.slice(0, 10) +
-          ',,, (コミッター:' +
+          ',,, (' +
+          committerLabel +
           committerName +
-          ', コメント: ' +
+          ', ' +
+          commentLabel +
           comment.slice(0, 20) +
           ',,,)'
         )

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>学習管理</h2>
+    <h2>{{ $t('titles.training_management') }}</h2>
     <el-row type="flex" justify="space-between" :gutter="20">
       <kqi-pagination
         v-model="pageStatus"
@@ -12,14 +12,14 @@
           v-if="selections.length !== 0"
           @click="updateTagDialogVisible = true"
         >
-          タグ変更
+          {{ $t('common.tag_change') }}
         </el-button>
         <el-button
           v-if="selections.length !== 0"
           type="danger"
           @click="showDeleteConfirm"
         >
-          一括削除
+          {{ $t('common.batch_delete') }}
         </el-button>
         <el-button
           icon="el-icon-edit-outline"
@@ -27,10 +27,13 @@
           plain
           @click="openCreateDialog()"
         >
-          新規実行
+          {{ $t('common.new_execution') }}
         </el-button>
       </el-col>
-      <el-dialog :visible.sync="updateTagDialogVisible" title="タグ変更">
+      <el-dialog
+        :visible.sync="updateTagDialogVisible"
+        :title="$t('common.tag_change')"
+      >
         <el-form>
           <el-form-item>
             <el-col :span="24">
@@ -40,23 +43,31 @@
         </el-form>
         <div class="right-top-button">
           <el-button type="primary" @click="updateTags('post')">
-            一括追加
+            {{ $t('common.batch_add') }}
           </el-button>
           <el-button type="danger" @click="updateTags('delete')">
-            一括削除
+            {{ $t('common.batch_delete') }}
           </el-button>
         </div>
         <el-table :data="selections">
           <el-table-column prop="id" label="ID" width="120px" />
-          <el-table-column prop="name" label="学習名" width="120px" />
-          <el-table-column prop="createdAt" label="開始日時" width="200px" />
+          <el-table-column
+            prop="name"
+            :label="$t('labels.training_name')"
+            width="120px"
+          />
+          <el-table-column
+            prop="createdAt"
+            :label="$t('labels.started_at')"
+            width="200px"
+          />
           <el-table-column
             prop="memo"
-            label="メモ"
+            :label="$t('labels.memo')"
             width="auto"
             class-name="memo-column"
           />
-          <el-table-column prop="tag" label="タグ" width="120px">
+          <el-table-column prop="tag" :label="$t('labels.tag')" width="120px">
             <template slot-scope="scope">
               <span
                 v-for="(tag, index) in scope.row.tags"
@@ -74,8 +85,8 @@
     </el-row>
     <el-row :gutter="20">
       <el-col class="search">
-        <el-button type="button" @click="searchDialogVisible = true">
-          詳細検索
+        <el-button type="button" @click="searchDialogVisible = true"
+          >{{ $t('common.detailed_search') }}
         </el-button>
         <el-select
           v-model="searchConditionId"
@@ -87,7 +98,7 @@
           <el-option
             v-if="searchingFlg"
             key="search"
-            label="(詳細検索中)"
+            :label="$t('common.searching')"
             value="search"
           />
           <el-option
@@ -130,9 +141,17 @@
           </div>
         </el-table-column>
         <el-table-column prop="id" label="ID" width="120px" />
-        <el-table-column prop="name" label="学習名" width="120px" />
-        <el-table-column prop="createdAt" label="開始日時" width="200px" />
-        <el-table-column label="マウントした学習" width="200px">
+        <el-table-column
+          prop="name"
+          :label="$t('labels.training_name')"
+          width="120px"
+        />
+        <el-table-column
+          prop="createdAt"
+          :label="$t('labels.started_at')"
+          width="200px"
+        />
+        <el-table-column :label="$t('labels.mounted_training')" width="200px">
           <template slot-scope="scope">
             <span
               v-for="(ParentName, index) in scope.row.parentFullNameList"
@@ -146,22 +165,22 @@
         </el-table-column>
         <el-table-column
           prop="dataSet.name"
-          label="データセット"
+          :label="$t('labels.dataset')"
           width="120px"
         />
         <el-table-column
           prop="entryPoint"
-          label="実行コマンド"
+          :label="$t('labels.entry_point')"
           width="auto"
           class-name="entry-point-column"
         />
         <el-table-column
           prop="memo"
-          label="メモ"
+          :label="$t('labels.memo')"
           width="auto"
           class-name="memo-column"
         />
-        <el-table-column prop="tag" label="タグ" width="120px">
+        <el-table-column prop="tag" :label="$t('labels.tag')" width="120px">
           <template slot-scope="scope">
             <span
               v-for="(tag, index) in scope.row.tags"
@@ -189,7 +208,11 @@
             </div>
           </div>
         </el-table-column>
-        <el-table-column prop="status" label="ステータス" width="120px" />
+        <el-table-column
+          prop="status"
+          :label="$t('labels.status')"
+          width="120px"
+        />
       </el-table>
     </el-row>
     <el-row>
@@ -220,7 +243,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('training')
 
 export default {
-  title: '学習管理',
+  title: this.$t('titles.training_management'),
   components: {
     KqiPagination,
     Search,
@@ -267,18 +290,35 @@ export default {
       searchCondition: null,
       searchConfigs: [
         { prop: 'id', name: 'ID', type: 'number' },
-        { prop: 'name', name: '学習名', type: 'text' },
-        { prop: 'parentId', name: 'マウントした学習ID', type: 'number' },
-        { prop: 'parentName', name: 'マウントした学習名', type: 'text' },
-        { prop: 'startedAt', name: '開始日時', type: 'date' },
-        { prop: 'startedBy', name: '実行者', type: 'text' },
-        { prop: 'dataSet', name: 'データセット', type: 'text' },
-        { prop: 'entryPoint', name: '実行コマンド', type: 'text' },
-        { prop: 'memo', name: 'メモ', type: 'text' },
-        { prop: 'tag', name: 'タグ', type: 'text', multiple: true },
+        { prop: 'name', name: this.$t('labels.training_name'), type: 'text' },
+        {
+          prop: 'parentId',
+          name: this.$t('labels.mounted_training_id'),
+          type: 'number',
+        },
+        {
+          prop: 'parentName',
+          name: this.$t('labels.mounted_training_name'),
+          type: 'text',
+        },
+        { prop: 'startedAt', name: this.$t('labels.started_at'), type: 'date' },
+        { prop: 'startedBy', name: this.$t('labels.started_by'), type: 'text' },
+        { prop: 'dataSet', name: this.$t('labels.dataset'), type: 'text' },
+        {
+          prop: 'entryPoint',
+          name: this.$t('labels.entry_point'),
+          type: 'text',
+        },
+        { prop: 'memo', name: this.$t('labels.memo'), type: 'text' },
+        {
+          prop: 'tag',
+          name: this.$t('labels.tag'),
+          type: 'text',
+          multiple: true,
+        },
         {
           prop: 'status',
-          name: 'ステータス',
+          name: this.$t('labels.status'),
           type: 'select',
           option: {
             items: [
@@ -519,11 +559,13 @@ export default {
       this.selections = val
     },
     async showDeleteConfirm() {
-      let confirmMessage = `学習履歴を${this.selections.length}件削除しますか（出力データ数が多い場合、処理に時間がかかります）`
+      let confirmMessage = this.$t('messages.training_delete_confirm', {
+        count: this.selections.length,
+      })
       await this.$confirm(confirmMessage, 'Warning', {
         distinguishCancelAndClose: true,
-        confirmButtonText: 'はい',
-        cancelButtonText: 'キャンセル',
+        confirmButtonText: this.$t('common.yes'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(async () => {
@@ -535,8 +577,10 @@ export default {
           }
           await this.$notify.info({
             type: 'info',
-            message: `学習履歴を削除しました。(成功：${successCount}件、 失敗：${this
-              .selections.length - successCount}件`,
+            message: this.$t('messages.training_deleted', {
+              success: successCount,
+              fail: this.selections.length - successCount,
+            }),
           })
           this.pageStatus.currentPage = 1
           await this.retrieveData()

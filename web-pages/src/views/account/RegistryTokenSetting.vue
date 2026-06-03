@@ -1,11 +1,13 @@
 <template>
   <!-- Registryトークン設定 -->
   <div v-if="registries.length <= 0">
-    Registryが選択されていません。 システム管理者にお問い合わせください。
+    {{ $t('messages.registry_not_selected') }}
   </div>
   <div v-else>
     <el-row class="row-element" style="margin-top: 30px;">
-      <el-col :span="6" class="content-color">選択中のRegistry</el-col>
+      <el-col :span="6" class="content-color">{{
+        $t('labels.selected_registry')
+      }}</el-col>
       <el-col :span="16">
         <div>
           <el-select
@@ -24,18 +26,18 @@
           <br />
 
           <template v-if="value.serviceType === 1">
-            <div class="content-color">ユーザ名</div>
+            <div class="content-color">{{ $t('labels.user_name') }}</div>
             <el-input :value="value.userName" type="text" @input="userChange" />
           </template>
           <template v-else-if="value.serviceType === 2">
-            <div class="content-color">プロジェクト名</div>
+            <div class="content-color">{{ $t('labels.project_name') }}</div>
             {{ value.projectName ? value.projectName : '--' }}
           </template>
           <template v-else>
-            <div class="content-color">ユーザ名/リポジトリ</div>
+            <div class="content-color">{{ $t('labels.user_name_repo') }}</div>
             {{ value.userName ? value.userName : '--' }}
           </template>
-          <div class="content-color">トークン</div>
+          <div class="content-color">{{ $t('labels.token') }}</div>
           <el-input
             :value="value.password"
             type="password"
@@ -47,8 +49,8 @@
     </el-row>
     <el-row>
       <el-col class="button-group">
-        <el-button type="primary" @click="$emit('updateRegistryToken')">
-          更新
+        <el-button type="primary" @click="$emit('updateRegistryToken')"
+          >{{ $t('common.update') }}
         </el-button>
       </el-col>
     </el-row>

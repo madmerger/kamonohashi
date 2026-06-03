@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>接続テナント設定</h2>
+    <h2>{{ $t('titles.tenant_setting') }}</h2>
     <el-card>
       <el-form
         ref="editForm"
@@ -11,19 +11,25 @@
         <kqi-display-error :error="error" />
 
         <el-col class="container base">
-          <h3>テナント情報</h3>
+          <h3>{{ $t('titles.tenant_info') }}</h3>
           <div class="margin">
             <kqi-display-text-form label="ID" :value="form.id" />
-            <kqi-display-text-form label="テナント名" :value="form.name" />
-            <el-form-item label="表示名" prop="displayName">
+            <kqi-display-text-form
+              :label="$t('labels.tenant_name')"
+              :value="form.name"
+            />
+            <el-form-item :label="$t('labels.display_name')" prop="displayName">
               <el-input v-model="form.displayName" />
             </el-form-item>
-            <el-form-item label="ノートブック無期限実行" required>
+            <el-form-item
+              :label="$t('labels.notebook_unlimited_exec')"
+              required
+            >
               <el-switch
                 v-model="form.availableInfiniteTimeNotebook"
                 style="width: 100%;"
-                inactive-text="禁止"
-                active-text="許可"
+                :inactive-text="$t('common.forbidden')"
+                :active-text="$t('common.allowed')"
               />
             </el-form-item>
           </div>
@@ -43,7 +49,7 @@
           <el-row :gutter="20">
             <el-col class="right-button-group">
               <el-button type="primary" @click="saveData">
-                保存
+                {{ $t('common.save') }}
               </el-button>
             </el-col>
           </el-row>
@@ -64,11 +70,11 @@ import validator from '@/util/validator'
 const formRule = {
   required: true,
   trigger: 'blur',
-  message: '必須項目です',
+  message: this.$t('common.required_field'),
 }
 
 export default {
-  title: '接続テナント設定',
+  title: this.$t('titles.tenant_setting'),
   components: {
     KqiDisplayError,
     KqiDisplayTextForm,

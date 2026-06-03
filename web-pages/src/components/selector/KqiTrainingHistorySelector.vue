@@ -6,7 +6,7 @@
       v-if="!multiple"
       ref="detail-popover"
       :disabled="value.length !== 1"
-      title="学習詳細"
+      :title="$t('titles.training_detail')"
       trigger="hover"
       width="350"
       placement="right"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Git管理</h2>
+    <h2>{{ $t('titles.git_management') }}</h2>
     <el-row>
       <el-col class="create-new">
         <el-button
@@ -9,7 +9,7 @@
           plain
           @click="openCreateDialog"
         >
-          新規登録
+          {{ $t('common.new_registration') }}
         </el-button>
       </el-col>
     </el-row>
@@ -21,13 +21,21 @@
         @row-click="openEditDialog"
       >
         <el-table-column prop="id" label="ID" width="100px" />
-        <el-table-column prop="name" label="リポジトリ名" width="auto" />
         <el-table-column
-          prop="repositoryUrl"
-          label="リポジトリURL"
+          prop="name"
+          :label="$t('labels.repository_name')"
           width="auto"
         />
-        <el-table-column prop="serviceTypeName" label="種別" width="auto" />
+        <el-table-column
+          prop="repositoryUrl"
+          :label="$t('labels.repository_url')"
+          width="auto"
+        />
+        <el-table-column
+          prop="serviceTypeName"
+          :label="$t('labels.type')"
+          width="auto"
+        />
         <el-table-column prop="apiUrl" label="API URL" width="auto" />
       </el-table>
     </el-row>
@@ -41,7 +49,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapActions } = createNamespacedHelpers('git')
 
 export default {
-  title: 'Git管理', //<title>設定
+  title: this.$t('titles.git_management'), //<title>設定
   computed: {
     ...mapGetters(['endpoints']),
   },
