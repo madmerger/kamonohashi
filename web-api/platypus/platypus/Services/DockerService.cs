@@ -275,19 +275,38 @@ namespace Nssol.Platypus.Services
                     Filters = filters
                 });
 
-                var result = containers.Select(c => new ContainerDetailsInfo
+                var result = new List<ContainerDetailsInfo>();
+                foreach (var c in containers)
                 {
-                    Name = c.Labels.ContainsKey(KqiContainerNameLabel) ? c.Labels[KqiContainerNameLabel] : c.Names.FirstOrDefault()?.TrimStart('/'),
-                    TenantName = c.Labels.ContainsKey(KqiTenantLabel) ? c.Labels[KqiTenantLabel] : "",
-                    Status = MapDockerStateToContainerStatus(c.State),
-                    NodeName = Environment.MachineName,
-                    NodeIpAddress = "localhost",
-                    CreatedAt = c.Created,
-                    Image = c.Image,
-                    Cpu = 0,
-                    Memory = 0,
-                    Gpu = 0
-                });
+                    KqiContainerStatus status;
+                    float cpu = 0, memory = 0;
+                    int gpu = 0;
+                    try
+                    {
+                        var inspect = await dockerClient.Containers.InspectContainerAsync(c.ID);
+                        status = MapInspectStateToContainerStatus(inspect.State);
+                        cpu = inspect.HostConfig?.NanoCPUs > 0 ? (float)inspect.HostConfig.NanoCPUs / 1_000_000_000 : 0;
+                        memory = inspect.HostConfig?.Memory > 0 ? (float)inspect.HostConfig.Memory / (1024 * 1024 * 1024) : 0;
+                        gpu = (int)(inspect.HostConfig?.DeviceRequests?.Sum(d => d.Count) ?? 0);
+                    }
+                    catch
+                    {
+                        status = MapDockerStateToContainerStatus(c.State);
+                    }
+                    result.Add(new ContainerDetailsInfo
+                    {
+                        Name = c.Labels.ContainsKey(KqiContainerNameLabel) ? c.Labels[KqiContainerNameLabel] : c.Names.FirstOrDefault()?.TrimStart('/'),
+                        TenantName = c.Labels.ContainsKey(KqiTenantLabel) ? c.Labels[KqiTenantLabel] : "",
+                        Status = status,
+                        NodeName = Environment.MachineName,
+                        NodeIpAddress = "localhost",
+                        CreatedAt = c.Created,
+                        Image = c.Image,
+                        Cpu = cpu,
+                        Memory = memory,
+                        Gpu = gpu
+                    });
+                }
 
                 return Result<IEnumerable<ContainerDetailsInfo>, KqiContainerStatus>.CreateResult(result);
             }
