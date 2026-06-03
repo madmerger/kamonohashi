@@ -42,6 +42,7 @@ namespace Nssol.Platypus.Controllers.spa
         private readonly ITagRepository tagRepository;
         private readonly ITenantRepository tenantRepository;
         private readonly INodeRepository nodeRepository;
+        private readonly IModelVersionRepository modelVersionRepository;
         private readonly IDataSetLogic dataSetLogic;
         private readonly ITagLogic tagLogic;
         private readonly ITrainingLogic trainingLogic;
@@ -65,6 +66,7 @@ namespace Nssol.Platypus.Controllers.spa
             ITagRepository tagRepository,
             ITenantRepository tenantRepository,
             INodeRepository nodeRepository,
+            IModelVersionRepository modelVersionRepository,
             IDataSetLogic dataSetLogic,
             ITagLogic tagLogic,
             ITrainingLogic trainingLogic,
@@ -85,6 +87,7 @@ namespace Nssol.Platypus.Controllers.spa
             this.tagRepository = tagRepository;
             this.tenantRepository = tenantRepository;
             this.nodeRepository = nodeRepository;
+            this.modelVersionRepository = modelVersionRepository;
             this.dataSetLogic = dataSetLogic;
             this.tagLogic = tagLogic;
             this.trainingLogic = trainingLogic;
@@ -1253,6 +1256,13 @@ namespace Nssol.Platypus.Controllers.spa
             if (id == null)
             {
                 return JsonBadRequest("Invalid inputs.");
+            }
+
+            // モデルバージョンで参照されていたら消せない
+            var referencingVersion = modelVersionRepository.Find(v => v.TrainingHistoryId == id.Value);
+            if (referencingVersion != null)
+            {
+                return JsonConflict($"Training {id.Value} is referenced by a model version and cannot be deleted.");
             }
 
             var (_, result) = await DoDelete(id.Value,

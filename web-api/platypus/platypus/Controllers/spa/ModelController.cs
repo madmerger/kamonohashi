@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Nssol.Platypus.ApiModels.ModelApiModels;
 using Nssol.Platypus.Controllers.Util;
 using Nssol.Platypus.DataAccess.Core;
@@ -197,22 +198,35 @@ namespace Nssol.Platypus.Controllers.spa
                 }
             }
 
-            int latestVersion = await modelVersionRepository.GetLatestVersionNumberAsync(id);
-
-            var newVersion = new ModelVersion
+            const int maxRetries = 3;
+            for (int retry = 0; retry < maxRetries; retry++)
             {
-                ModelId = id,
-                Version = latestVersion + 1,
-                TrainingHistoryId = input.TrainingHistoryId,
-                Accuracy = input.Accuracy,
-                Status = input.Status ?? "none",
-                Description = input.Description,
-            };
+                int latestVersion = await modelVersionRepository.GetLatestVersionNumberAsync(id);
 
-            modelVersionRepository.Add(newVersion);
-            unitOfWork.Commit();
+                var newVersion = new ModelVersion
+                {
+                    ModelId = id,
+                    Version = latestVersion + 1,
+                    TrainingHistoryId = input.TrainingHistoryId,
+                    Accuracy = input.Accuracy,
+                    Status = input.Status ?? "none",
+                    Description = input.Description,
+                };
 
-            return JsonCreated(new VersionOutputModel(newVersion));
+                modelVersionRepository.Add(newVersion);
+
+                try
+                {
+                    unitOfWork.Commit();
+                    return JsonCreated(new VersionOutputModel(newVersion));
+                }
+                catch (DbUpdateException) when (retry < maxRetries - 1)
+                {
+                    // Version number conflict due to concurrent request; retry with fresh number
+                }
+            }
+
+            return JsonConflict("Failed to assign version number due to concurrent requests. Please retry.");
         }
 
         /// <summary>
