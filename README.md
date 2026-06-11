@@ -9,7 +9,6 @@ KAMONOHASHIは、Deep Learningのモデル開発を効率的に行うためのAI
 ## Getting Started
 [KAMONOHASHIのインストール方法](https://kamonohashi.ai/docs/install-and-update)を参照してください。  
 
-
 ## Contributing
 KAMONOHASHIに関するバグレポートやリクエストは、[Issue](https://github.com/KAMONOHASHI/kamonohashi/issues/new/choose)の作成による報告をお願いします。  
 
